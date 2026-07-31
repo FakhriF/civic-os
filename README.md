@@ -44,19 +44,19 @@ graph TD
 
 ## 📚 Documentation Index
 
-All architectural specs, design guidelines, entity schemas, and decision records are maintained in the [`docs/`](file:///mnt/data_ssd/Codes/FullStack/CivicOS/docs) folder:
+All architectural specs, design guidelines, entity schemas, and decision records are maintained in the [`docs/`](./docs) folder:
 
 | Document | Description |
 | :--- | :--- |
-| 🎯 [**Product Vision & Scope**](file:///mnt/data_ssd/Codes/FullStack/CivicOS/docs/vision.md) | Mission statement, strategic goals, and target outcomes |
-| 🏗️ [**System Architecture**](file:///mnt/data_ssd/Codes/FullStack/CivicOS/docs/architecture.md) | High-level system topology, layered design, and domain contracts |
-| 🗄️ [**Database & ERD**](file:///mnt/data_ssd/Codes/FullStack/CivicOS/docs/database.md) | Relational schema, field definitions, foreign keys, and ER diagram |
-| 🎨 [**Design System**](file:///mnt/data_ssd/Codes/FullStack/CivicOS/docs/design.md) | UI tokens, color palette, typography scale, and layout guidelines |
-| 📂 [**Project Structure**](file:///mnt/data_ssd/Codes/FullStack/CivicOS/docs/project-structure.md) | Monorepo layout, package sharing, and frontend/backend directories |
-| 🗺️ [**Product Roadmap**](file:///mnt/data_ssd/Codes/FullStack/CivicOS/docs/roadmap.md) | Development phases, milestones, and release targets |
-| 🛠️ [**Development Standards**](file:///mnt/data_ssd/Codes/FullStack/CivicOS/docs/development-standards.md) | Coding conventions, Git workflows, error handling, API response formats, & DoD |
-| 📜 [**Architecture Decision Records (ADRs)**](file:///mnt/data_ssd/Codes/FullStack/CivicOS/docs/adr) | Key technical decisions and design rationale |
-| 🧩 [**Business Modules**](file:///mnt/data_ssd/Codes/FullStack/CivicOS/docs/modules) | Specifications for domain modules (Auth, Population, Announcements) |
+| 🎯 [**Product Vision & Scope**](./docs/vision.md) | Mission statement, strategic goals, and target outcomes |
+| 🏗️ [**System Architecture**](./docs/architecture.md) | High-level system topology, layered design, and domain contracts |
+| 🗄️ [**Database & ERD**](./docs/database.md) | Relational schema, field definitions, foreign keys, and ER diagram |
+| 🎨 [**Design System**](./docs/design.md) | UI tokens, color palette, typography scale, and layout guidelines |
+| 📂 [**Project Structure**](./docs/project-structure.md) | Monorepo layout, package sharing, and frontend/backend directories |
+| 🗺️ [**Product Roadmap**](./docs/roadmap.md) | Development phases, milestones, and release targets |
+| 🛠️ [**Development Standards**](./docs/development-standards.md) | Coding conventions, Git workflows, error handling, API response formats, & DoD |
+| 📜 [**Architecture Decision Records (ADRs)**](./docs/adr) | Key technical decisions and design rationale |
+| 🧩 [**Business Modules**](./docs/modules) | Specifications for domain modules (Auth, Population, Announcements) |
 
 ---
 
@@ -97,4 +97,4 @@ CivicOS/
 
 ## 📄 License
 
-This project is licensed under the [**MIT License**](file:///mnt/data_ssd/Codes/FullStack/CivicOS/LICENSE.md).
+This project is licensed under the [**MIT License**](./LICENSE.md).

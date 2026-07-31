@@ -166,7 +166,7 @@ All REST API endpoints in CivicOS returned from `apps/api` must conform to the s
    ```
 
 2. **Architecture Decision Record (ADR) Criteria**:
-   - Create a new ADR in [`docs/adr/`](file:///mnt/data_ssd/Codes/FullStack/CivicOS/docs/adr) when making long-term architectural choices (e.g. adopting a framework, database strategy, monorepo tooling).
+   - Create a new ADR in [`docs/adr/`](./adr) when making long-term architectural choices (e.g. adopting a framework, database strategy, monorepo tooling).
    - Routine changes (adding an endpoint, editing UI styles, tweaking variables) do not require an ADR.
 
 ---

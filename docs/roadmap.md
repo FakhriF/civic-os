@@ -57,7 +57,7 @@ graph LR
 
 | Milestone | Scope & Deliverables | Status |
 | :--- | :--- | :--- |
-| **M1: Project Setup** | Monorepo structure, Vite frontend, Elysia backend, Docker Compose, PostgreSQL + Drizzle ORM setup |  `Planned` ⚪  |
+| **M1: Project Setup** | Monorepo structure, Bun workspaces (`packages/`, `apps/`), Root `package.json` & `tsconfig.json` | `Completed` 🟢 |
 | **M2: Authentication** | Login, Logout, JWT bearer tokens, Refresh token handling, Protected route guards | `Planned` ⚪  |
 | **M3: App Shell Layout** | Mantine header, collapsible sidebar, breadcrumb navigation, theme switching |  `Planned` ⚪  |
 | **M4: Executive Dashboard** | City overview stats cards, recent bulletins list, quick action panel | `Planned` ⚪ |

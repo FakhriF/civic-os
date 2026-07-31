@@ -36,51 +36,51 @@ graph TD
 
 ### 1. Core Specifications
 
-- [**Product Vision & Scope**](file:///mnt/data_ssd/Codes/FullStack/CivicOS/docs/vision.md)  
+- [**Product Vision & Scope**](./vision.md)  
   *Defines the product purpose, municipal mission, target audience, and high-level goals.*
 
-- [**System Architecture**](file:///mnt/data_ssd/Codes/FullStack/CivicOS/docs/architecture.md)  
+- [**System Architecture**](./architecture.md)  
   *Detailed breakdown of monorepo design, layered architecture, technology choices, and service boundaries.*
 
-- [**Database Schema & ERD**](file:///mnt/data_ssd/Codes/FullStack/CivicOS/docs/database.md)  
+- [**Database Schema & ERD**](./database.md)  
   *Entity definitions, relational mappings, foreign key constraints, data dictionary, and visual ERD.*
 
-- [**Design System Guidelines**](file:///mnt/data_ssd/Codes/FullStack/CivicOS/docs/design.md)  
+- [**Design System Guidelines**](./design.md)  
   *Design philosophy, color tokens, typography scale, component standards, accessibility rules, and layout specs.*
 
-- [**Project Structure**](file:///mnt/data_ssd/Codes/FullStack/CivicOS/docs/project-structure.md)  
+- [**Project Structure**](./project-structure.md)  
   *Organization of apps, packages, feature folders, global assets, and monorepo conventions.*
 
-- [**Product Roadmap**](file:///mnt/data_ssd/Codes/FullStack/CivicOS/docs/roadmap.md)  
+- [**Product Roadmap**](./roadmap.md)  
   *Phase-by-phase execution plan, milestone timelines, and feature rollout tracking.*
 
-- [**Development Standards**](file:///mnt/data_ssd/Codes/FullStack/CivicOS/docs/development-standards.md)  
+- [**Development Standards**](./development-standards.md)  
   *Coding conventions, Git workflows, error handling protocols, API contracts, AI policy, and DoD checklist.*
 
 ---
 
 ### 2. Architecture Decision Records (ADRs)
 
-Located in [`docs/adr/`](file:///mnt/data_ssd/Codes/FullStack/CivicOS/docs/adr):
+Located in [`docs/adr/`](./adr):
 
-- [**ADR-001: Monorepo Architecture**](file:///mnt/data_ssd/Codes/FullStack/CivicOS/docs/adr/ADR-001-monorepo.md) — *Unified workspace for frontend, API, & shared libs*
-- [**ADR-002: React + Vite Frontend**](file:///mnt/data_ssd/Codes/FullStack/CivicOS/docs/adr/ADR-002-react-vite.md) — *Modern SPA tooling & rapid developer HMR feedback*
-- [**ADR-003: REST API Paradigm**](file:///mnt/data_ssd/Codes/FullStack/CivicOS/docs/adr/ADR-003-rest-api.md) — *Standard HTTP verbs, status codes, & DTO contracts*
-- [**ADR-004: Layered Architecture**](file:///mnt/data_ssd/Codes/FullStack/CivicOS/docs/adr/ADR-004-layered-architecture.md) — *Presentation ➔ Business ➔ Data separation*
-- [**ADR-005: Feature-Based Structure**](file:///mnt/data_ssd/Codes/FullStack/CivicOS/docs/adr/ADR-005-feature-based-structure.md) — *Frontend feature encapsulation*
-- [**ADR-006: Foreign Key Normalization**](file:///mnt/data_ssd/Codes/FullStack/CivicOS/docs/adr/ADR-006-foreign-keys.md) — *Relational integrity over duplicated text*
-- [**ADR-007: Mantine Design System**](file:///mnt/data_ssd/Codes/FullStack/CivicOS/docs/adr/ADR-007-mantine-design-system.md) — *Enterprise UI component foundation*
-- [**ADR-008: Bun Runtime & Package Manager**](file:///mnt/data_ssd/Codes/FullStack/CivicOS/docs/adr/ADR-008-bun-runtime.md) — *Primary JS/TS runtime, package manager, & workspace runner*
+- [**ADR-001: Monorepo Architecture**](./adr/ADR-001-monorepo.md) — *Unified workspace for frontend, API, & shared libs*
+- [**ADR-002: React + Vite Frontend**](./adr/ADR-002-react-vite.md) — *Modern SPA tooling & rapid developer HMR feedback*
+- [**ADR-003: REST API Paradigm**](./adr/ADR-003-rest-api.md) — *Standard HTTP verbs, status codes, & DTO contracts*
+- [**ADR-004: Layered Architecture**](./adr/ADR-004-layered-architecture.md) — *Presentation ➔ Business ➔ Data separation*
+- [**ADR-005: Feature-Based Structure**](./adr/ADR-005-feature-based-structure.md) — *Frontend feature encapsulation*
+- [**ADR-006: Foreign Key Normalization**](./adr/ADR-006-foreign-keys.md) — *Relational integrity over duplicated text*
+- [**ADR-007: Mantine Design System**](./adr/ADR-007-mantine-design-system.md) — *Enterprise UI component foundation*
+- [**ADR-008: Bun Runtime & Package Manager**](./adr/ADR-008-bun-runtime.md) — *Primary JS/TS runtime, package manager, & workspace runner*
 
 ---
 
 ### 3. Business Modules Specs
 
-Located in [`docs/modules/`](file:///mnt/data_ssd/Codes/FullStack/CivicOS/docs/modules):
+Located in [`docs/modules/`](./modules):
 
-- [**Authentication & Authorization Module**](file:///mnt/data_ssd/Codes/FullStack/CivicOS/docs/modules/auth.md) — *RBAC, JWT tokens, session handling*
-- [**Population Registry Module**](file:///mnt/data_ssd/Codes/FullStack/CivicOS/docs/modules/population.md) — *Resident information management*
-- [**Announcements Module**](file:///mnt/data_ssd/Codes/FullStack/CivicOS/docs/modules/announcement.md) — *Official municipal bulletins & statuses*
+- [**Authentication & Authorization Module**](./modules/auth.md) — *RBAC, JWT tokens, session handling*
+- [**Population Registry Module**](./modules/population.md) — *Resident information management*
+- [**Announcements Module**](./modules/announcement.md) — *Official municipal bulletins & statuses*
 
 ---
 
