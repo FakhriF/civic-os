@@ -73,6 +73,7 @@ Located in [`docs/adr/`](./adr):
 - [**ADR-008: Bun Runtime & Package Manager**](./adr/ADR-008-bun-runtime.md) — *Primary JS/TS runtime, package manager, & workspace runner*
 - [**ADR-009: Pure Bun Project**](./adr/ADR-009-pure-bun-project.md) — *Strict enforcement of Bun across dev, scripts, & production*
 - [**ADR-010: Official Project Templates**](./adr/ADR-010-official-templates.md) — *Official framework starters for reliable initialization*
+- [**ADR-011: Strict Dependency Ownership**](./adr/ADR-011-dependency-ownership.md) — *Dependencies scoped strictly to their smallest owner package*
 
 ---
 

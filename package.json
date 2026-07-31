@@ -4,15 +4,18 @@
   "private": true,
   "devDependencies": {
     "@types/bun": "latest",
-    "typescript": "^5.x"
+    "typescript": "~6.0.2"
   },
   "workspaces": [
     "packages/*",
     "apps/*"
   ],
   "scripts": {
-    "dev": "echo \"Apps not configured yet\"",
-    "build": "echo \"Not implemented\"",
+    "dev:web": "bun --cwd apps/web dev",
+     "dev:api": "bun --cwd apps/api dev",
     "lint": "echo \"Not implemented\""
+  },
+  "dependencies": {
+
   }
 }

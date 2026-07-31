@@ -30,7 +30,8 @@ CivicOS/
 │   │   ├── 📄 ADR-007-mantine-design-system.md
 │   │   ├── 📄 ADR-008-bun-runtime.md
 │   │   ├── 📄 ADR-009-pure-bun-project.md
-│   │   └── 📄 ADR-010-official-templates.md
+│   │   ├── 📄 ADR-010-official-templates.md
+│   │   └── 📄 ADR-011-dependency-ownership.md
 │   ├── 📂 modules/            # Business Module Specifications
 │   ├── 📄 architecture.md     # System architecture spec
 │   ├── 📄 database.md         # Database schema & ERD
