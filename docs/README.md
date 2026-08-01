@@ -74,6 +74,7 @@ Located in [`docs/adr/`](./adr):
 - [**ADR-009: Pure Bun Project**](./adr/ADR-009-pure-bun-project.md) — *Strict enforcement of Bun across dev, scripts, & production*
 - [**ADR-010: Official Project Templates**](./adr/ADR-010-official-templates.md) — *Official framework starters for reliable initialization*
 - [**ADR-011: Strict Dependency Ownership**](./adr/ADR-011-dependency-ownership.md) — *Dependencies scoped strictly to their smallest owner package*
+- [**ADR-012: Feature-Oriented Frontend Structure**](./adr/ADR-012-feature-oriented-frontend.md) — *Organize frontend by feature while keeping core infrastructure under app/*
 
 ---
 
