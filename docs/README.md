@@ -61,21 +61,36 @@ graph TD
 
 ### 2. Architecture Decision Records (ADRs)
 
-Located in [`docs/adr/`](./adr):
+All architectural decisions are documented in the [**ADR Registry (`docs/adr/`)**](./adr/README.md):
 
-- [**ADR-001: Monorepo Architecture**](./adr/ADR-001-monorepo.md) — *Unified workspace for frontend, API, & shared libs*
-- [**ADR-002: React + Vite Frontend**](./adr/ADR-002-react-vite.md) — *Modern SPA tooling & rapid developer HMR feedback*
-- [**ADR-003: REST API Paradigm**](./adr/ADR-003-rest-api.md) — *Standard HTTP verbs, status codes, & DTO contracts*
-- [**ADR-004: Layered Architecture**](./adr/ADR-004-layered-architecture.md) — *Presentation ➔ Business ➔ Data separation*
-- [**ADR-005: Feature-Based Structure**](./adr/ADR-005-feature-based-structure.md) — *Frontend feature encapsulation*
-- [**ADR-006: Foreign Key Normalization**](./adr/ADR-006-foreign-keys.md) — *Relational integrity over duplicated text*
-- [**ADR-007: Mantine Design System**](./adr/ADR-007-mantine-design-system.md) — *Enterprise UI component foundation*
-- [**ADR-008: Bun Runtime & Package Manager**](./adr/ADR-008-bun-runtime.md) — *Primary JS/TS runtime, package manager, & workspace runner*
-- [**ADR-009: Pure Bun Project**](./adr/ADR-009-pure-bun-project.md) — *Strict enforcement of Bun across dev, scripts, & production*
-- [**ADR-010: Official Project Templates**](./adr/ADR-010-official-templates.md) — *Official framework starters for reliable initialization*
-- [**ADR-011: Strict Dependency Ownership**](./adr/ADR-011-dependency-ownership.md) — *Dependencies scoped strictly to their smallest owner package*
-- [**ADR-012: Feature-Oriented Frontend Structure**](./adr/ADR-012-feature-oriented-frontend.md) — *Organize frontend by feature while keeping core infrastructure under app/*
-- [**ADR-013: Feature-Based Backend Modules**](./adr/ADR-013-feature-based-backend-modules.md) — *Organize backend code by business domain modules rather than technical layers*
+| Category | Key Decisions Included | Full Registry |
+| :--- | :--- | :--- |
+| 🏗️ **Monorepo & Core** | Monorepo (`001`), Bun Runtime (`008`), Pure Bun (`009`), Templates (`010`), Dependencies (`011`) | [View Specs ➔](./adr/README.md#-1-monorepo--core-toolchain) |
+| 💻 **Frontend & UI** | React + Vite (`002`), Feature Structure (`005`), Mantine (`007`), App Shell (`012`) | [View Specs ➔](./adr/README.md#-2-frontend--design-system) |
+| ⚡ **Backend & Data** | REST API (`003`), Layered Model (`004`), Foreign Keys (`006`), Domain Modules (`013`) | [View Specs ➔](./adr/README.md#-3-backend--data-architecture) |
+| 🐳 **DevOps & Infra** | Docker Compose (`014`), `.dockerignore` (`015`), Layer Caching (`016`) | [View Specs ➔](./adr/README.md#-4-infrastructure--devops) |
+
+<details>
+<summary><b>📜 Click to Expand Complete ADR List (16 Records)</b></summary>
+
+- [**ADR-001: Monorepo Architecture**](./adr/ADR-001-monorepo.md)
+- [**ADR-002: React + Vite Frontend**](./adr/ADR-002-react-vite.md)
+- [**ADR-003: REST API Paradigm**](./adr/ADR-003-rest-api.md)
+- [**ADR-004: Layered Architecture**](./adr/ADR-004-layered-architecture.md)
+- [**ADR-005: Feature-Based Structure**](./adr/ADR-005-feature-based-structure.md)
+- [**ADR-006: Foreign Key Normalization**](./adr/ADR-006-foreign-keys.md)
+- [**ADR-007: Mantine Design System**](./adr/ADR-007-mantine-design-system.md)
+- [**ADR-008: Bun Runtime & Package Manager**](./adr/ADR-008-bun-runtime.md)
+- [**ADR-009: Pure Bun Project**](./adr/ADR-009-pure-bun-project.md)
+- [**ADR-010: Official Project Templates**](./adr/ADR-010-official-templates.md)
+- [**ADR-011: Strict Dependency Ownership**](./adr/ADR-011-dependency-ownership.md)
+- [**ADR-012: Feature-Oriented Frontend Structure**](./adr/ADR-012-feature-oriented-frontend.md)
+- [**ADR-013: Feature-Based Backend Modules**](./adr/ADR-013-feature-based-backend-modules.md)
+- [**ADR-014: Containerized Development Environment**](./adr/ADR-014-containerized-dev-environment.md)
+- [**ADR-015: Ignore Local Files in Docker**](./adr/ADR-015-ignore-local-files-in-docker.md)
+- [**ADR-016: Optimize Docker Layer Caching**](./adr/ADR-016-optimize-docker-layer-caching.md)
+
+</details>
 
 ---
 

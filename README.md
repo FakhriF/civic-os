@@ -56,7 +56,7 @@ All architectural specs, design guidelines, entity schemas, and decision records
 | 🗺️ [**Product Roadmap**](./docs/roadmap.md) | Development phases, milestones, and release targets |
 | 🛠️ [**Development Standards**](./docs/development-standards.md) | Coding conventions, Git workflows, error handling, API response formats, & DoD |
 | 🤝 [**Contribution Guide**](./CONTRIBUTING.md) | Simple guidelines for submitting features, docs, and bug fixes |
-| 📜 [**Architecture Decision Records (ADRs)**](./docs/adr) | Key technical decisions and design rationale |
+| 📜 [**Architecture Decision Records (ADRs)**](./docs/adr/README.md) | Categorized decision log (15 records across Monorepo, FE, BE, & DevOps) |
 | 🧩 [**Business Modules**](./docs/modules) | Specifications for domain modules (Auth, Population, Announcements) |
 
 ---

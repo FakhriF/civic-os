@@ -33,7 +33,10 @@ CivicOS/
 │   │   ├── 📄 ADR-010-official-templates.md
 │   │   ├── 📄 ADR-011-dependency-ownership.md
 │   │   ├── 📄 ADR-012-feature-oriented-frontend.md
-│   │   └── 📄 ADR-013-feature-based-backend-modules.md
+│   │   ├── 📄 ADR-013-feature-based-backend-modules.md
+│   │   ├── 📄 ADR-014-containerized-dev-environment.md
+│   │   ├── 📄 ADR-015-ignore-local-files-in-docker.md
+│   │   └── 📄 ADR-016-optimize-docker-layer-caching.md
 │   ├── 📂 modules/            # Business Module Specifications
 │   ├── 📄 architecture.md     # System architecture spec
 │   ├── 📄 database.md         # Database schema & ERD
