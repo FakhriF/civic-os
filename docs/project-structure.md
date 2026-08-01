@@ -32,7 +32,8 @@ CivicOS/
 │   │   ├── 📄 ADR-009-pure-bun-project.md
 │   │   ├── 📄 ADR-010-official-templates.md
 │   │   ├── 📄 ADR-011-dependency-ownership.md
-│   │   └── 📄 ADR-012-feature-oriented-frontend.md
+│   │   ├── 📄 ADR-012-feature-oriented-frontend.md
+│   │   └── 📄 ADR-013-feature-based-backend-modules.md
 │   ├── 📂 modules/            # Business Module Specifications
 │   ├── 📄 architecture.md     # System architecture spec
 │   ├── 📄 database.md         # Database schema & ERD
@@ -103,21 +104,27 @@ apps/web/src/
 
 ## ⚡ Backend Application Layout (`apps/api/src/`)
 
-The backend follows a **Domain-Module Architecture**.
+The backend follows a **Feature-Based Domain Architecture** organized into app infrastructure (`src/app/`) and business domain modules (`src/modules/`).
 
 ```text
 apps/api/src/
-├── 📂 modules/                # Self-contained business modules
-│   ├── 📂 auth/               # Routes, login service, JWT handling
-│   ├── 📂 population/         # Routes, citizen CRUD service, validators
-│   ├── 📂 users/              # Routes, user/role management service
-│   └── 📂 announcement/       # Routes, bulletin publishing service
+├── 📂 app/                    # Application Infrastructure
+│   ├── 📂 config/             # DB connection & environment settings
+│   ├── 📂 middleware/         # Auth checking, CORS, & error handlers
+│   └── 📂 plugins/            # Elysia plugins (JWT, Swagger/OpenAPI)
 │
-├── 📂 db/                     # Drizzle ORM setup & migrations
-│   ├── 📂 schema/             # Database table definitions
-│   └── 📄 index.ts            # Database client connection
+├── 📂 database/               # Data Persistence Layer
+│   ├── 📂 schema/             # Drizzle ORM entity definitions
+│   └── 📂 migrations/         # Declarative SQL migrations
 │
-├── 📂 middleware/             # RBAC auth checking, logging, error handlers
+├── 📂 modules/                # Self-contained business domain modules
+│   ├── 📂 announcement/       # Bulletin creation, publish/archive workflow
+│   ├── 📂 auth/               # Login endpoints, JWT handling, RBAC
+│   ├── 📂 population/         # Citizen registry endpoints, search, CRUD services
+│   └── 📂 user/               # User management & role provisioning
+│
+├── 📂 lib/                    # Helper utilities & shared functions
+├── 📂 types/                  # API-specific DTOs & context types
 └── 📄 index.ts                # Server entry point & route registration
 ```
 

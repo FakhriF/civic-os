@@ -64,7 +64,7 @@ flowchart LR
 
     Backend --> B1["modules/auth"]
     Backend --> B2["modules/population"]
-    Backend --> B3["modules/users"]
+    Backend --> B3["modules/user"]
     Backend --> B4["modules/announcement"]
 ```
 
