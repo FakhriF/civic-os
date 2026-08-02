@@ -58,6 +58,15 @@ Run scripts from the workspace root or inside `apps/api`:
 # Start API dev server with hot reload (--watch)
 bun run --cwd apps/api dev
 
+# Generate database migration SQL files
+bun run --cwd apps/api drizzle-kit generate
+
+# Execute pending database migrations
+bun run --cwd apps/api drizzle-kit migrate
+
+# Seed initial roles and departments data into database
+bun run --cwd apps/api db:seed
+
 # Run unit and integration tests
 bun run --cwd apps/api test
 ```
