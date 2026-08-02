@@ -36,7 +36,12 @@ CivicOS/
 │   │   ├── 📄 ADR-013-feature-based-backend-modules.md
 │   │   ├── 📄 ADR-014-containerized-dev-environment.md
 │   │   ├── 📄 ADR-015-ignore-local-files-in-docker.md
-│   │   └── 📄 ADR-016-optimize-docker-layer-caching.md
+│   │   ├── 📄 ADR-016-optimize-docker-layer-caching.md
+│   │   ├── 📄 ADR-017-dev-containers-bind-mounts.md
+│   │   ├── 📄 ADR-018-dev-servers-listen-all-interfaces.md
+│   │   ├── 📄 ADR-019-incremental-docker-compose.md
+│   │   ├── 📄 ADR-020-soft-delete-user-accounts.md
+│   │   └── 📄 ADR-021-environment-configuration.md
 │   ├── 📂 modules/            # Business Module Specifications
 │   ├── 📄 architecture.md     # System architecture spec
 │   ├── 📄 database.md         # Database schema & ERD

@@ -67,11 +67,11 @@ All architectural decisions are documented in the [**ADR Registry (`docs/adr/`)*
 | :--- | :--- | :--- |
 | 🏗️ **Monorepo & Core** | Monorepo (`001`), Bun Runtime (`008`), Pure Bun (`009`), Templates (`010`), Dependencies (`011`) | [View Specs ➔](./adr/README.md#-1-monorepo--core-toolchain) |
 | 💻 **Frontend & UI** | React + Vite (`002`), Feature Structure (`005`), Mantine (`007`), App Shell (`012`) | [View Specs ➔](./adr/README.md#-2-frontend--design-system) |
-| ⚡ **Backend & Data** | REST API (`003`), Layered Model (`004`), Foreign Keys (`006`), Domain Modules (`013`) | [View Specs ➔](./adr/README.md#-3-backend--data-architecture) |
-| 🐳 **DevOps & Infra** | Docker Compose (`014`), `.dockerignore` (`015`), Layer Caching (`016`) | [View Specs ➔](./adr/README.md#-4-infrastructure--devops) |
+| ⚡ **Backend & Data** | REST API (`003`), Layered Model (`004`), Foreign Keys (`006`), Domain Modules (`013`), Soft Delete (`020`) | [View Specs ➔](./adr/README.md#-3-backend--data-architecture) |
+| 🐳 **DevOps & Infra** | Docker Compose (`014`), `.dockerignore` (`015`), Layer Caching (`016`), Bind Mounts (`017`), All Interfaces (`018`), Incremental Compose (`019`), Env Config (`021`) | [View Specs ➔](./adr/README.md#-4-infrastructure--devops) |
 
 <details>
-<summary><b>📜 Click to Expand Complete ADR List (16 Records)</b></summary>
+<summary><b>📜 Click to Expand Complete ADR List (21 Records)</b></summary>
 
 - [**ADR-001: Monorepo Architecture**](./adr/ADR-001-monorepo.md)
 - [**ADR-002: React + Vite Frontend**](./adr/ADR-002-react-vite.md)
@@ -89,6 +89,11 @@ All architectural decisions are documented in the [**ADR Registry (`docs/adr/`)*
 - [**ADR-014: Containerized Development Environment**](./adr/ADR-014-containerized-dev-environment.md)
 - [**ADR-015: Ignore Local Files in Docker**](./adr/ADR-015-ignore-local-files-in-docker.md)
 - [**ADR-016: Optimize Docker Layer Caching**](./adr/ADR-016-optimize-docker-layer-caching.md)
+- [**ADR-017: Development Containers Use Bind Mounts**](./adr/ADR-017-dev-containers-bind-mounts.md)
+- [**ADR-018: Development Servers Must Listen on All Interfaces**](./adr/ADR-018-dev-servers-listen-all-interfaces.md)
+- [**ADR-019: Incremental Docker Compose Configuration**](./adr/ADR-019-incremental-docker-compose.md)
+- [**ADR-020: User Account Deactivation via Soft Delete**](./adr/ADR-020-soft-delete-user-accounts.md)
+- [**ADR-021: Environment-Based Configuration**](./adr/ADR-021-environment-configuration.md)
 
 </details>
 

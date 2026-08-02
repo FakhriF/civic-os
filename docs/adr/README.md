@@ -53,6 +53,7 @@ graph TD
 | [**ADR-004**](./ADR-004-layered-architecture.md) | **Layered Architecture** | `Accepted` 🟢 | Strict separation across Presentation, Business, and Data layers |
 | [**ADR-006**](./ADR-006-foreign-keys.md) | **Foreign Key Normalization** | `Accepted` 🟢 | Relational foreign keys over duplicated string fields |
 | [**ADR-013**](./ADR-013-feature-based-backend-modules.md) | **Feature-Based Backend Modules** | `Accepted` 🟢 | Organize backend code by business domain modules (`src/modules/`) |
+| [**ADR-020**](./ADR-020-soft-delete-user-accounts.md) | **User Account Deactivation** | `Accepted` 🟢 | Disable users via `isActive` flag; never hard-delete to preserve audit history |
 
 ---
 
@@ -63,3 +64,7 @@ graph TD
 | [**ADR-014**](./ADR-014-containerized-dev-environment.md) | **Containerized Development** | `Accepted` 🟢 | Docker Compose orchestration for local multi-service parity |
 | [**ADR-015**](./ADR-015-ignore-local-files-in-docker.md) | **Ignore Local Development Files** | `Accepted` 🟢 | Exclude build artifacts, logs, and `.env` secrets via `.dockerignore` |
 | [**ADR-016**](./ADR-016-optimize-docker-layer-caching.md) | **Optimize Docker Layer Caching** | `Accepted` 🟢 | Copy `package.json` & `bun.lock` before source to maximize build cache |
+| [**ADR-017**](./ADR-017-dev-containers-bind-mounts.md) | **Development Bind Mounts** | `Accepted` 🟢 | Mount local source into dev containers for live reloading |
+| [**ADR-018**](./ADR-018-dev-servers-listen-all-interfaces.md) | **All Interfaces Dev Binding** | `Accepted` 🟢 | Bind dev servers to `0.0.0.0` for host machine container access |
+| [**ADR-019**](./ADR-019-incremental-docker-compose.md) | **Incremental Docker Compose** | `Accepted` 🟢 | Add services and configs to `docker-compose.yml` only when needed |
+| [**ADR-021**](./ADR-021-environment-configuration.md) | **Environment-Based Configuration** | `Accepted` 🟢 | Store secrets in `.env` & document variables via committed `.env.example` |
