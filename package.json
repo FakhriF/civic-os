@@ -4,6 +4,9 @@
   "private": true,
   "devDependencies": {
     "@types/bun": "latest",
+    "@types/pg": "^8.20.3",
+    "drizzle-kit": "^1.0.0-rc.4",
+    "tsx": "^4.23.4",
     "typescript": "~6.0.2"
   },
   "workspaces": [
@@ -12,10 +15,12 @@
   ],
   "scripts": {
     "dev:web": "bun --cwd apps/web dev",
-     "dev:api": "bun --cwd apps/api dev",
+    "dev:api": "bun --cwd apps/api dev",
     "lint": "echo \"Not implemented\""
   },
   "dependencies": {
-
+    "dotenv": "^17.4.2",
+    "drizzle-orm": "^1.0.0-rc.4",
+    "pg": "^8.22.0"
   }
 }
