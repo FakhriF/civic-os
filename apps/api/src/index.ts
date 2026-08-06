@@ -1,8 +1,12 @@
 import { Elysia } from "elysia";
 import { db } from "./database/client";
 import { roles } from "./database/schema";
+import { databasePlugin } from "./app/plugins/database";
+import { authRoutes } from "./modules/auth/auth.routes";
 
 const app = new Elysia()
+  .use(databasePlugin)
+  .use(authRoutes)
   .get("/health", async ({ set }) => {
     try {
       const [sampleRole] = await db.select().from(roles).limit(1);

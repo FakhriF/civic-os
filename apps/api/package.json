@@ -6,6 +6,7 @@
     "db:seed": "bun run src/database/seed.ts"
   },
   "dependencies": {
+    "@elysia/jwt": "^1.4.2",
     "drizzle-orm": "^1.0.0-rc.4",
     "elysia": "latest",
     "pg": "^8.22.0"
