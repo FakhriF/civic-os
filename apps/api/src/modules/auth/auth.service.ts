@@ -14,4 +14,12 @@ export class AuthService {
 
     return { user };
   }
+
+  static async findActiveUserById(db: any, userId: number) {
+    const [user] = await db.select().from(users).where(eq(users.id, userId)).limit(1);
+
+    if (!user || !user.isActive) return null;
+
+    return user;
+  }
 }

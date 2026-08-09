@@ -1,5 +1,6 @@
+import { eq } from "drizzle-orm";
 import { db, pool } from "./client";
-import { roles, departments } from "./schema";
+import { roles, departments, users } from "./schema";
 
 async function main() {
   console.log("🌱 Starting database seeding...");
@@ -19,6 +20,29 @@ async function main() {
     { name: "Population", description: "Civil registry & citizen population management" },
     { name: "Public Relations", description: "Public announcements & citizen communications" },
   ]).onConflictDoNothing();
+
+  // 3. Seed default admin user (only if empty)
+  console.log("👤 Seeding default admin user...");
+
+  const [adminRole] = await db.select().from(roles).where(eq(roles.name, "Administrator")).limit(1);
+
+  const [popDept] = await db.select().from(departments).where(eq(departments.name, "Population")).limit(1);
+
+  const [existingUser] = await db.select().from(users).limit(1)
+
+  if (adminRole && popDept && !existingUser) {
+    const passwordHash = await Bun.password.hash("STRONGpassword")
+    await db.insert(users).values({
+      email: "civicos@fakhrif.my.id",
+      fullName: "System Administrator",
+      passwordHash,
+      roleId: adminRole.id,
+      departmentId: popDept.id
+    })
+    console.log("✅ Default admin user seeded! civicos@fakhrif.my.id")
+  } else {
+    console.log("⚠️ Default admin user already exists or roles/departments not seeded.")
+  }
 
   console.log("✅ Database seeding completed successfully!");
     await pool.end();
