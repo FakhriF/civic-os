@@ -55,16 +55,16 @@ graph LR
     M7 --> M8["M8: Testing & Deploy"]
 ```
 
-| Milestone                   | Scope & Deliverables                                                                                      | Status           |
-| :-------------------------- | :-------------------------------------------------------------------------------------------------------- | :--------------- |
-| **M1: Project Setup**       | Monorepo structure, Bun workspaces (`packages/`, `apps/`), Root `package.json` & `tsconfig.json`          | `Completed` 🟢   |
-| **M2: Authentication**      | Login, Logout, JWT bearer tokens, Refresh token handling, Protected route guards                          | `In Progress` 🟡 |
-| **M3: App Shell Layout**    | Mantine header, collapsible sidebar, breadcrumb navigation, theme switching                               | `Planned` ⚪     |
-| **M4: Executive Dashboard** | City overview stats cards, recent bulletins list, quick action panel                                      | `Planned` ⚪     |
-| **M5: User Management**     | Employee directory, account creation, role assignment (`Officer`, `Manager`, `Mayor`), department linking | `Planned` ⚪     |
-| **M6: Population Module**   | Citizen registry CRUD, National ID lookup, search/filter, pagination, audit tracking                      | `Planned` ⚪     |
-| **M7: Announcements**       | Bulletin creation, publish/archive workflow, department tags                                              | `Planned` ⚪     |
-| **M8: Testing & Deploy**    | Deployment Preparation, Docker image packaging, Production Configuration, Basic Testing                   | `Planned` ⚪     |
+| Milestone                   | Scope & Deliverables                                                                                                   | Status           |
+| :-------------------------- | :--------------------------------------------------------------------------------------------------------------------- | :--------------- |
+| **M1: Project Setup**       | Monorepo structure, Bun workspaces (`packages/`, `apps/`), Root `package.json` & `tsconfig.json`                       | `Completed` 🟢   |
+| **M2: Authentication**      | Login, Logout, JWT bearer tokens, Refresh token handling (backend complete), Protected route guards (frontend pending) | `In Progress` 🟡 |
+| **M3: App Shell Layout**    | Mantine header, collapsible sidebar, breadcrumb navigation, theme switching                                            | `Planned` ⚪     |
+| **M4: Executive Dashboard** | City overview stats cards, recent bulletins list, quick action panel                                                   | `Planned` ⚪     |
+| **M5: User Management**     | Employee directory, account creation, role assignment (`Officer`, `Manager`, `Mayor`), department linking              | `Planned` ⚪     |
+| **M6: Population Module**   | Citizen registry CRUD, National ID lookup, search/filter, pagination, audit tracking                                   | `Planned` ⚪     |
+| **M7: Announcements**       | Bulletin creation, publish/archive workflow, department tags                                                           | `Planned` ⚪     |
+| **M8: Testing & Deploy**    | Deployment Preparation, Docker image packaging, Production Configuration, Basic Testing                                | `Planned` ⚪     |
 
 ---
 

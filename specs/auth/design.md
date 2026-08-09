@@ -78,7 +78,7 @@ Error responses follow the shape `{ status: "error", error: { code, message } }`
 | `UNAUTHORIZED`        | 401  | Missing / invalid / expired bearer or refresh token, or deactivated user |
 | Validation errors     | 422  | DTO validation failure (Elysia default)                                  |
 
-> ⚠️ **Documented discrepancy**: `docs/development-standards.md` specifies `{ "success": true, ... }` as the response envelope, but the implemented API returns `{ "status": "success", ... }`. The contract doc does not match the implementation (per `agents.md`, AI must surface such inconsistencies to the developer rather than working around them silently).
+> ✅ **Resolved (2026-08-10)**: `docs/development-standards.md` previously specified a `{ "success": true, ... }` envelope; it now documents the implemented `{ "status": "success", ... }` / `{ "status": "error", "error": { "code", "message" } }` contract.
 
 ## Security Considerations
 
