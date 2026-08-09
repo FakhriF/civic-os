@@ -17,8 +17,9 @@
 
 ## 🔌 API Contracts
 
-| Method | Endpoint           | Access Level  | Description                                                |
-| :----- | :----------------- | :------------ | :--------------------------------------------------------- |
-| `POST` | `/api/auth/login`  | Public        | Authenticates credentials and returns JWT bearer token     |
-| `POST` | `/api/auth/logout` | Authenticated | Invalidates user session token                             |
-| `GET`  | `/api/auth/me`     | Authenticated | Returns currently authenticated user profile & permissions |
+| Method | Endpoint               | Access Level            | Description                                                |
+| :----- | :--------------------- | :---------------------- | :--------------------------------------------------------- |
+| `POST` | `/api/v1/auth/login`   | Public                  | Authenticates credentials and returns JWT bearer token     |
+| `POST` | `/api/v1/auth/refresh` | Public (cookie)         | Issues a new access token from the refresh cookie          |
+| `POST` | `/api/v1/auth/logout`  | Public (cookie removal) | Invalidates user session token                             |
+| `GET`  | `/api/v1/auth/me`      | Authenticated           | Returns currently authenticated user profile & permissions |

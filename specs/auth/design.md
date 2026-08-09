@@ -5,29 +5,30 @@
 
 ## Overview
 
-Authentication is implemented as an Elysia route group mounted at `/api/v1/auth` inside `apps/api`. Credentials are validated against the `users` table, a short-lived JWT access token (15 min) is returned, and a long-lived refresh cookie (7 days) is set for future refresh flows. Protected routes derive the current user globally from the `Authorization: Bearer` header via the shared `authMiddleware`.
+Authentication is implemented as an Elysia route group mounted at `/api/v1/auth` inside `apps/api`. Credentials are validated against the `users` table, a short-lived JWT access token (15 min) is returned, and a long-lived refresh cookie (7 days) is set to obtain new access tokens via `POST /refresh`. Protected routes derive the current user globally from the `Authorization: Bearer` header via the shared `authMiddleware`.
 
 ## Architecture
 
-| File                                        | Responsibility                                                                      |
-| :------------------------------------------ | :---------------------------------------------------------------------------------- |
-| `apps/api/src/modules/auth/auth.routes.ts`  | Route group `/api/v1/auth` (login, logout, me)                                      |
-| `apps/api/src/modules/auth/auth.service.ts` | `AuthService.validateUser`: email lookup, deactivation check, password verification |
-| `apps/api/src/modules/auth/auth.dto.ts`     | Request validation via Elysia `t.Object`                                            |
-| `apps/api/src/app/middleware/auth.ts`       | Bearer token → derived `user` (global derive, checks `isActive`)                    |
-| `apps/api/src/app/plugins/jwt.ts`           | `jwtAccess` (15m) and `jwtRefresh` (7d) JWT plugins                                 |
-| `apps/api/src/database/schema/user.ts`      | `users` table definition                                                            |
-| `apps/api/src/index.ts`                     | Mounts `authRoutes`                                                                 |
+| File                                        | Responsibility                                                     |
+| :------------------------------------------ | :----------------------------------------------------------------- |
+| `apps/api/src/modules/auth/auth.routes.ts`  | Route group `/api/v1/auth` (login, logout, refresh, me)            |
+| `apps/api/src/modules/auth/auth.service.ts` | `AuthService.validateUser` (login); `findActiveUserById` (refresh) |
+| `apps/api/src/modules/auth/auth.dto.ts`     | Request validation via Elysia `t.Object`                           |
+| `apps/api/src/app/middleware/auth.ts`       | Bearer token → derived `user` (global derive, checks `isActive`)   |
+| `apps/api/src/app/plugins/jwt.ts`           | `jwtAccess` (15m) and `jwtRefresh` (7d) JWT plugins                |
+| `apps/api/src/database/schema/user.ts`      | `users` table definition                                           |
+| `apps/api/src/index.ts`                     | Mounts `authRoutes`                                                |
 
 Frontend (`apps/web`) has no authentication screens yet; this design covers the backend only.
 
 ## API Changes
 
-| Method | Endpoint              | Auth                    | Request               | Response                                                              | Errors                                                               |
-| :----- | :-------------------- | :---------------------- | :-------------------- | :-------------------------------------------------------------------- | :------------------------------------------------------------------- |
-| `POST` | `/api/v1/auth/login`  | Public                  | `{ email, password }` | `{ status: "success", data: { accessToken, user } }` + refresh cookie | `401 INVALID_CREDENTIALS` / `401 ACCOUNT_DISABLED`; `422` validation |
-| `POST` | `/api/v1/auth/logout` | Public (cookie removal) | —                     | `{ status: "success", message }`                                      | —                                                                    |
-| `GET`  | `/api/v1/auth/me`     | Bearer token            | —                     | `{ status: "success", data: { user } }`                               | `401 UNAUTHORIZED`                                                   |
+| Method | Endpoint               | Auth                    | Request               | Response                                                              | Errors                                                               |
+| :----- | :--------------------- | :---------------------- | :-------------------- | :-------------------------------------------------------------------- | :------------------------------------------------------------------- |
+| `POST` | `/api/v1/auth/login`   | Public                  | `{ email, password }` | `{ status: "success", data: { accessToken, user } }` + refresh cookie | `401 INVALID_CREDENTIALS` / `401 ACCOUNT_DISABLED`; `422` validation |
+| `POST` | `/api/v1/auth/logout`  | Public (cookie removal) | —                     | `{ status: "success", message }`                                      | —                                                                    |
+| `POST` | `/api/v1/auth/refresh` | Public (refresh cookie) | —                     | `{ status: "success", data: { accessToken, user } }`                  | `401 UNAUTHORIZED`                                                   |
+| `GET`  | `/api/v1/auth/me`      | Bearer token            | —                     | `{ status: "success", data: { user } }`                               | `401 UNAUTHORIZED`                                                   |
 
 Note: `logout` is not protected by the auth middleware in the current implementation; it only removes the cookie.
 
@@ -47,6 +48,13 @@ Note: `logout` is not protected by the auth middleware in the current implementa
 3. On success: sign access token (`sub`, `email`, `roleId`, `departmentId`; exp 15m), sign refresh token (`sub`; exp 7d), set refresh cookie (`httpOnly`, `sameSite=strict`, `path=/api/v1/auth/refresh`, `maxAge=7d`), return tokens + profile.
 4. On failure: `401` with `INVALID_CREDENTIALS` or `ACCOUNT_DISABLED`.
 
+**Refresh** (`POST /refresh`):
+
+1. Read the `refreshToken` cookie; missing → `401 UNAUTHORIZED`.
+2. `jwtRefresh.verify`; invalid/expired → clear cookie + `401 UNAUTHORIZED`.
+3. `AuthService.findActiveUserById`; missing or deactivated user → clear cookie + `401 UNAUTHORIZED`.
+4. Sign a new access token with the login payload shape (`sub`, `email`, `roleId`, `departmentId`) and return it. No rotation in MVP — the refresh cookie is not replaced.
+
 **Protected request** (`GET /me` and future routes):
 
 1. `authMiddleware` reads `Authorization: Bearer <token>`, verifies `jwtAccess`, loads the user from DB by `sub`, rejects inactive users.
@@ -63,12 +71,12 @@ Note: `logout` is not protected by the auth middleware in the current implementa
 
 Error responses follow the shape `{ status: "error", error: { code, message } }` with `set.status`:
 
-| Code                  | HTTP | When                                                                      |
-| :-------------------- | :--- | :------------------------------------------------------------------------ |
-| `INVALID_CREDENTIALS` | 401  | Unknown email or wrong password (identical response, no enumeration)      |
-| `ACCOUNT_DISABLED`    | 401  | Deactivated account tries to log in                                       |
-| `UNAUTHORIZED`        | 401  | Missing / invalid / expired token, or deactivated user on protected route |
-| Validation errors     | 422  | DTO validation failure (Elysia default)                                   |
+| Code                  | HTTP | When                                                                     |
+| :-------------------- | :--- | :----------------------------------------------------------------------- |
+| `INVALID_CREDENTIALS` | 401  | Unknown email or wrong password (identical response, no enumeration)     |
+| `ACCOUNT_DISABLED`    | 401  | Deactivated account tries to log in                                      |
+| `UNAUTHORIZED`        | 401  | Missing / invalid / expired bearer or refresh token, or deactivated user |
+| Validation errors     | 422  | DTO validation failure (Elysia default)                                  |
 
 > ⚠️ **Documented discrepancy**: `docs/development-standards.md` specifies `{ "success": true, ... }` as the response envelope, but the implemented API returns `{ "status": "success", ... }`. The contract doc does not match the implementation (per `agents.md`, AI must surface such inconsistencies to the developer rather than working around them silently).
 
@@ -87,6 +95,5 @@ Not yet implemented — no unit, API, or E2E tests exist for the auth module. Pl
 
 ## Known Gaps / Open Questions
 
-- `POST /api/v1/auth/refresh` does not exist, although the refresh cookie is scoped to that path — refresh flow is unfinished.
 - `/logout` is unauthenticated; acceptable for MVP but revisit if refresh tokens move server-side.
 - `AuthService.validateUser` uses `db: any` — should be typed with the Drizzle query type once the shared types settle.

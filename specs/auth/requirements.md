@@ -62,6 +62,22 @@ The system SHALL block authentication for deactivated accounts in every flow.
 - R4.2 Deactivated users cannot access protected endpoints (R2.3).
 - R4.3 No access or refresh token is issued to a deactivated account.
 
+### R5 — Token Refresh
+
+The system SHALL issue a new access token from a valid refresh-token cookie via `POST /api/v1/auth/refresh`.
+
+#### Acceptance Criteria
+
+- R5.1 A valid refresh cookie returns `200` with a new `accessToken` and the user profile (same shape as login).
+- R5.2 A missing, invalid, or expired refresh token returns `401`, code `UNAUTHORIZED`, and the refresh cookie is cleared.
+- R5.3 A refresh token for a missing or deactivated user returns `401`, code `UNAUTHORIZED`, and the refresh cookie is cleared.
+- R5.4 The new access token has the same payload shape as login (`sub`, `email`, `roleId`, `departmentId`).
+
+#### Edge Cases
+
+- Expired refresh token (7-day lifetime): the request fails and the cookie is cleared to prevent a stuck 401 loop.
+- No token rotation in MVP: the refresh cookie is not replaced when refreshing.
+
 ## Non-Functional Requirements
 
 - NFR1 Passwords SHALL be stored only as hashes (argon2id), never plaintext.
@@ -72,7 +88,6 @@ The system SHALL block authentication for deactivated accounts in every flow.
 
 ## Out of Scope
 
-- Token refresh endpoint (`POST /api/v1/auth/refresh`) — not yet implemented (cookie path is prepared).
 - Password reset / change, email verification, MFA.
 - Rate limiting / account lockout.
 - Frontend authentication screens (`apps/web`) — backend only for now.
