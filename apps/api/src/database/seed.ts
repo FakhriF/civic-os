@@ -24,8 +24,6 @@ async function main() {
   // 3. Seed default admin user (only if empty)
   console.log("👤 Seeding default admin user...");
 
-  // Dev-only defaults — ALWAYS override via SEED_ADMIN_EMAIL / SEED_ADMIN_PASSWORD
-  // before any real deployment (see .env.example).
   const adminEmail = process.env.SEED_ADMIN_EMAIL ?? "admin@civicos.dev";
   const adminPassword = process.env.SEED_ADMIN_PASSWORD ?? "dev-admin-password-change-me";
 
