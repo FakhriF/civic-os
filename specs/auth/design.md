@@ -37,7 +37,7 @@ Note: `logout` is not protected by the auth middleware in the current implementa
 - Uses the existing `users`, `roles`, and `departments` tables (see [docs/database.md](../../docs/database.md) and `apps/api/src/database/schema/`).
 - `users.is_active` boolean enables account deactivation per [ADR-020](../../docs/adr/ADR-020-soft-delete-user-accounts.md); `password_hash` stores the argon2id hash.
 - Covered by migration `20260802174802_regular_matthew_murdock`.
-- Seed (`apps/api/src/database/seed.ts`) inserts roles `Administrator`, `Manager`, `Mayor`, `Officer` and departments `Population`, `Public Relations`.
+- Seed (`apps/api/src/database/seed.ts`) inserts roles `Administrator`, `Manager`, `Mayor`, `Officer`, departments `Population` and `Public Relations`, and a default admin user whose credentials come from `SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD` (dev-only env defaults, ADR-021).
 
 ## Data Flow
 

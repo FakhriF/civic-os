@@ -24,6 +24,11 @@ async function main() {
   // 3. Seed default admin user (only if empty)
   console.log("👤 Seeding default admin user...");
 
+  // Dev-only defaults — ALWAYS override via SEED_ADMIN_EMAIL / SEED_ADMIN_PASSWORD
+  // before any real deployment (see .env.example).
+  const adminEmail = process.env.SEED_ADMIN_EMAIL ?? "admin@civicos.dev";
+  const adminPassword = process.env.SEED_ADMIN_PASSWORD ?? "dev-admin-password-change-me";
+
   const [adminRole] = await db.select().from(roles).where(eq(roles.name, "Administrator")).limit(1);
 
   const [popDept] = await db.select().from(departments).where(eq(departments.name, "Population")).limit(1);
@@ -31,15 +36,15 @@ async function main() {
   const [existingUser] = await db.select().from(users).limit(1)
 
   if (adminRole && popDept && !existingUser) {
-    const passwordHash = await Bun.password.hash("STRONGpassword")
+    const passwordHash = await Bun.password.hash(adminPassword)
     await db.insert(users).values({
-      email: "civicos@fakhrif.my.id",
+      email: adminEmail,
       fullName: "System Administrator",
       passwordHash,
       roleId: adminRole.id,
       departmentId: popDept.id
     })
-    console.log("✅ Default admin user seeded! civicos@fakhrif.my.id")
+    console.log(`✅ Default admin user seeded! ${adminEmail}`)
   } else {
     console.log("⚠️ Default admin user already exists or roles/departments not seeded.")
   }
