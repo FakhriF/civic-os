@@ -18,6 +18,7 @@ graph TD
     Standards["🛠️ Development Standards"]
     ADR["📜 ADR Records"]
     Modules["🧩 Business Modules"]
+    AI["🤖 AI Guidelines"]
 
     Docs --> Vision
     Docs --> Arch
@@ -28,6 +29,7 @@ graph TD
     Docs --> Standards
     Docs --> ADR
     Docs --> Modules
+    Docs --> AI
 ```
 
 ---
@@ -37,25 +39,25 @@ graph TD
 ### 1. Core Specifications
 
 - [**Product Vision & Scope**](./vision.md)  
-  *Defines the product purpose, municipal mission, target audience, and high-level goals.*
+  _Defines the product purpose, municipal mission, target audience, and high-level goals._
 
 - [**System Architecture**](./architecture.md)  
-  *Detailed breakdown of monorepo design, layered architecture, technology choices, and service boundaries.*
+  _Detailed breakdown of monorepo design, layered architecture, technology choices, and service boundaries._
 
 - [**Database Schema & ERD**](./database.md)  
-  *Entity definitions, relational mappings, foreign key constraints, data dictionary, and visual ERD.*
+  _Entity definitions, relational mappings, foreign key constraints, data dictionary, and visual ERD._
 
 - [**Design System Guidelines**](./design.md)  
-  *Design philosophy, color tokens, typography scale, component standards, accessibility rules, and layout specs.*
+  _Design philosophy, color tokens, typography scale, component standards, accessibility rules, and layout specs._
 
 - [**Project Structure**](./project-structure.md)  
-  *Organization of apps, packages, feature folders, global assets, and monorepo conventions.*
+  _Organization of apps, packages, feature folders, global assets, and monorepo conventions._
 
 - [**Product Roadmap**](./roadmap.md)  
-  *Phase-by-phase execution plan, milestone timelines, and feature rollout tracking.*
+  _Phase-by-phase execution plan, milestone timelines, and feature rollout tracking._
 
 - [**Development Standards**](./development-standards.md)  
-  *Coding conventions, Git workflows, error handling protocols, API contracts, AI policy, and DoD checklist.*
+  _Coding conventions, Git workflows, error handling protocols, API contracts, AI policy, and DoD checklist._
 
 ---
 
@@ -63,12 +65,12 @@ graph TD
 
 All architectural decisions are documented in the [**ADR Registry (`docs/adr/`)**](./adr/README.md):
 
-| Category | Key Decisions Included | Full Registry |
-| :--- | :--- | :--- |
-| 🏗️ **Monorepo & Core** | Monorepo (`001`), Bun Runtime (`008`), Pure Bun (`009`), Templates (`010`), Dependencies (`011`) | [View Specs ➔](./adr/README.md#-1-monorepo--core-toolchain) |
-| 💻 **Frontend & UI** | React + Vite (`002`), Feature Structure (`005`), Mantine (`007`), App Shell (`012`) | [View Specs ➔](./adr/README.md#-2-frontend--design-system) |
-| ⚡ **Backend & Data** | REST API (`003`), Layered Model (`004`), Foreign Keys (`006`), Domain Modules (`013`), Soft Delete (`020`) | [View Specs ➔](./adr/README.md#-3-backend--data-architecture) |
-| 🐳 **DevOps & Infra** | Docker Compose (`014`), `.dockerignore` (`015`), Layer Caching (`016`), Bind Mounts (`017`), All Interfaces (`018`), Incremental Compose (`019`), Env Config (`021`) | [View Specs ➔](./adr/README.md#-4-infrastructure--devops) |
+| Category               | Key Decisions Included                                                                                                                                               | Full Registry                                                 |
+| :--------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------ |
+| 🏗️ **Monorepo & Core** | Monorepo (`001`), Bun Runtime (`008`), Pure Bun (`009`), Templates (`010`), Dependencies (`011`)                                                                     | [View Specs ➔](./adr/README.md#-1-monorepo--core-toolchain)   |
+| 💻 **Frontend & UI**   | React + Vite (`002`), Feature Structure (`005`), Mantine (`007`), App Shell (`012`)                                                                                  | [View Specs ➔](./adr/README.md#-2-frontend--design-system)    |
+| ⚡ **Backend & Data**  | REST API (`003`), Layered Model (`004`), Foreign Keys (`006`), Domain Modules (`013`), Soft Delete (`020`)                                                           | [View Specs ➔](./adr/README.md#-3-backend--data-architecture) |
+| 🐳 **DevOps & Infra**  | Docker Compose (`014`), `.dockerignore` (`015`), Layer Caching (`016`), Bind Mounts (`017`), All Interfaces (`018`), Incremental Compose (`019`), Env Config (`021`) | [View Specs ➔](./adr/README.md#-4-infrastructure--devops)     |
 
 <details>
 <summary><b>📜 Click to Expand Complete ADR List (21 Records)</b></summary>
@@ -103,15 +105,25 @@ All architectural decisions are documented in the [**ADR Registry (`docs/adr/`)*
 
 Located in [`docs/modules/`](./modules):
 
-- [**Authentication & Authorization Module**](./modules/auth.md) — *RBAC, JWT tokens, session handling*
-- [**Population Registry Module**](./modules/population.md) — *Resident information management*
-- [**Announcements Module**](./modules/announcement.md) — *Official municipal bulletins & statuses*
+- [**Authentication & Authorization Module**](./modules/auth.md) — _RBAC, JWT tokens, session handling_
+- [**Population Registry Module**](./modules/population.md) — _Resident information management_
+- [**Announcements Module**](./modules/announcement.md) — _Official municipal bulletins & statuses_
+
+---
+
+### 4. AI Assistant Guidelines
+
+- [**AI Assistant Guidelines (`agents.md`)**](../agents.md)  
+  _Defines how AI assistants support CivicOS development: AI explains, suggests, and reviews — the developer writes the code._
+- [**Feature Planning Templates (`specs/_templates/`)**](../specs/_templates/)  
+  _Optional templates for the developer's own feature planning (requirements, design, tasks)._
 
 ---
 
 ## 💡 Document Conventions
 
 > [!TIP]
+>
 > - All new architecture decisions **must** follow the MADR format in `docs/adr/ADR-XXX.md`.
 > - Diagramming uses standard [Mermaid syntax](https://mermaid.js.org/).
 > - Shared types and domain schemas must be referenced from `packages/shared`.

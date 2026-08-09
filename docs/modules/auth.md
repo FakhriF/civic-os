@@ -3,6 +3,7 @@
 > **Module Name**: `auth`  
 > **Backend Path**: `apps/api/src/modules/auth`  
 > **Frontend Path**: `apps/web/src/features/authentication`  
+> 📄 **Detailed feature specification**: [`specs/auth/`](../../specs/auth/) (requirements, design, tasks)
 
 ---
 
@@ -16,8 +17,8 @@
 
 ## 🔌 API Contracts
 
-| Method | Endpoint | Access Level | Description |
-| :--- | :--- | :--- | :--- |
-| `POST` | `/api/auth/login` | Public | Authenticates credentials and returns JWT bearer token |
-| `POST` | `/api/auth/logout` | Authenticated | Invalidates user session token |
-| `GET` | `/api/auth/me` | Authenticated | Returns currently authenticated user profile & permissions |
+| Method | Endpoint           | Access Level  | Description                                                |
+| :----- | :----------------- | :------------ | :--------------------------------------------------------- |
+| `POST` | `/api/auth/login`  | Public        | Authenticates credentials and returns JWT bearer token     |
+| `POST` | `/api/auth/logout` | Authenticated | Invalidates user session token                             |
+| `GET`  | `/api/auth/me`     | Authenticated | Returns currently authenticated user profile & permissions |
