@@ -4,11 +4,13 @@ import { roles } from "./database/schema";
 import { databasePlugin } from "./app/plugins/database";
 import { authRoutes } from "./modules/auth/auth.routes";
 import { dashboardRoutes } from "./modules/dashboard/dashboard.routes";
+import { announcementRoutes } from "./modules/announcement/announcement.routes";
 
 const app = new Elysia()
   .use(databasePlugin)
   .use(authRoutes)
   .use(dashboardRoutes)
+  .use(announcementRoutes)
   .get("/health", async ({ set }) => {
     try {
       const [sampleRole] = await db.select().from(roles).limit(1);
