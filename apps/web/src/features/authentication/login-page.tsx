@@ -35,7 +35,8 @@ export function LoginPage() {
       await login(email, password);
     } catch (error) {
       if (isAxiosError(error)) {
-        const data = error.response?.data as { error?: { message?: string } } | undefined;
+        const data = error.response?.data as
+          { error?: { message?: string } } | undefined;
         setErrorMsg(data?.error?.message ?? "Invalid email or password");
       } else {
         setErrorMsg("Invalid email or password");
@@ -89,7 +90,13 @@ export function LoginPage() {
               mb="xl"
             />
 
-            <Button type="submit" fullWidth loading={isSubmitting} color="blue" size="md">
+            <Button
+              type="submit"
+              fullWidth
+              loading={isSubmitting}
+              color="blue"
+              size="md"
+            >
               Sign In
             </Button>
           </form>

@@ -72,6 +72,15 @@ import type { User, Role } from "@civicos/shared";
 
 ---
 
+## 🎨 Code Formatting
+
+All code MUST be formatted with Prettier using the project defaults (`.prettierrc.json`): double quotes, semicolons, 2-space indentation.
+
+- Run `bun run format` to format the workspace, or `bun run lint` to verify formatting in CI.
+- Import grouping (external → internal → type-only) is a manual convention; Prettier does not enforce it.
+
+---
+
 ## 🌍 UI & Comment Language
 
 All user-facing UI strings and code comments MUST be written in English.

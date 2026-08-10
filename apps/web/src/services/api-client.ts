@@ -61,7 +61,11 @@ apiClient.interceptors.response.use(
     const originalRequest = error.config as RetriableRequest | undefined;
 
     // 401 and this is not already a retry
-    if (error.response?.status === 401 && originalRequest && !originalRequest._retry) {
+    if (
+      error.response?.status === 401 &&
+      originalRequest &&
+      !originalRequest._retry
+    ) {
       // Never retry the login/refresh endpoints themselves
       if (
         originalRequest.url?.includes("/api/v1/auth/login") ||
@@ -93,7 +97,7 @@ apiClient.interceptors.response.use(
         const response = await axios.post(
           `${API_BASE_URL}/api/v1/auth/refresh`,
           {},
-          { withCredentials: true }
+          { withCredentials: true },
         );
 
         const newAccessToken = response.data.data.accessToken as string;
@@ -118,5 +122,5 @@ apiClient.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );

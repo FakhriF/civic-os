@@ -16,7 +16,7 @@ const app = new Elysia()
         database: "connected",
         sampleRole,
         timestamp: new Date().toISOString(),
-      }
+      };
     } catch (error) {
       set.status = 503;
       console.error("Health check DB Error", error);
@@ -29,8 +29,9 @@ const app = new Elysia()
       };
     }
   })
-  .get("/", () => "Hello CivicOS").listen(3000);
+  .get("/", () => "Hello CivicOS")
+  .listen(3000);
 
 console.log(
-  `CivicOS is running at ${app.server?.hostname}:${app.server?.port}`
+  `CivicOS is running at ${app.server?.hostname}:${app.server?.port}`,
 );

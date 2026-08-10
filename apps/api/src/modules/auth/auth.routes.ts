@@ -1,4 +1,4 @@
-import {Elysia} from "elysia";
+import { Elysia } from "elysia";
 import { jwtPlugin } from "../../app/plugins/jwt";
 import { databasePlugin } from "../../app/plugins/database";
 import { AuthService } from "./auth.service";
@@ -12,8 +12,19 @@ export const authRoutes = new Elysia({ prefix: "/api/v1/auth" })
   // 1. POST /api/v1/auth/login
   .post(
     "/login",
-    async ({ body, db, jwtAccess, jwtRefresh, cookie: { refreshToken }, set }) => {
-      const result = await AuthService.validateUser(db, body.email, body.password)
+    async ({
+      body,
+      db,
+      jwtAccess,
+      jwtRefresh,
+      cookie: { refreshToken },
+      set,
+    }) => {
+      const result = await AuthService.validateUser(
+        db,
+        body.email,
+        body.password,
+      );
 
       if (!result || result.error === "ACCOUNT_DISABLED") {
         set.status = 401;
@@ -21,9 +32,10 @@ export const authRoutes = new Elysia({ prefix: "/api/v1/auth" })
           status: "error",
           error: {
             code: result?.error || "INVALID_CREDENTIALS",
-            message: result?.error === "ACCOUNT_DISABLED"
-              ? "Account has been deactivated. Please contact admin."
-              : "Invalid email or password.",
+            message:
+              result?.error === "ACCOUNT_DISABLED"
+                ? "Account has been deactivated. Please contact admin."
+                : "Invalid email or password.",
           },
         };
       }
@@ -35,11 +47,11 @@ export const authRoutes = new Elysia({ prefix: "/api/v1/auth" })
         email: user.email,
         roleId: user.roleId,
         departmentId: user.departmentId,
-      })
+      });
 
       const refreshTokenValue = await jwtRefresh.sign({
         sub: String(user.id),
-      })
+      });
 
       refreshToken.set({
         value: refreshTokenValue,
@@ -47,7 +59,7 @@ export const authRoutes = new Elysia({ prefix: "/api/v1/auth" })
         maxAge: 7 * 86400,
         path: "/api/v1/auth/refresh",
         sameSite: "strict",
-      })
+      });
 
       return {
         status: "success",
@@ -59,19 +71,19 @@ export const authRoutes = new Elysia({ prefix: "/api/v1/auth" })
             fullName: user.fullName,
             roleId: user.roleId,
             departmentId: user.departmentId,
-          }
-        }
-      }
+          },
+        },
+      };
     },
-    { body: LoginBodyDTO }
+    { body: LoginBodyDTO },
   )
 
   // 2. POST /api/v1/auth/logout
   .post("/logout", ({ cookie: { refreshToken } }) => {
-    refreshToken.remove()
+    refreshToken.remove();
     return {
       status: "success",
-      message: "Logged out successfully."
+      message: "Logged out successfully.",
     };
   })
 
@@ -79,57 +91,62 @@ export const authRoutes = new Elysia({ prefix: "/api/v1/auth" })
   .post(
     "/refresh",
     async ({ db, jwtAccess, jwtRefresh, cookie: { refreshToken }, set }) => {
-      const token = refreshToken.value as string | undefined
+      const token = refreshToken.value as string | undefined;
 
       if (!token) {
         set.status = 401;
         return {
           status: "error",
-          error: { code: "UNAUTHORIZED", message: "Unauthorized access." }
-        }
+          error: { code: "UNAUTHORIZED", message: "Unauthorized access." },
+        };
       }
 
-      const payload = await jwtRefresh.verify(token)
+      const payload = await jwtRefresh.verify(token);
       if (!payload || typeof payload !== "object" || !payload.sub) {
-        refreshToken.remove()
+        refreshToken.remove();
         set.status = 401;
         return {
           status: "error",
-          error: { code: "UNAUTHORIZED", message: "Unauthorized access." }
-        }
+          error: { code: "UNAUTHORIZED", message: "Unauthorized access." },
+        };
       }
 
-      const user = await AuthService.findActiveUserById(db, Number(payload.sub))
+      const user = await AuthService.findActiveUserById(
+        db,
+        Number(payload.sub),
+      );
 
       if (!user) {
-        refreshToken.remove()
+        refreshToken.remove();
         set.status = 401;
         return {
           status: "error",
-          error: { code: "UNAUTHORIZED", message: "Unauthorized access." }
-        }
+          error: { code: "UNAUTHORIZED", message: "Unauthorized access." },
+        };
       }
 
       const accessToken = await jwtAccess.sign({
         sub: String(user.id),
         email: user.email,
         roleId: user.roleId,
-        departmentId: user.departmentId
-      })
+        departmentId: user.departmentId,
+      });
 
       return {
         status: "success",
         data: {
-          accessToken, user: {
+          accessToken,
+          user: {
             id: user.id,
             email: user.email,
             fullName: user.fullName,
             roleId: user.roleId,
-            departmentId: user.departmentId
-          }
-        }
-      }
-    })
+            departmentId: user.departmentId,
+          },
+        },
+      };
+    },
+  )
 
   // 4. GET /api/v1/auth/me (Protected route)
   .use(authMiddleware)
@@ -138,12 +155,12 @@ export const authRoutes = new Elysia({ prefix: "/api/v1/auth" })
       set.status = 401;
       return {
         status: "error",
-        error: { code: "UNAUTHORIZED", message: "Unauthorized access." }
+        error: { code: "UNAUTHORIZED", message: "Unauthorized access." },
       };
     }
 
     return {
       status: "success",
-      data: {user}
-    }
-  })
+      data: { user },
+    };
+  });
