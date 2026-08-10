@@ -59,7 +59,7 @@ graph LR
 | :-------------------------- | :-------------------------------------------------------------------------------------------------------- | :------------- |
 | **M1: Project Setup**       | Monorepo structure, Bun workspaces (`packages/`, `apps/`), Root `package.json` & `tsconfig.json`          | `Completed` 🟢 |
 | **M2: Authentication**      | Login, Logout, JWT bearer tokens, Refresh token handling, Protected route guards                          | `Completed` 🟢 |
-| **M3: App Shell Layout**    | Mantine header, collapsible sidebar, breadcrumb navigation, theme switching                               | `Planned` ⚪   |
+| **M3: App Shell Layout**    | Mantine header, collapsible sidebar, breadcrumb navigation, theme switching                               | `Completed` 🟢 |
 | **M4: Executive Dashboard** | City overview stats cards, recent bulletins list, quick action panel                                      | `Planned` ⚪   |
 | **M5: User Management**     | Employee directory, account creation, role assignment (`Officer`, `Manager`, `Mayor`), department linking | `Planned` ⚪   |
 | **M6: Population Module**   | Citizen registry CRUD, National ID lookup, search/filter, pagination, audit tracking                      | `Planned` ⚪   |
