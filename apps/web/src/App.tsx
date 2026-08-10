@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from "react-router";
 import { LoginPage } from "./features/authentication/login-page";
 import { ProtectedRoute } from "./features/authentication/protected-route";
 import { AppShellLayout } from "./layouts/app-shell";
+import { DashboardPage } from "./features/dashboard/dashboard-page";
 
 // Temporary placeholder — real pages land with their milestones (M4 dashboard, M5 users, ...)
 function PagePlaceholder({ title }: { title: string }) {
@@ -21,7 +22,7 @@ export default function App() {
           </ProtectedRoute>
         }
       >
-        <Route index element={<PagePlaceholder title="Dashboard" />} />
+        <Route index element={<DashboardPage />} />
         <Route
           path="population"
           element={<PagePlaceholder title="Population" />}
