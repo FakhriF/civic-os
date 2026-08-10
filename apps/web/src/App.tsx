@@ -1,50 +1,37 @@
-import { AppShell, Burger, Text } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { Text } from "@mantine/core";
 import { Navigate, Route, Routes } from "react-router";
 import { LoginPage } from "./features/authentication/login-page";
 import { ProtectedRoute } from "./features/authentication/protected-route";
+import { AppShellLayout } from "./layouts/app-shell";
 
-function Home() {
-  const [opened, { toggle }] = useDisclosure();
-
-  return (
-    <AppShell
-      padding="md"
-      header={{ height: 60 }}
-      navbar={{
-        width: 300,
-        breakpoint: "sm",
-        collapsed: { mobile: !opened },
-      }}
-    >
-      <AppShell.Header>
-        <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-        <div>
-          <Text size="xl" fw={700}>
-            CivicOS
-          </Text>
-        </div>
-      </AppShell.Header>
-
-      <AppShell.Navbar>Navbar</AppShell.Navbar>
-
-      <AppShell.Main>Main</AppShell.Main>
-    </AppShell>
-  );
+// Temporary placeholder — real pages land with their milestones (M4 dashboard, M5 users, ...)
+function PagePlaceholder({ title }: { title: string }) {
+  return <Text mt="xl">{title} — coming soon</Text>;
 }
 
 export default function App() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
+      {/* Layout route (no path): AppShell wraps every child page, auth guard on top */}
       <Route
-        path="/"
         element={
           <ProtectedRoute>
-            <Home />
+            <AppShellLayout />
           </ProtectedRoute>
         }
-      />
+      >
+        <Route index element={<PagePlaceholder title="Dashboard" />} />
+        <Route
+          path="population"
+          element={<PagePlaceholder title="Population" />}
+        />
+        <Route
+          path="announcements"
+          element={<PagePlaceholder title="Announcements" />}
+        />
+        <Route path="users" element={<PagePlaceholder title="Users" />} />
+      </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

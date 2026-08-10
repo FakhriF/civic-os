@@ -1,0 +1,72 @@
+import { AppShell, Burger, Group, Text } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import { NavLink, Outlet } from "react-router";
+
+// Nav items — keep in sync with the route list in App.tsx
+const NAV_ITEMS = [
+  { to: "/", label: "Dashboard" },
+  { to: "/population", label: "Population" },
+  { to: "/announcements", label: "Announcements" },
+  { to: "/users", label: "Users" },
+];
+
+export function AppShellLayout() {
+  // opened only matters on mobile (<sm) — desktop navbar is always visible
+  const [opened, { toggle }] = useDisclosure();
+
+  return (
+    <AppShell
+      padding={"md"}
+      header={{ height: 60 }}
+      navbar={{
+        width: 300,
+        breakpoint: "sm",
+        collapsed: { mobile: !opened },
+      }}
+    >
+      <AppShell.Header>
+        <Group h="100%" px={"md"}>
+          <Burger
+            opened={opened}
+            onClick={toggle}
+            hiddenFrom="sm"
+            size={"sm"}
+          />
+          <Text size="xl" fw={700}>
+            CivicOS
+          </Text>
+        </Group>
+      </AppShell.Header>
+
+      <AppShell.Navbar p={"md"}>
+        {NAV_ITEMS.map((item) => (
+          <NavLink
+            key={item.to}
+            to={item.to}
+            // end makes sure "/" (Dashboard) doesn't stay highlighted on other routes
+            end={item.to === "/"}
+            style={({ isActive }) => ({
+              // Mantine CSS vars: highlight adapts in dark mode (Primary token = blue 7)
+              display: "block",
+              padding: "8px 12px",
+              borderRadius: 6,
+              color: isActive ? "var(--mantine-color-blue-7)" : "inherit",
+              backgroundColor: isActive
+                ? "var(--mantine-color-blue-light)"
+                : "transparent",
+              textDecoration: "none",
+              fontWeight: isActive ? 600 : 400,
+            })}
+          >
+            {item.label}
+          </NavLink>
+        ))}
+      </AppShell.Navbar>
+
+      <AppShell.Main>
+        {/* Child routes from App.tsx render here */}
+        <Outlet />
+      </AppShell.Main>
+    </AppShell>
+  );
+}
