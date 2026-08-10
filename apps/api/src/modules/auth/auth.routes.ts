@@ -5,6 +5,9 @@ import { AuthService } from "./auth.service";
 import { LoginBodyDTO } from "./auth.dto";
 import { authMiddleware } from "../../app/middleware/auth";
 
+// Must match login's cookie path exactly — deletion only works if the paths align
+const REFRESH_COOKIE_PATH = "/api/v1/auth/refresh";
+
 export const authRoutes = new Elysia({ prefix: "/api/v1/auth" })
   .use(jwtPlugin)
   .use(databasePlugin)
@@ -80,7 +83,14 @@ export const authRoutes = new Elysia({ prefix: "/api/v1/auth" })
 
   // 2. POST /api/v1/auth/logout
   .post("/logout", ({ cookie: { refreshToken } }) => {
-    refreshToken.remove();
+    refreshToken.set({
+      value: "",
+      maxAge: 0,
+      expires: new Date(0),
+      path: REFRESH_COOKIE_PATH,
+      sameSite: "strict",
+      httpOnly: true,
+    });
     return {
       status: "success",
       message: "Logged out successfully.",
@@ -103,7 +113,14 @@ export const authRoutes = new Elysia({ prefix: "/api/v1/auth" })
 
       const payload = await jwtRefresh.verify(token);
       if (!payload || typeof payload !== "object" || !payload.sub) {
-        refreshToken.remove();
+        refreshToken.set({
+          value: "",
+          maxAge: 0,
+          expires: new Date(0),
+          path: REFRESH_COOKIE_PATH,
+          sameSite: "strict",
+          httpOnly: true,
+        });
         set.status = 401;
         return {
           status: "error",
@@ -117,7 +134,14 @@ export const authRoutes = new Elysia({ prefix: "/api/v1/auth" })
       );
 
       if (!user) {
-        refreshToken.remove();
+        refreshToken.set({
+          value: "",
+          maxAge: 0,
+          expires: new Date(0),
+          path: REFRESH_COOKIE_PATH,
+          sameSite: "strict",
+          httpOnly: true,
+        });
         set.status = 401;
         return {
           status: "error",
