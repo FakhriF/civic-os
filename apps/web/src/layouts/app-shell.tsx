@@ -1,6 +1,18 @@
-import { AppShell, Burger, Group, Text } from "@mantine/core";
+import {
+  ActionIcon,
+  AppShell,
+  Avatar,
+  Burger,
+  Group,
+  Menu,
+  Text,
+  UnstyledButton,
+  useMantineColorScheme,
+} from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { IconLogout, IconMoon, IconSun } from "@tabler/icons-react";
 import { NavLink, Outlet } from "react-router";
+import { useAuth } from "../features/authentication/auth-context";
 
 // Nav items — keep in sync with the route list in App.tsx
 const NAV_ITEMS = [
@@ -13,6 +25,19 @@ const NAV_ITEMS = [
 export function AppShellLayout() {
   // opened only matters on mobile (<sm) — desktop navbar is always visible
   const [opened, { toggle }] = useDisclosure();
+  const { colorScheme, setColorScheme } = useMantineColorScheme();
+  const { user, logout } = useAuth();
+
+  const initials =
+    user?.fullName
+      ?.split(" ")
+      .map((part) => part[0])
+      .join("")
+      .slice(0, 2)
+      .toUpperCase() ?? "";
+
+  const toggleColorScheme = () =>
+    setColorScheme(colorScheme === "dark" ? "light" : "dark");
 
   return (
     <AppShell
@@ -25,16 +50,55 @@ export function AppShellLayout() {
       }}
     >
       <AppShell.Header>
-        <Group h="100%" px={"md"}>
-          <Burger
-            opened={opened}
-            onClick={toggle}
-            hiddenFrom="sm"
-            size={"sm"}
-          />
-          <Text size="xl" fw={700}>
-            CivicOS
-          </Text>
+        <Group h="100%" px={"md"} justify="space-between">
+          <Group>
+            <Burger
+              opened={opened}
+              onClick={toggle}
+              hiddenFrom="sm"
+              size={"sm"}
+            />
+            <Text size="xl" fw={700}>
+              CivicOS
+            </Text>
+          </Group>
+          <Group>
+            <ActionIcon
+              variant="default"
+              size={"lg"}
+              onClick={toggleColorScheme}
+              title="Toggle Color Scheme"
+            >
+              {colorScheme === "dark" ? <IconSun /> : <IconMoon />}
+            </ActionIcon>
+
+            <Menu shadow="md" width={220} position="bottom-end">
+              <Menu.Target>
+                <UnstyledButton>
+                  <Group gap="xs">
+                    <Avatar size="sm" radius={"xl"} color="blue">
+                      {initials}
+                    </Avatar>
+                    <Text size="sm" fw={500} visibleFrom="sm">
+                      {user?.fullName}
+                    </Text>
+                  </Group>
+                </UnstyledButton>
+              </Menu.Target>
+              <Menu.Dropdown>
+                <Menu.Label>{user?.email}</Menu.Label>
+                <Menu.Item
+                  color="red"
+                  leftSection={<IconLogout size={14}></IconLogout>}
+                  onClick={() => {
+                    void logout();
+                  }}
+                >
+                  Logout
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
+          </Group>
         </Group>
       </AppShell.Header>
 

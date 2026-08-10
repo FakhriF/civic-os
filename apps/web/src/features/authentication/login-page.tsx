@@ -53,7 +53,6 @@ export function LoginPage() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#f8f9fa",
       }}
     >
       <Container size={420} my={40}>
