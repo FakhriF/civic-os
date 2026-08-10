@@ -9,17 +9,22 @@ Authentication is implemented as an Elysia route group mounted at `/api/v1/auth`
 
 ## Architecture
 
-| File                                        | Responsibility                                                     |
-| :------------------------------------------ | :----------------------------------------------------------------- |
-| `apps/api/src/modules/auth/auth.routes.ts`  | Route group `/api/v1/auth` (login, logout, refresh, me)            |
-| `apps/api/src/modules/auth/auth.service.ts` | `AuthService.validateUser` (login); `findActiveUserById` (refresh) |
-| `apps/api/src/modules/auth/auth.dto.ts`     | Request validation via Elysia `t.Object`                           |
-| `apps/api/src/app/middleware/auth.ts`       | Bearer token → derived `user` (global derive, checks `isActive`)   |
-| `apps/api/src/app/plugins/jwt.ts`           | `jwtAccess` (15m) and `jwtRefresh` (7d) JWT plugins                |
-| `apps/api/src/database/schema/user.ts`      | `users` table definition                                           |
-| `apps/api/src/index.ts`                     | Mounts `authRoutes`                                                |
+| File                                                       | Responsibility                                                          |
+| :--------------------------------------------------------- | :---------------------------------------------------------------------- |
+| `apps/api/src/modules/auth/auth.routes.ts`                 | Route group `/api/v1/auth` (login, logout, refresh, me)                 |
+| `apps/api/src/modules/auth/auth.service.ts`                | `AuthService.validateUser` (login); `findActiveUserById` (refresh)      |
+| `apps/api/src/modules/auth/auth.dto.ts`                    | Request validation via Elysia `t.Object`                                |
+| `apps/api/src/app/middleware/auth.ts`                      | Bearer token → derived `user` (global derive, checks `isActive`)        |
+| `apps/api/src/app/plugins/jwt.ts`                          | `jwtAccess` (15m) and `jwtRefresh` (7d) JWT plugins                     |
+| `apps/api/src/database/schema/user.ts`                     | `users` table definition                                                |
+| `apps/api/src/index.ts`                                    | Mounts `authRoutes`                                                     |
+| `apps/web/src/services/api-client.ts`                      | Axios client: in-memory token, bearer interceptor, silent refresh queue |
+| `apps/web/src/features/authentication/auth-context.tsx`    | `AuthProvider`/`useAuth`: session state, login/logout, restore on mount |
+| `apps/web/src/features/authentication/login-page.tsx`      | Mantine login form                                                      |
+| `apps/web/src/features/authentication/protected-route.tsx` | Route guard, redirects to `/login`                                      |
+| `apps/web/src/App.tsx`, `main.tsx`                         | Router wiring + providers                                               |
 
-Frontend (`apps/web`) has no authentication screens yet; this design covers the backend only.
+The web frontend consumes these endpoints: `apps/web/src/services/api-client.ts` (axios instance with in-memory token and silent refresh queue), `apps/web/src/features/authentication/auth-context.tsx` (session state provider), `login-page.tsx` (Mantine login form), and `protected-route.tsx` (route guard). Routing uses React Router v8 (`App.tsx`), with `AuthProvider` + `BrowserRouter` mounted in `main.tsx`. In development, Vite proxies `/api` to the API via `VITE_API_PROXY_TARGET`.
 
 ## API Changes
 
@@ -59,6 +64,13 @@ Note: `logout` is not protected by the auth middleware in the current implementa
 
 1. `authMiddleware` reads `Authorization: Bearer <token>`, verifies `jwtAccess`, loads the user from DB by `sub`, rejects inactive users.
 2. Derives `user` globally; routes can consume it without re-validating.
+
+**Frontend flow**:
+
+1. On first load, `AuthProvider` calls `POST /refresh` to restore the session from the HttpOnly cookie.
+2. The access token is kept in memory and attached to every request by the `api-client` request interceptor.
+3. A `401` response triggers a silent refresh (queuing concurrent requests); a failed refresh signs the user out.
+4. `ProtectedRoute` redirects unauthenticated users to `/login`; a successful login navigates to the home page.
 
 ## Authentication & Authorization
 

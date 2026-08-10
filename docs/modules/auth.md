@@ -5,6 +5,8 @@
 > **Frontend Path**: `apps/web/src/features/authentication`  
 > 📄 **Detailed feature specification**: [`specs/auth/`](../../specs/auth/) (requirements, design, tasks)
 
+> ✅ **Frontend**: login page, session restore, and route guards are implemented in `apps/web/src/features/authentication` (see [`specs/auth/`](../../specs/auth/) for details).
+
 ---
 
 ## 📌 Functional Requirements

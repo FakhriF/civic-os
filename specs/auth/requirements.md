@@ -6,7 +6,7 @@
 
 ## Overview
 
-CivicOS backend shall authenticate municipal users (Officer, Manager, Administrator, Mayor) with email and password, issue short-lived JWT access tokens, and maintain session identity via an httpOnly refresh-token cookie. Deactivated accounts (ADR-020 soft delete) must be blocked from both login and token usage.
+CivicOS backend shall authenticate municipal users (Officer, Manager, Administrator, Mayor) with email and password, issue short-lived JWT access tokens, and maintain session identity via an httpOnly refresh-token cookie. Deactivated accounts (ADR-020 soft delete) must be blocked from both login and token usage. The web frontend (`apps/web`) consumes these endpoints to provide a login page, session restore, and route protection.
 
 ## Functional Requirements
 
@@ -78,6 +78,18 @@ The system SHALL issue a new access token from a valid refresh-token cookie via 
 - Expired refresh token (7-day lifetime): the request fails and the cookie is cleared to prevent a stuck 401 loop.
 - No token rotation in MVP: the refresh cookie is not replaced when refreshing.
 
+### R6 — Web Authentication Flow
+
+The web frontend SHALL provide a login page and protect private pages behind a route guard, restoring the session from the refresh cookie.
+
+#### Acceptance Criteria
+
+- R6.1 Unauthenticated users are redirected from protected pages to `/login`.
+- R6.2 Valid credentials sign the user in, store the access token in memory only (never `localStorage`), and navigate to the home page.
+- R6.3 Refreshing the page restores the session via `POST /api/v1/auth/refresh`.
+- R6.4 A `401` response triggers a silent refresh; if the refresh fails, the user is signed out.
+- R6.5 Logout clears the session and returns to `/login`.
+
 ## Non-Functional Requirements
 
 - NFR1 Passwords SHALL be stored only as hashes (argon2id), never plaintext.
@@ -90,5 +102,4 @@ The system SHALL issue a new access token from a valid refresh-token cookie via 
 
 - Password reset / change, email verification, MFA.
 - Rate limiting / account lockout.
-- Frontend authentication screens (`apps/web`) — backend only for now.
 - RBAC permission matrix beyond role assignment carried in the token.

@@ -1,7 +1,7 @@
 # Authentication & Authorization — Tasks
 
 > Implements: [./design.md](./design.md)
-> Status: In Progress (backend implemented; tests pending)
+> Status: In Progress (backend + frontend implemented; tests pending)
 
 Every task references the requirement ID(s) it implements. The feature is only ready for verification when every requirement R1..Rn has at least one task.
 
@@ -22,8 +22,12 @@ Every task references the requirement ID(s) it implements. The feature is only r
 
 ## Frontend
 
-- [ ] Implement login screen (`apps/web/src/features/authentication`) (R1) — future work
-- [ ] Implement route guard for protected pages (R2) — future work
+- [x] Implement `api-client.ts` with in-memory token and silent refresh queue (R6)
+- [x] Implement `AuthProvider`/`useAuth` with session restore on mount (R6)
+- [x] Implement login page (`features/authentication/login-page.tsx`) (R6)
+- [x] Implement protected route guard (`features/authentication/protected-route.tsx`) (R6)
+- [x] Wire router + providers in `main.tsx` / `App.tsx` (R6)
+- [x] Configure Vite dev proxy for `/api` (R6)
 
 ## Testing
 
@@ -35,6 +39,7 @@ Every task references the requirement ID(s) it implements. The feature is only r
 - [x] Type checks pass (`tsconfig` bundler resolution + `refreshToken.value` cast)
 - [ ] Lint/format pass — **blocked**: root `lint` script is a stub (`echo "Not implemented"`)
 - [x] Manual verification of login, logout, refresh, and `/me` flows against the running API
+- [x] Manual verification of the web login flow (redirect, sign in, session restore) in the browser
 - [x] Spec reflects the final implementation
 - [x] `docs/modules/auth.md` overview kept up to date (linked to this spec)
 
