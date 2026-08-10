@@ -72,6 +72,16 @@ import type { User, Role } from "@civicos/shared";
 
 ---
 
+## 🌍 UI & Comment Language
+
+All user-facing UI strings and code comments MUST be written in English.
+
+- UI strings include labels, placeholders, buttons, alerts, toasts, and loading messages.
+- Code comments explain intent in English so the codebase stays consistent with the documentation (`docs/`).
+- Product localization (e.g. Bahasa Indonesia) is handled through an i18n layer when needed, never by mixing languages directly in the source.
+
+---
+
 ## 🌿 Git Workflow & Branching Strategy
 
 ### 1. Conventional Commit Standard
