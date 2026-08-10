@@ -51,4 +51,13 @@ export const authMiddleware = new Elysia({ name: "auth-middleware" })
         departmentId: user.departmentId,
       },
     };
+  })
+  .onBeforeHandle({ as: "global" }, ({ user, set }) => {
+    if (!user) {
+      set.status = 401;
+      return {
+        status: "error",
+        error: { code: "UNAUTHORIZED", message: "Unauthorized access" },
+      };
+    }
   });
