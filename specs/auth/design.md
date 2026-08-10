@@ -9,20 +9,20 @@ Authentication is implemented as an Elysia route group mounted at `/api/v1/auth`
 
 ## Architecture
 
-| File                                                       | Responsibility                                                          |
-| :--------------------------------------------------------- | :---------------------------------------------------------------------- |
-| `apps/api/src/modules/auth/auth.routes.ts`                 | Route group `/api/v1/auth` (login, logout, refresh, me)                 |
-| `apps/api/src/modules/auth/auth.service.ts`                | `AuthService.validateUser` (login); `findActiveUserById` (refresh)      |
-| `apps/api/src/modules/auth/auth.dto.ts`                    | Request validation via Elysia `t.Object`                                |
-| `apps/api/src/app/middleware/auth.ts`                      | Bearer token → derived `user` (global derive, checks `isActive`)        |
-| `apps/api/src/app/plugins/jwt.ts`                          | `jwtAccess` (15m) and `jwtRefresh` (7d) JWT plugins                     |
-| `apps/api/src/database/schema/user.ts`                     | `users` table definition                                                |
-| `apps/api/src/index.ts`                                    | Mounts `authRoutes`                                                     |
-| `apps/web/src/services/api-client.ts`                      | Axios client: in-memory token, bearer interceptor, silent refresh queue |
-| `apps/web/src/features/authentication/auth-context.tsx`    | `AuthProvider`/`useAuth`: session state, login/logout, restore on mount |
-| `apps/web/src/features/authentication/login-page.tsx`      | Mantine login form                                                      |
-| `apps/web/src/features/authentication/protected-route.tsx` | Route guard, redirects to `/login`                                      |
-| `apps/web/src/App.tsx`, `main.tsx`                         | Router wiring + providers                                               |
+| File                                                       | Responsibility                                                                 |
+| :--------------------------------------------------------- | :----------------------------------------------------------------------------- |
+| `apps/api/src/modules/auth/auth.routes.ts`                 | Route group `/api/v1/auth` (login, logout, refresh, me)                        |
+| `apps/api/src/modules/auth/auth.service.ts`                | `AuthService.validateUser` (login); `findActiveUserById` (refresh)             |
+| `apps/api/src/modules/auth/auth.dto.ts`                    | Request validation via Elysia `t.Object`                                       |
+| `apps/api/src/app/middleware/auth.ts`                      | Bearer token → derived `user` + 401 enforcement (global derive + beforeHandle) |
+| `apps/api/src/app/plugins/jwt.ts`                          | `jwtAccess` (15m) and `jwtRefresh` (7d) JWT plugins                            |
+| `apps/api/src/database/schema/user.ts`                     | `users` table definition                                                       |
+| `apps/api/src/index.ts`                                    | Mounts `authRoutes`                                                            |
+| `apps/web/src/services/api-client.ts`                      | Axios client: in-memory token, bearer interceptor, silent refresh queue        |
+| `apps/web/src/features/authentication/auth-context.tsx`    | `AuthProvider`/`useAuth`: session state, login/logout, restore on mount        |
+| `apps/web/src/features/authentication/login-page.tsx`      | Mantine login form                                                             |
+| `apps/web/src/features/authentication/protected-route.tsx` | Route guard, redirects to `/login`                                             |
+| `apps/web/src/App.tsx`, `main.tsx`                         | Router wiring + providers                                                      |
 
 The web frontend consumes these endpoints: `apps/web/src/services/api-client.ts` (axios instance with in-memory token and silent refresh queue), `apps/web/src/features/authentication/auth-context.tsx` (session state provider), `login-page.tsx` (Mantine login form), and `protected-route.tsx` (route guard). Routing uses React Router v8 (`App.tsx`), with `AuthProvider` + `BrowserRouter` mounted in `main.tsx`. In development, Vite proxies `/api` to the API via `VITE_API_PROXY_TARGET`.
 
@@ -83,6 +83,7 @@ Note: `logout` is not protected by the auth middleware in the current implementa
 - Refresh token: `sub` only — 7-day expiry, delivered via httpOnly cookie.
 - RBAC roles are seeded but authorization checks (per-role guards) are not yet implemented; role information is carried in the token for future use.
 - Middleware verifies the user still exists and is active on every request (DB round-trip per request).
+- Protected routes are enforced by a global `onBeforeHandle` in `authMiddleware`: unauthenticated requests are rejected with `401 UNAUTHORIZED` **before the handler runs**, so handlers never need to check `user` themselves.
 
 ## Error Handling
 

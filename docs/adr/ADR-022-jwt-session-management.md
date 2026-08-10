@@ -47,6 +47,7 @@ CivicOS employees (Officer, Manager, Administrator, Mayor) authenticate with ema
 3. **No storage APIs**: access tokens never touch `localStorage`/`sessionStorage`.
 4. **Separate secrets**: access and refresh tokens MUST be signed with different secrets so a leaked access token cannot be used to refresh.
 5. **Cookie deletion**: the refresh cookie MUST be cleared by repeating its exact path (`/api/v1/auth/refresh`). Elysia's `remove()` drops the path attribute, so logout and refresh-failure paths set an explicit expired cookie instead.
+6. **Enforcement**: protected routes are guarded by a global `onBeforeHandle` in the auth middleware — unauthenticated requests are rejected with `401 UNAUTHORIZED` before the handler runs, so handlers never check `user` themselves.
 
 ### Consequences & Trade-offs:
 
