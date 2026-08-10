@@ -2,7 +2,7 @@
 
 > **Status**: Accepted  
 > **Date**: 2026-08-10  
-> **Deciders**: CivicOS Architecture Team  
+> **Deciders**: CivicOS Architecture Team
 
 ---
 
@@ -46,6 +46,7 @@ CivicOS employees (Officer, Manager, Administrator, Mayor) authenticate with ema
 2. **Deactivation**: login, refresh, and the auth middleware MUST reject `isActive = false` accounts ([**ADR-020**](./ADR-020-soft-delete-user-accounts.md)).
 3. **No storage APIs**: access tokens never touch `localStorage`/`sessionStorage`.
 4. **Separate secrets**: access and refresh tokens MUST be signed with different secrets so a leaked access token cannot be used to refresh.
+5. **Cookie deletion**: the refresh cookie MUST be cleared by repeating its exact path (`/api/v1/auth/refresh`). Elysia's `remove()` drops the path attribute, so logout and refresh-failure paths set an explicit expired cookie instead.
 
 ### Consequences & Trade-offs:
 

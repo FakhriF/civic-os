@@ -65,6 +65,11 @@ Note: `logout` is not protected by the auth middleware in the current implementa
 1. `authMiddleware` reads `Authorization: Bearer <token>`, verifies `jwtAccess`, loads the user from DB by `sub`, rejects inactive users.
 2. Derives `user` globally; routes can consume it without re-validating.
 
+**Logout** (`POST /logout`):
+
+1. Clears the refresh cookie by repeating the exact attributes from login (`path=/api/v1/auth/refresh`, `maxAge=0`, `expires` in the past). Browser deletion requires identical name + domain + path, so the path must be repeated explicitly.
+2. Returns a success message; idempotent when no cookie is present.
+
 **Frontend flow**:
 
 1. On first load, `AuthProvider` calls `POST /refresh` to restore the session from the HttpOnly cookie.

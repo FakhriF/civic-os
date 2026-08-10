@@ -52,6 +52,10 @@ The system SHALL invalidate the client session by removing the refresh-token coo
 - R3.1 `POST /api/v1/auth/logout` removes the refresh cookie and returns a success response.
 - R3.2 Logout is idempotent: calling it without a cookie still succeeds.
 
+#### Edge Cases
+
+- Cookie removal MUST repeat the exact cookie `Path` (`/api/v1/auth/refresh`). A `Path` mismatch leaves the original cookie in the browser, so the session can be silently restored on the next page refresh.
+
 ### R4 — Account Deactivation Enforcement
 
 The system SHALL block authentication for deactivated accounts in every flow.
