@@ -65,15 +65,15 @@ graph TD
 
 All architectural decisions are documented in the [**ADR Registry (`docs/adr/`)**](./adr/README.md):
 
-| Category               | Key Decisions Included                                                                                                                                               | Full Registry                                                 |
-| :--------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------ |
-| 🏗️ **Monorepo & Core** | Monorepo (`001`), Bun Runtime (`008`), Pure Bun (`009`), Templates (`010`), Dependencies (`011`)                                                                     | [View Specs ➔](./adr/README.md#-1-monorepo--core-toolchain)   |
-| 💻 **Frontend & UI**   | React + Vite (`002`), Feature Structure (`005`), Mantine (`007`), App Shell (`012`)                                                                                  | [View Specs ➔](./adr/README.md#-2-frontend--design-system)    |
-| ⚡ **Backend & Data**  | REST API (`003`), Layered Model (`004`), Foreign Keys (`006`), Domain Modules (`013`), Soft Delete (`020`)                                                           | [View Specs ➔](./adr/README.md#-3-backend--data-architecture) |
-| 🐳 **DevOps & Infra**  | Docker Compose (`014`), `.dockerignore` (`015`), Layer Caching (`016`), Bind Mounts (`017`), All Interfaces (`018`), Incremental Compose (`019`), Env Config (`021`) | [View Specs ➔](./adr/README.md#-4-infrastructure--devops)     |
+| Category               | Key Decisions Included                                                                                                                                                                          | Full Registry                                                 |
+| :--------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------ |
+| 🏗️ **Monorepo & Core** | Monorepo (`001`), Bun Runtime (`008`), Pure Bun (`009`), Templates (`010`), Dependencies (`011`)                                                                                                | [View Specs ➔](./adr/README.md#-1-monorepo--core-toolchain)   |
+| 💻 **Frontend & UI**   | React + Vite (`002`), Feature Structure (`005`), Mantine (`007`), App Shell (`012`)                                                                                                             | [View Specs ➔](./adr/README.md#-2-frontend--design-system)    |
+| ⚡ **Backend & Data**  | REST API (`003`), Layered Model (`004`), Foreign Keys (`006`), Domain Modules (`013`), Soft Delete (`020`), JWT Sessions (`022`)                                                                | [View Specs ➔](./adr/README.md#-3-backend--data-architecture) |
+| 🐳 **DevOps & Infra**  | Docker Compose (`014`), `.dockerignore` (`015`), Layer Caching (`016`), Bind Mounts (`017`), All Interfaces (`018`), Incremental Compose (`019`), Env Config (`021`), Same-Origin Proxy (`023`) | [View Specs ➔](./adr/README.md#-4-infrastructure--devops)     |
 
 <details>
-<summary><b>📜 Click to Expand Complete ADR List (21 Records)</b></summary>
+<summary><b>📜 Click to Expand Complete ADR List (23 Records)</b></summary>
 
 - [**ADR-001: Monorepo Architecture**](./adr/ADR-001-monorepo.md)
 - [**ADR-002: React + Vite Frontend**](./adr/ADR-002-react-vite.md)
@@ -96,6 +96,8 @@ All architectural decisions are documented in the [**ADR Registry (`docs/adr/`)*
 - [**ADR-019: Incremental Docker Compose Configuration**](./adr/ADR-019-incremental-docker-compose.md)
 - [**ADR-020: User Account Deactivation via Soft Delete**](./adr/ADR-020-soft-delete-user-accounts.md)
 - [**ADR-021: Environment-Based Configuration**](./adr/ADR-021-environment-configuration.md)
+- [**ADR-022: JWT Session Management**](./adr/ADR-022-jwt-session-management.md)
+- [**ADR-023: Same-Origin API Proxy**](./adr/ADR-023-same-origin-api-proxy.md)
 
 </details>
 
