@@ -82,3 +82,7 @@ The system SHALL record who created and last updated every citizen record.
 - Import/export (CSV) and bulk operations.
 - Marriage/family or birth/death certificate features.
 - Advanced search (NIK auto-suggest, multi-field filters beyond gender).
+
+## Future Work
+
+- **Record voiding (soft-void)**: citizen records are permanent by design (they represent real residents, and the schema carries `createdById`/`updatedById` audit columns). If mistaken registrations need to be removed, the preferred path is a soft-void flow — add `isVoided`, `voidedById`, `voidedAt` and filter voided records from the list, preserving the row and its audit trail (consistent with ADR-020's philosophy). Hard delete is not planned.

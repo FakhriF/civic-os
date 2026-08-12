@@ -9,14 +9,14 @@ A `population` module on the backend exposes the paginated, searchable citizen r
 
 ## Architecture
 
-| File | Responsibility |
-| :--- | :--- |
-| `apps/api/src/app/middleware/require-role.ts` | **Moved & extended** shared `requireRole(...roles)` guard (multi-role) |
-| `apps/api/src/modules/population/population.routes.ts` | Registry routes + guards |
-| `apps/api/src/modules/population/population.service.ts` | Paginated list, findById, create/update, unique-violation handling |
-| `apps/web/src/features/population/population-page.tsx` | Searchable, paginated table |
-| `apps/web/src/features/population/citizen-form-dialog.tsx` | Create/edit modal |
-| `apps/web/src/features/population/use-citizens.ts` | TanStack Query: list query + create/update mutations |
+| File                                                       | Responsibility                                                         |
+| :--------------------------------------------------------- | :--------------------------------------------------------------------- |
+| `apps/api/src/app/middleware/require-role.ts`              | **Moved & extended** shared `requireRole(...roles)` guard (multi-role) |
+| `apps/api/src/modules/population/population.routes.ts`     | Registry routes + guards                                               |
+| `apps/api/src/modules/population/population.service.ts`    | Paginated list, findById, create/update, unique-violation handling     |
+| `apps/web/src/features/population/population-page.tsx`     | Searchable, paginated table                                            |
+| `apps/web/src/features/population/citizen-form-dialog.tsx` | Create/edit modal                                                      |
+| `apps/web/src/features/population/use-citizens.ts`         | TanStack Query: list query + create/update mutations                   |
 
 ## Authorization: Multi-Role `requireRole`
 
@@ -31,7 +31,10 @@ export const requireRole = (...roleNames: string[]) =>
     .onBeforeHandle({ as: "scoped" }, async ({ db, user, set }) => {
       if (!user) {
         set.status = 403;
-        return { status: "error", error: { code: "FORBIDDEN", message: "Forbidden." } };
+        return {
+          status: "error",
+          error: { code: "FORBIDDEN", message: "Forbidden." },
+        };
       }
 
       const allowed = await db
@@ -41,7 +44,10 @@ export const requireRole = (...roleNames: string[]) =>
 
       if (!allowed.some((role) => role.id === user.roleId)) {
         set.status = 403;
-        return { status: "error", error: { code: "FORBIDDEN", message: "Forbidden." } };
+        return {
+          status: "error",
+          error: { code: "FORBIDDEN", message: "Forbidden." },
+        };
       }
     });
 ```
@@ -50,12 +56,12 @@ Usage: `.use(requireRole("Officer", "Manager", "Administrator"))` on mutation ro
 
 ## API Changes
 
-| Method | Endpoint | Auth | Request | Response | Errors |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| `GET` | `/api/v1/citizens` | Bearer | query `page`, `limit`, `search`, `gender` | `{ status, data: { items, total, page, limit, totalPages } }` | `401` |
-| `GET` | `/api/v1/citizens/:id` | Bearer | — | `{ status, data: Citizen }` | `401` / `404 CITIZEN_NOT_FOUND` |
-| `POST` | `/api/v1/citizens` | Bearer + Officer/Manager/Admin | `{ nationalId, fullName, gender, birthDate, address, occupation }` | `{ status, data: Citizen }` | `401` / `403` / `409 CITIZEN_EXISTS` / `422 VALIDATION` |
-| `PATCH` | `/api/v1/citizens/:id` | Bearer + Officer/Manager/Admin | partial `{ fullName?, gender?, birthDate?, address?, occupation? }` | `{ status, data: Citizen }` | `401` / `403` / `404` / `422` |
+| Method  | Endpoint               | Auth                           | Request                                                             | Response                                                      | Errors                                                  |
+| :------ | :--------------------- | :----------------------------- | :------------------------------------------------------------------ | :------------------------------------------------------------ | :------------------------------------------------------ |
+| `GET`   | `/api/v1/citizens`     | Bearer                         | query `page`, `limit`, `search`, `gender`                           | `{ status, data: { items, total, page, limit, totalPages } }` | `401`                                                   |
+| `GET`   | `/api/v1/citizens/:id` | Bearer                         | —                                                                   | `{ status, data: Citizen }`                                   | `401` / `404 CITIZEN_NOT_FOUND`                         |
+| `POST`  | `/api/v1/citizens`     | Bearer + Officer/Manager/Admin | `{ nationalId, fullName, gender, birthDate, address, occupation }`  | `{ status, data: Citizen }`                                   | `401` / `403` / `409 CITIZEN_EXISTS` / `422 VALIDATION` |
+| `PATCH` | `/api/v1/citizens/:id` | Bearer + Officer/Manager/Admin | partial `{ fullName?, gender?, birthDate?, address?, occupation? }` | `{ status, data: Citizen }`                                   | `401` / `403` / `404` / `422`                           |
 
 `Citizen` payload: `{ id, nationalId, fullName, gender, birthDate, address, occupation, createdById, updatedById, createdAt, updatedAt }`.
 
@@ -74,13 +80,13 @@ Usage: `.use(requireRole("Officer", "Manager", "Administrator"))` on mutation ro
 
 ## Error Handling
 
-| Code | HTTP | When |
-| :--- | :--- | :--- |
-| `UNAUTHORIZED` | 401 | Missing/invalid token (middleware) |
-| `FORBIDDEN` | 403 | Role not allowed for the mutation |
-| `CITIZEN_EXISTS` | 409 | Duplicate National ID |
-| `CITIZEN_NOT_FOUND` | 404 | Unknown `:id` |
-| `VALIDATION` | 422 | DTO validation failure |
+| Code                | HTTP | When                               |
+| :------------------ | :--- | :--------------------------------- |
+| `UNAUTHORIZED`      | 401  | Missing/invalid token (middleware) |
+| `FORBIDDEN`         | 403  | Role not allowed for the mutation  |
+| `CITIZEN_EXISTS`    | 409  | Duplicate National ID              |
+| `CITIZEN_NOT_FOUND` | 404  | Unknown `:id`                      |
+| `VALIDATION`        | 422  | DTO validation failure             |
 
 ## Security Considerations
 
@@ -96,4 +102,5 @@ Usage: `.use(requireRole("Officer", "Manager", "Administrator"))` on mutation ro
 
 ## Open Questions
 
-- None blocking; NIK auto-suggest and CSV import are deferred (Out of Scope).
+- Deletion policy: no delete by design (registry permanence — see requirements, Out of Scope). If mistaken registrations become a real need, a soft-void flow (`isVoided` + `voidedById`/`voidedAt`, filtered from the list) is the preferred path over hard delete; deferred until needed.
+- NIK auto-suggest and CSV import are deferred (Out of Scope).

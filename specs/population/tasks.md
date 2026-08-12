@@ -1,7 +1,7 @@
 # Population Registry — Tasks
 
 > Implements: [./design.md](./design.md)
-> Status: In Progress (backend complete; frontend pending)
+> Status: Complete (automated tests pending)
 
 Every task references the requirement ID(s) it implements. The feature is only ready for verification when every requirement R1..Rn has at least one task.
 
@@ -16,11 +16,11 @@ Every task references the requirement ID(s) it implements. The feature is only r
 
 ## Frontend
 
-- [ ] Implement `features/population/population-page.tsx` (search, filter, table, pagination) (R1)
-- [ ] Implement `citizen-form-dialog.tsx` create/edit modal (R3, R4)
-- [ ] Implement `use-citizens.ts` query + mutations with cache invalidation (R1–R4)
-- [ ] Add debounced search via `useDebouncedValue` (R1)
-- [ ] Render empty state for an empty registry (R1)
+- [x] Implement `features/population/population-page.tsx` (search, filter, table, pagination) (R1)
+- [x] Implement `citizen-form-dialog.tsx` create/edit modal (R3, R4)
+- [x] Implement `use-citizens.ts` query + mutations with cache invalidation (R1–R4)
+- [x] Add debounced search via `useDebouncedValue` (R1)
+- [x] Render empty state for an empty registry (R1)
 
 ## Testing
 
@@ -29,7 +29,7 @@ Every task references the requirement ID(s) it implements. The feature is only r
 
 ## Verification
 
-- [ ] Type checks pass (api + web)
-- [ ] Lint/format pass (`bun run lint`)
-- [ ] Manual verification: officer full flow + forbidden role + pagination
-- [ ] Spec reflects the final implementation
+- [x] Type checks pass (api + web)
+- [x] Lint/format pass (`bun run lint`)
+- [x] Manual verification: officer full flow + forbidden role + pagination
+- [x] Spec reflects the final implementation
