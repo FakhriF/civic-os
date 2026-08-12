@@ -1,4 +1,3 @@
-import { Text } from "@mantine/core";
 import { Navigate, Route, Routes } from "react-router";
 import { LoginPage } from "./features/authentication/login-page";
 import { ProtectedRoute } from "./features/authentication/protected-route";
@@ -6,11 +5,7 @@ import { AppShellLayout } from "./layouts/app-shell";
 import { DashboardPage } from "./features/dashboard/dashboard-page";
 import { UsersPage } from "./features/users/users-page";
 import { PopulationPage } from "./features/population/population-page";
-
-// Temporary placeholder — real pages land with their milestones (M7 announcements)
-function PagePlaceholder({ title }: { title: string }) {
-  return <Text mt="xl">{title} — coming soon</Text>;
-}
+import { AnnouncementsPage } from "./features/announcement/announcements-page";
 
 export default function App() {
   return (
@@ -26,10 +21,7 @@ export default function App() {
       >
         <Route index element={<DashboardPage />} />
         <Route path="population" element={<PopulationPage />} />
-        <Route
-          path="announcements"
-          element={<PagePlaceholder title="Announcements" />}
-        />
+        <Route path="announcements" element={<AnnouncementsPage />} />
         <Route path="users" element={<UsersPage />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
