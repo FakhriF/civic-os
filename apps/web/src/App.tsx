@@ -4,8 +4,9 @@ import { LoginPage } from "./features/authentication/login-page";
 import { ProtectedRoute } from "./features/authentication/protected-route";
 import { AppShellLayout } from "./layouts/app-shell";
 import { DashboardPage } from "./features/dashboard/dashboard-page";
+import { UsersPage } from "./features/users/users-page";
 
-// Temporary placeholder — real pages land with their milestones (M4 dashboard, M5 users, ...)
+// Temporary placeholder — real pages land with their milestones (M6 population, M7 announcements)
 function PagePlaceholder({ title }: { title: string }) {
   return <Text mt="xl">{title} — coming soon</Text>;
 }
@@ -31,7 +32,7 @@ export default function App() {
           path="announcements"
           element={<PagePlaceholder title="Announcements" />}
         />
-        <Route path="users" element={<PagePlaceholder title="Users" />} />
+        <Route path="users" element={<UsersPage />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
