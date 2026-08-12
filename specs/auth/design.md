@@ -94,7 +94,7 @@ Error responses follow the shape `{ status: "error", error: { code, message } }`
 | `INVALID_CREDENTIALS` | 401  | Unknown email or wrong password (identical response, no enumeration)     |
 | `ACCOUNT_DISABLED`    | 401  | Deactivated account tries to log in                                      |
 | `UNAUTHORIZED`        | 401  | Missing / invalid / expired bearer or refresh token, or deactivated user |
-| Validation errors     | 422  | DTO validation failure (Elysia default)                                  |
+| `VALIDATION`          | 422  | DTO validation failure (normalized from Elysia's `ValidationError`)      |
 
 > ✅ **Resolved (2026-08-10)**: `docs/development-standards.md` previously specified a `{ "success": true, ... }` envelope; it now documents the implemented `{ "status": "success", ... }` / `{ "status": "error", "error": { "code", "message" } }` contract.
 

@@ -77,13 +77,13 @@ Applied to the mutation routes: `.use(requireRole("Administrator"))`. The role i
 
 ## Error Handling
 
-| Code             | HTTP | When                               |
-| :--------------- | :--- | :--------------------------------- |
-| `UNAUTHORIZED`   | 401  | Missing/invalid token (middleware) |
-| `FORBIDDEN`      | 403  | Non-Administrator tries a mutation |
-| `EMAIL_EXISTS`   | 409  | Duplicate email on create          |
-| `USER_NOT_FOUND` | 404  | Unknown `:id` on update            |
-| Validation       | 422  | DTO validation failure             |
+| Code             | HTTP | When                                                                |
+| :--------------- | :--- | :------------------------------------------------------------------ |
+| `UNAUTHORIZED`   | 401  | Missing/invalid token (middleware)                                  |
+| `FORBIDDEN`      | 403  | Non-Administrator tries a mutation                                  |
+| `EMAIL_EXISTS`   | 409  | Duplicate email on create                                           |
+| `USER_NOT_FOUND` | 404  | Unknown `:id` on update                                             |
+| `VALIDATION`     | 422  | DTO validation failure (normalized from Elysia's `ValidationError`) |
 
 ## Security Considerations
 

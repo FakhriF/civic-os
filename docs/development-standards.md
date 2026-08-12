@@ -177,7 +177,9 @@ All REST API endpoints in CivicOS returned from `apps/api` must conform to the s
 }
 ```
 
-Error codes use `UPPER_SNAKE_CASE` (e.g. `INVALID_CREDENTIALS`, `UNAUTHORIZED`, `RESOURCE_NOT_FOUND`) and must be stable identifiers that clients can branch on without parsing messages.
+Error codes use `UPPER_SNAKE_CASE` (e.g. `VALIDATION`, `INVALID_CREDENTIALS`, `UNAUTHORIZED`, `RESOURCE_NOT_FOUND`) and must be stable identifiers that clients can branch on without parsing messages.
+
+Validation failures return `422` with the `VALIDATION` code — Elysia's default validation shape is normalized to this contract by the API's global error handler.
 
 Resource endpoints use **plural nouns** (`/api/v1/announcements`, `/api/v1/users`) unless the route is a singleton or an action (`/api/v1/auth/me`, `/api/v1/auth/login`).
 
