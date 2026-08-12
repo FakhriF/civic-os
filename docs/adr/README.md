@@ -55,6 +55,7 @@ graph TD
 | [**ADR-013**](./ADR-013-feature-based-backend-modules.md) | **Feature-Based Backend Modules** | `Accepted` 🟢 | Organize backend code by business domain modules (`src/modules/`)              |
 | [**ADR-020**](./ADR-020-soft-delete-user-accounts.md)     | **User Account Deactivation**     | `Accepted` 🟢 | Disable users via `isActive` flag; never hard-delete to preserve audit history |
 | [**ADR-022**](./ADR-022-jwt-session-management.md)        | **JWT Session Management**        | `Accepted` 🟢 | Short-lived in-memory access token + long-lived HttpOnly refresh cookie        |
+| [**ADR-024**](./ADR-024-role-based-access-control.md)     | **Role-Based Access Control**     | `Accepted` 🟢 | Reusable `requireRole` guard plugin with scoped `onBeforeHandle`               |
 
 ---
 
