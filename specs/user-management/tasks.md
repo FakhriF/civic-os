@@ -1,7 +1,7 @@
 # User Management — Tasks
 
 > Implements: [./design.md](./design.md)
-> Status: In Progress (backend complete; frontend pending)
+> Status: Complete (automated tests pending)
 
 Every task references the requirement ID(s) it implements. The feature is only ready for verification when every requirement R1..Rn has at least one task.
 
@@ -17,12 +17,12 @@ Every task references the requirement ID(s) it implements. The feature is only r
 
 ## Frontend
 
-- [ ] Implement `features/users/users-page.tsx` directory table (R1)
-- [ ] Implement `user-form-dialog.tsx` create/edit modal (R2, R3)
-- [ ] Implement `use-users.ts` query + mutations with cache invalidation (R1–R4)
-- [ ] Populate role/department selects from `/roles` + `/departments` (R2, R3)
-- [ ] Add deactivate action with confirmation + hide for own row (R4)
-- [ ] Render empty state for an empty directory (R1)
+- [x] Implement `features/users/users-page.tsx` directory table (R1)
+- [x] Implement `user-form-dialog.tsx` create/edit modal (R2, R3)
+- [x] Implement `use-users.ts` query + mutations with cache invalidation (R1–R4)
+- [x] Populate role/department selects from `/roles` + `/departments` (R2, R3)
+- [x] Add deactivate action with confirmation + hide for own row (R4)
+- [x] Render empty state for an empty directory (R1)
 
 ## Testing
 
@@ -31,7 +31,7 @@ Every task references the requirement ID(s) it implements. The feature is only r
 
 ## Verification
 
-- [ ] Type checks pass (api + web)
-- [ ] Lint/format pass (`bun run lint`)
-- [ ] Manual verification: admin full flow + non-admin forbidden + self-deactivation blocked
-- [ ] Spec reflects the final implementation
+- [x] Type checks pass (api + web)
+- [x] Lint/format pass (`bun run lint`)
+- [x] Manual verification: admin full flow + non-admin forbidden + self-deactivation blocked
+- [x] Spec reflects the final implementation
