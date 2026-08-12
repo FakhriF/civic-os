@@ -1,32 +1,9 @@
 import Elysia, { t } from "elysia";
-import { eq } from "drizzle-orm";
 import { authMiddleware } from "../../app/middleware/auth";
 import { databasePlugin } from "../../app/plugins/database";
-import { roles } from "../../database/schema";
 import { UserService } from "./user.service";
-
-const requireRole = (roleName: string) =>
-  // as: "scoped" matters — the default 'local' would only apply to routes
-  // inside this plugin, which has none; scoped reaches the parent's
-  // routes registered after .use(requireRole(...))
-  new Elysia({ name: "require-role" })
-    .use(databasePlugin)
-    .use(authMiddleware)
-    .onBeforeHandle({ as: "scoped" }, async ({ db, user, set }) => {
-      const [role] = await db
-        .select()
-        .from(roles)
-        .where(eq(roles.name, roleName))
-        .limit(1);
-
-      if (!user || !role || user.roleId !== role.id) {
-        set.status = 403;
-        return {
-          status: "error",
-          error: { code: "FORBIDDEN", message: "Forbidden." },
-        };
-      }
-    });
+import { requireRole } from "../../app/middleware/require-role";
+import { isUniqueViolation } from "../../app/utils/unique-violation";
 
 const CreateUserBody = t.Object({
   email: t.String({ format: "email", error: "Must be a valid email address!" }),
@@ -65,7 +42,7 @@ export const userRoutes = new Elysia({ prefix: "/api/v1/users" })
         set.status = 201;
         return { status: "success", data: user };
       } catch (err) {
-        if (UserService.isUniqueViolation(err)) {
+        if (isUniqueViolation(err)) {
           set.status = 409;
           return {
             status: "error",

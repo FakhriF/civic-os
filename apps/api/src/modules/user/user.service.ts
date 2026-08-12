@@ -86,12 +86,4 @@ export class UserService {
     if (!updated) return null;
     return UserService.findById(db, updated.id);
   }
-
-  // Drizzle wraps driver errors in DrizzleQueryError — the pg code lives on .cause
-  static isUniqueViolation(err: unknown) {
-    const code =
-      (err as { code?: string })?.code ??
-      (err as { cause?: { code?: string } })?.cause?.code;
-    return code === "23505";
-  }
 }

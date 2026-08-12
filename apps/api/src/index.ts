@@ -8,6 +8,7 @@ import { announcementRoutes } from "./modules/announcement/announcement.routes";
 import { roleRoutes } from "./modules/role/role.routes";
 import { departmentRoutes } from "./modules/department/department.routes";
 import { userRoutes } from "./modules/user/user.routes";
+import { populationRoutes } from "./modules/population/population.routes";
 
 const app = new Elysia()
   .onError(({ error, set }) => {
@@ -26,6 +27,7 @@ const app = new Elysia()
   .use(authRoutes)
   .use(dashboardRoutes)
   .use(announcementRoutes)
+  .use(populationRoutes)
   .use(roleRoutes)
   .use(departmentRoutes)
   .use(userRoutes)
