@@ -140,9 +140,10 @@ apps/api/src/
 
 ## ⚖️ Global vs. Feature-Scoped Conventions
 
-| Code Type | Scope | Placement Directory | Example |
-| :--- | :--- | :--- | :--- |
-| **Global Component** | Generic, reusable UI component | `src/components/ui/` | `<Button>`, `<Modal>`, `<Table>`, `<Navbar>` |
-| **Feature Component** | Specific to one business domain | `src/features/<feature>/` | `<CitizenForm>`, `<AnnouncementCard>` |
-| **Global Utility** | General helper function | `src/lib/` | `formatDate()`, `currencyFormatter()` |
-| **Feature Hook** | Business state/query hook | `src/features/<feature>/hooks/` | `useCitizenQuery()`, `usePublishAnnouncement()` |
+| Code Type             | Scope                           | Placement Directory             | Example                                                |
+| :-------------------- | :------------------------------ | :------------------------------ | :----------------------------------------------------- |
+| **Global Component**  | Generic, reusable UI component  | `src/components/ui/`            | `<Button>`, `<Modal>`, `<Table>`, `<Navbar>`           |
+| **Feature Component** | Specific to one business domain | `src/features/<feature>/`       | `<CitizenForm>`, `<AnnouncementCard>`                  |
+| **Global Utility**    | General helper function         | `src/lib/`                      | `formatDate()`, `currencyFormatter()`                  |
+| **Shared Hook**       | Cross-feature state/query hook  | `src/lib/`                      | `useRoleOptions()`, `useDepartmentOptions()` (ADR-025) |
+| **Feature Hook**      | Business state/query hook       | `src/features/<feature>/hooks/` | `useCitizenQuery()`, `usePublishAnnouncement()`        |

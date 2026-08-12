@@ -36,12 +36,13 @@ graph TD
 
 ### 💻 2. Frontend & Design System
 
-| ADR                                                   | Title                                | Status        | Primary Decision                                               |
-| :---------------------------------------------------- | :----------------------------------- | :------------ | :------------------------------------------------------------- |
-| [**ADR-002**](./ADR-002-react-vite.md)                | **React + Vite Frontend**            | `Accepted` 🟢 | Single Page Application (SPA) framework with Vite HMR          |
-| [**ADR-005**](./ADR-005-feature-based-structure.md)   | **Feature-Based Structure**          | `Accepted` 🟢 | Co-locate UI, hooks, and services by domain feature            |
-| [**ADR-007**](./ADR-007-mantine-design-system.md)     | **Mantine UI Adoption**              | `Accepted` 🟢 | Standardized UI component library and design system foundation |
-| [**ADR-012**](./ADR-012-feature-oriented-frontend.md) | **Feature-Oriented Frontend Layout** | `Accepted` 🟢 | Feature domain modules with core app shell under `src/app/`    |
+| ADR                                                   | Title                                | Status        | Primary Decision                                                       |
+| :---------------------------------------------------- | :----------------------------------- | :------------ | :--------------------------------------------------------------------- |
+| [**ADR-002**](./ADR-002-react-vite.md)                | **React + Vite Frontend**            | `Accepted` 🟢 | Single Page Application (SPA) framework with Vite HMR                  |
+| [**ADR-005**](./ADR-005-feature-based-structure.md)   | **Feature-Based Structure**          | `Accepted` 🟢 | Co-locate UI, hooks, and services by domain feature                    |
+| [**ADR-007**](./ADR-007-mantine-design-system.md)     | **Mantine UI Adoption**              | `Accepted` 🟢 | Standardized UI component library and design system foundation         |
+| [**ADR-012**](./ADR-012-feature-oriented-frontend.md) | **Feature-Oriented Frontend Layout** | `Accepted` 🟢 | Feature domain modules with core app shell under `src/app/`            |
+| [**ADR-025**](./ADR-025-shared-query-hooks.md)        | **Shared Query Hooks & Cache**       | `Accepted` 🟢 | Cross-feature hooks in `src/lib/`; reuse owning hooks for shared cache |
 
 ---
 
