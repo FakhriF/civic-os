@@ -129,3 +129,16 @@ Version 1.0 is considered complete when:
 - Population Officers can manage citizens.
 - Public Relations Officers can publish announcements.
 - The system is deployable on a VPS using Docker Compose.
+
+---
+
+## 💡 Backlog (Deferred Ideas)
+
+Ideas raised during development that fall outside the agreed milestone scope. They are parked here instead of creeping into the current milestone; pick them up in a future milestone or release.
+
+| Idea                                                             | Source    | Category   | Notes                                                                    |
+| :--------------------------------------------------------------- | :-------- | :--------- | :----------------------------------------------------------------------- |
+| Soft-void citizen records (`isVoided` + `voidedById`/`voidedAt`) | M6 review | Population | Preferred over hard delete (ADR-020 philosophy); see `specs/population/` |
+| CSV import/export                                                | M6 spec   | Population | Bulk operations deferred                                                 |
+| NIK auto-suggest search                                          | M6 spec   | Population | Advanced search deferred                                                 |
+| Pagination/search for the user directory                         | M5 spec   | Users      | Directory is small for now                                               |
