@@ -1,4 +1,4 @@
-import { Elysia } from "elysia";
+import { Elysia, ValidationError } from "elysia";
 import { db } from "./database/client";
 import { roles } from "./database/schema";
 import { databasePlugin } from "./app/plugins/database";
@@ -10,6 +10,18 @@ import { departmentRoutes } from "./modules/department/department.routes";
 import { userRoutes } from "./modules/user/user.routes";
 
 const app = new Elysia()
+  .onError(({ error, set }) => {
+    if (error instanceof ValidationError) {
+      set.status = 422;
+      return {
+        status: "error",
+        error: {
+          code: "VALIDATION",
+          message: error.all?.[0]?.message ?? "Invalid request body.",
+        },
+      };
+    }
+  })
   .use(databasePlugin)
   .use(authRoutes)
   .use(dashboardRoutes)
