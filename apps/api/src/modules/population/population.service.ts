@@ -1,4 +1,5 @@
 import { and, count, eq, ilike, or } from "drizzle-orm";
+import { computeTotalPages } from "../../lib/pagination";
 import { citizens } from "../../database/schema";
 
 const citizenSelect = {
@@ -59,7 +60,7 @@ export class PopulationService {
       total,
       page: params.page,
       limit: params.limit,
-      totalPages: Math.max(1, Math.ceil(total / params.limit)),
+      totalPages: computeTotalPages(total, params.limit),
     };
   }
 

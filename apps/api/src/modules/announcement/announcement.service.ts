@@ -1,4 +1,5 @@
 import { and, count, desc, eq } from "drizzle-orm";
+import { computeTotalPages } from "../../lib/pagination";
 import { announcements, departments } from "../../database/schema";
 
 const announcementSelect = {
@@ -14,10 +15,19 @@ const announcementSelect = {
   updatedAt: announcements.updatedAt,
 };
 
+export type AnnouncementStatus = "draft" | "published" | "archived";
+
+export class AnnouncementTransitionError extends Error {
+  constructor(from: AnnouncementStatus, to: "published" | "archived") {
+    super(`Invalid announcement transition: ${from} → ${to}`);
+    this.name = "AnnouncementTransitionError";
+  }
+}
+
 export interface AnnouncementListParams {
   page: number;
   limit: number;
-  status?: "draft" | "published" | "archived";
+  status?: AnnouncementStatus;
   departmentId?: number;
 }
 
@@ -54,7 +64,7 @@ export class AnnouncementService {
       total,
       page: params.page,
       limit: params.limit,
-      totalPages: Math.max(1, Math.ceil(total / params.limit)),
+      totalPages: computeTotalPages(total, params.limit),
     };
   }
 
@@ -88,6 +98,21 @@ export class AnnouncementService {
       .returning({ id: announcements.id });
     if (!updated) return null;
     return AnnouncementService.findById(db, updated.id);
+  }
+
+  // Pure business rule — unit-tested without a database (specs/testing)
+  static assertTransition(
+    current: AnnouncementStatus,
+    next: "published" | "archived",
+  ) {
+    const allowed: Record<AnnouncementStatus, ("published" | "archived")[]> = {
+      draft: ["published"],
+      published: ["archived"],
+      archived: ["published"], // republish
+    };
+    if (!allowed[current].includes(next)) {
+      throw new AnnouncementTransitionError(current, next);
+    }
   }
 
   static async publish(db: any, id: number) {

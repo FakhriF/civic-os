@@ -4,7 +4,10 @@ import { authMiddleware } from "../../app/middleware/auth";
 import { databasePlugin } from "../../app/plugins/database";
 import { announcements } from "../../database/schema";
 import { requireRole } from "../../app/middleware/require-role";
-import { AnnouncementService } from "./announcement.service";
+import {
+  AnnouncementService,
+  AnnouncementTransitionError,
+} from "./announcement.service";
 
 const CreateAnnouncementBody = t.Object({
   title: t.String({ minLength: 3, error: "Title is required." }),
@@ -110,15 +113,20 @@ export const announcementRoutes = new Elysia({
         },
       };
     }
-    if (current.status !== "draft" && current.status !== "archived") {
-      set.status = 400;
-      return {
-        status: "error",
-        error: {
-          code: "INVALID_STATUS_TRANSITION",
-          message: "Only draft or archived announcements can be published.",
-        },
-      };
+    try {
+      AnnouncementService.assertTransition(current.status, "published");
+    } catch (error) {
+      if (error instanceof AnnouncementTransitionError) {
+        set.status = 400;
+        return {
+          status: "error",
+          error: {
+            code: "INVALID_STATUS_TRANSITION",
+            message: "Only draft or archived announcements can be published.",
+          },
+        };
+      }
+      throw error;
     }
     const item = await AnnouncementService.publish(db, Number(params.id));
     return { status: "success", data: item };
@@ -136,15 +144,20 @@ export const announcementRoutes = new Elysia({
         },
       };
     }
-    if (current.status !== "published") {
-      set.status = 400;
-      return {
-        status: "error",
-        error: {
-          code: "INVALID_STATUS_TRANSITION",
-          message: "Only published announcements can be archived.",
-        },
-      };
+    try {
+      AnnouncementService.assertTransition(current.status, "archived");
+    } catch (error) {
+      if (error instanceof AnnouncementTransitionError) {
+        set.status = 400;
+        return {
+          status: "error",
+          error: {
+            code: "INVALID_STATUS_TRANSITION",
+            message: "Only published announcements can be archived.",
+          },
+        };
+      }
+      throw error;
     }
     const item = await AnnouncementService.archive(db, Number(params.id));
     return { status: "success", data: item };

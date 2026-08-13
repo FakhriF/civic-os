@@ -1,0 +1,4 @@
+# Run test files serially — they share the civicos_test database and
+# reset it between suites (specs/testing R5)
+[test]
+serial = true
