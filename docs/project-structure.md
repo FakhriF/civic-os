@@ -132,8 +132,10 @@ apps/api/src/
 │   └── 📂 user/               # User management & role provisioning
 │
 ├── 📂 lib/                    # Helper utilities & shared functions
+├── 📂 test/                   # Unit + API test suites (bun test, ADR-026)
 ├── 📂 types/                  # API-specific DTOs & context types
-└── 📄 index.ts                # Server entry point & route registration
+├── 📄 app.ts                  # App builder & route registration (exported for tests)
+└── 📄 index.ts                # Server entry point (imports app, binds port)
 ```
 
 ---
