@@ -73,3 +73,4 @@ graph TD
 | [**ADR-019**](./ADR-019-incremental-docker-compose.md)        | **Incremental Docker Compose**      | `Accepted` 🟢 | Add services and configs to `docker-compose.yml` only when needed                          |
 | [**ADR-021**](./ADR-021-environment-configuration.md)         | **Environment-Based Configuration** | `Accepted` 🟢 | Store secrets in `.env` & document variables via committed `.env.example`                  |
 | [**ADR-023**](./ADR-023-same-origin-api-proxy.md)             | **Same-Origin API Proxy**           | `Accepted` 🟢 | Browser talks only to the web origin; `/api` proxied to the backend (Vite dev, Nginx prod) |
+| [**ADR-027**](./ADR-027-production-build-reverse-proxy.md)    | **Production Build & Proxy**        | `Accepted` 🟢 | Prod images (`--omit=dev`, static serve) + Nginx `/api` proxy, API port internal           |

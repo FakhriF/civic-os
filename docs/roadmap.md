@@ -27,14 +27,14 @@ gantt
 
 ## 🏷️ Version Release Overview
 
-| Version  | Release Title                     | Primary Focus & Domain Modules                                               | Status           |
-| :------- | :-------------------------------- | :--------------------------------------------------------------------------- | :--------------- |
-| **v1.0** | **Core Administration (MVP)**     | Auth, Dashboard, User Management, Population Registry, Announcements         | `In Progress` 🟡 |
-| **v1.1** | **Transportation & Transit**      | Bus Routes, Bus Stops, Fleet Vehicles, Driver Assignments, Route Status      | `Planned` ⚪     |
-| **v1.2** | **Finance & Revenue**             | Annual Budget, Department Budgets, Expenditure Tracking, Revenue Reports     | `Planned` ⚪     |
-| **v1.3** | **Infrastructure & Public Works** | Construction Projects, Progress Tracking, Budget Usage, Completion Timelines | `Planned` ⚪     |
-| **v1.4** | **Cross-Domain Analytics**        | Consolidated City Intelligence, Inter-departmental Reports & Metrics         | `Planned` ⚪     |
-| **v2.0** | **Smart City Platform**           | Public Citizen Portal, Interactive Maps, Notifications, Citizen Requests     | `Future` 🔵      |
+| Version  | Release Title                     | Primary Focus & Domain Modules                                               | Status         |
+| :------- | :-------------------------------- | :--------------------------------------------------------------------------- | :------------- |
+| **v1.0** | **Core Administration (MVP)**     | Auth, Dashboard, User Management, Population Registry, Announcements         | `Completed` 🟢 |
+| **v1.1** | **Transportation & Transit**      | Bus Routes, Bus Stops, Fleet Vehicles, Driver Assignments, Route Status      | `Planned` ⚪   |
+| **v1.2** | **Finance & Revenue**             | Annual Budget, Department Budgets, Expenditure Tracking, Revenue Reports     | `Planned` ⚪   |
+| **v1.3** | **Infrastructure & Public Works** | Construction Projects, Progress Tracking, Budget Usage, Completion Timelines | `Planned` ⚪   |
+| **v1.4** | **Cross-Domain Analytics**        | Consolidated City Intelligence, Inter-departmental Reports & Metrics         | `Planned` ⚪   |
+| **v2.0** | **Smart City Platform**           | Public Citizen Portal, Interactive Maps, Notifications, Citizen Requests     | `Future` 🔵    |
 
 ---
 
@@ -55,16 +55,16 @@ graph LR
     M7 --> M8["M8: Testing & Deploy"]
 ```
 
-| Milestone                   | Scope & Deliverables                                                                                      | Status           |
-| :-------------------------- | :-------------------------------------------------------------------------------------------------------- | :--------------- |
-| **M1: Project Setup**       | Monorepo structure, Bun workspaces (`packages/`, `apps/`), Root `package.json` & `tsconfig.json`          | `Completed` 🟢   |
-| **M2: Authentication**      | Login, Logout, JWT bearer tokens, Refresh token handling, Protected route guards                          | `Completed` 🟢   |
-| **M3: App Shell Layout**    | Mantine header, collapsible sidebar, breadcrumb navigation, theme switching                               | `Completed` 🟢   |
-| **M4: Executive Dashboard** | City overview stats cards, recent bulletins list, quick action panel                                      | `Completed` 🟢   |
-| **M5: User Management**     | Employee directory, account creation, role assignment (`Officer`, `Manager`, `Mayor`), department linking | `Completed` 🟢   |
-| **M6: Population Module**   | Citizen registry CRUD, National ID lookup, search/filter, pagination, audit tracking                      | `Completed` 🟢   |
-| **M7: Announcements**       | Bulletin creation, publish/archive workflow, department tags                                              | `Completed` 🟢   |
-| **M8: Testing & Deploy**    | Deployment Preparation, Docker image packaging, Production Configuration, Basic Testing                   | `In Progress` 🟡 |
+| Milestone                   | Scope & Deliverables                                                                                      | Status         |
+| :-------------------------- | :-------------------------------------------------------------------------------------------------------- | :------------- |
+| **M1: Project Setup**       | Monorepo structure, Bun workspaces (`packages/`, `apps/`), Root `package.json` & `tsconfig.json`          | `Completed` 🟢 |
+| **M2: Authentication**      | Login, Logout, JWT bearer tokens, Refresh token handling, Protected route guards                          | `Completed` 🟢 |
+| **M3: App Shell Layout**    | Mantine header, collapsible sidebar, breadcrumb navigation, theme switching                               | `Completed` 🟢 |
+| **M4: Executive Dashboard** | City overview stats cards, recent bulletins list, quick action panel                                      | `Completed` 🟢 |
+| **M5: User Management**     | Employee directory, account creation, role assignment (`Officer`, `Manager`, `Mayor`), department linking | `Completed` 🟢 |
+| **M6: Population Module**   | Citizen registry CRUD, National ID lookup, search/filter, pagination, audit tracking                      | `Completed` 🟢 |
+| **M7: Announcements**       | Bulletin creation, publish/archive workflow, department tags                                              | `Completed` 🟢 |
+| **M8: Testing & Deploy**    | Deployment Preparation, Docker image packaging, Production Configuration, Basic Testing                   | `Completed` 🟢 |
 
 ---
 
