@@ -1,0 +1,67 @@
+services:
+  api:
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile
+    container_name: civicos-api
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    volumes:
+      - ./apps/api/src:/app/src # ADR-017: bind mount for live reload
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      NODE_ENV: ${NODE_ENV}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
+
+  web:
+    build:
+      context: ./apps/web
+      dockerfile: Dockerfile
+    container_name: civicos-web
+    ports:
+      - "5173:5173"
+    depends_on:
+      - api
+    restart: unless-stopped
+    volumes:
+      - ./apps/web/src:/app/src # ADR-017: bind mount for HMR
+    environment:
+      VITE_API_PROXY_TARGET: http://api:3000
+
+  postgres:
+    image: postgres:18-alpine
+    container_name: civicos-db
+    restart: unless-stopped
+
+    ports:
+      - "5432:5432"
+
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+    volumes:
+      - postgres-data:/var/lib/postgresql
+
+  # Isolated test database (specs/testing R2) — separate port and credentials,
+  # never touched by dev/prod code paths
+  postgres-test:
+    image: postgres:18-alpine
+    container_name: civicos-test-db
+    restart: unless-stopped
+
+    ports:
+      - "5433:5432"
+
+    environment:
+      POSTGRES_DB: civicos_test
+      POSTGRES_USER: civicos
+      POSTGRES_PASSWORD: civicos_test
+
+volumes:
+  postgres-data:

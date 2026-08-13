@@ -17,53 +17,53 @@ erDiagram
     DEPARTMENT ||--o{ ANNOUNCEMENT : "sponsors"
 
     ROLE {
-        uuid id PK
+        serial id PK
         varchar name UK
         text description
         timestamp createdAt
     }
 
     DEPARTMENT {
-        uuid id PK
+        serial id PK
         varchar name UK
         text description
         timestamp createdAt
     }
 
     USER {
-        uuid id PK
+        serial id PK
         varchar email UK
-        varchar password
+        varchar passwordHash
         varchar fullName
-        uuid roleId FK
-        uuid departmentId FK
+        integer roleId FK
+        integer departmentId FK
         boolean isActive
         timestamp createdAt
         timestamp updatedAt
     }
 
     CITIZEN {
-        uuid id PK
+        serial id PK
         varchar nationalId UK
         varchar fullName
         enum gender
         date birthDate
         text address
         varchar occupation
-        uuid createdById FK
-        uuid updatedById FK
+        integer createdById FK
+        integer updatedById FK
         timestamp createdAt
         timestamp updatedAt
     }
 
     ANNOUNCEMENT {
-        uuid id PK
+        serial id PK
         varchar title
         text content
         enum status
         timestamp publishedAt
-        uuid departmentId FK
-        uuid createdById FK
+        integer departmentId FK
+        integer createdById FK
         timestamp createdAt
         timestamp updatedAt
     }
@@ -79,30 +79,28 @@ Represents municipal employees, officers, department heads, and administrators a
 
 | Field | Data Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
-| `id` | `UUID` | `PRIMARY KEY`, Default `gen_random_uuid()` | Unique user account identifier |
+| `id` | `SERIAL` | `PRIMARY KEY` | Auto-incrementing user account identifier |
 | `email` | `VARCHAR(255)` | `NOT NULL`, `UNIQUE` | Official work email address |
-| `password` | `VARCHAR(255)` | `NOT NULL` | Argon2id / bcrypt hashed password string |
+| `passwordHash` | `VARCHAR(255)` | `NOT NULL` | Argon2id / bcrypt hashed password string |
 | `fullName` | `VARCHAR(150)` | `NOT NULL` | Employee full display name |
-| `roleId` | `UUID` | `NOT NULL`, `FK -> roles(id)` | Foreign key referencing assigned system role |
-| `departmentId` | `UUID` | `NULLABLE`, `FK -> departments(id)` | Foreign key referencing assigned department |
-| `isActive` | `BOOLEAN` | `NOT NULL`, Default `true` | Account activation status flag |
-| `createdAt` | `TIMESTAMPTZ` | `NOT NULL`, Default `NOW()` | Record creation timestamp |
-| `updatedAt` | `TIMESTAMPTZ` | `NOT NULL`, Default `NOW()` | Record last modification timestamp |
+| `roleId` | `INTEGER` | `NOT NULL`, `FK -> roles(id)` | Foreign key referencing assigned system role |
+| `departmentId` | `INTEGER` | `NOT NULL`, `FK -> departments(id)` | Foreign key referencing assigned department |
+| `isActive` | `BOOLEAN` | `NOT NULL`, Default `true` | Account activation status flag ([**ADR-020**](./adr/ADR-020-soft-delete-user-accounts.md)) |
+| `createdAt` | `TIMESTAMP` | `NOT NULL`, Default `NOW()` | Record creation timestamp |
+| `updatedAt` | `TIMESTAMP` | `NOT NULL`, Default `NOW()` | Record last modification timestamp |
 
 ---
 
 ### 2. `roles` (Access Permissions)
 
-Note: A user's position is represented by combining their Role (authority level) and Department (organizational unit). For example, a user with the role Officer in the Population department is effectively a Population Officer.
-
 Defines Role-Based Access Control (RBAC) levels across CivicOS.
 
 | Field | Data Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
-| `id` | `UUID` | `PRIMARY KEY`, Default `gen_random_uuid()` | Unique role identifier |
+| `id` | `SERIAL` | `PRIMARY KEY` | Auto-incrementing role identifier |
 | `name` | `VARCHAR(50)` | `NOT NULL`, `UNIQUE` | Role name (`Officer`, `Manager`, `Administrator`, `Mayor`) |
 | `description` | `TEXT` | `NULLABLE` | Human-readable explanation of permissions |
-| `createdAt` | `TIMESTAMPTZ` | `NOT NULL`, Default `NOW()` | Record creation timestamp |
+| `createdAt` | `TIMESTAMP` | `NOT NULL`, Default `NOW()` | Record creation timestamp |
 
 ---
 
@@ -112,10 +110,10 @@ Represents government divisions (e.g., Population, Finance, Transportation, Publ
 
 | Field | Data Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
-| `id` | `UUID` | `PRIMARY KEY`, Default `gen_random_uuid()` | Unique department identifier |
+| `id` | `SERIAL` | `PRIMARY KEY` | Auto-incrementing department identifier |
 | `name` | `VARCHAR(100)` | `NOT NULL`, `UNIQUE` | Department title |
 | `description` | `TEXT` | `NULLABLE` | Function & scope description |
-| `createdAt` | `TIMESTAMPTZ` | `NOT NULL`, Default `NOW()` | Record creation timestamp |
+| `createdAt` | `TIMESTAMP` | `NOT NULL`, Default `NOW()` | Record creation timestamp |
 
 ---
 
@@ -125,17 +123,17 @@ Stores demographic records managed by the Population Department.
 
 | Field | Data Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
-| `id` | `UUID` | `PRIMARY KEY`, Default `gen_random_uuid()` | Unique citizen record identifier |
+| `id` | `SERIAL` | `PRIMARY KEY` | Auto-incrementing citizen record identifier |
 | `nationalId` | `VARCHAR(20)` | `NOT NULL`, `UNIQUE` | National identification number (NIK / SSN) |
 | `fullName` | `VARCHAR(150)` | `NOT NULL` | Legal full name |
-| `gender` | `ENUM` | `NOT NULL` (`MALE`, `FEMALE`) | Biological sex identifier |
+| `gender` | `PG_ENUM` | `NOT NULL` (`male`, `female`, `other`) | Gender identity classification |
 | `birthDate` | `DATE` | `NOT NULL` | Date of birth |
 | `address` | `TEXT` | `NOT NULL` | Primary residential address |
-| `occupation` | `VARCHAR(100)` | `NULLABLE` | Current primary occupation |
-| `createdById` | `UUID` | `NOT NULL`, `FK -> users(id)` | User who registered this citizen record |
-| `updatedById` | `UUID` | `NULLABLE`, `FK -> users(id)` | User who last updated this citizen record |
-| `createdAt` | `TIMESTAMPTZ` | `NOT NULL`, Default `NOW()` | Record creation timestamp |
-| `updatedAt` | `TIMESTAMPTZ` | `NOT NULL`, Default `NOW()` | Record last update timestamp |
+| `occupation` | `VARCHAR(100)` | `NOT NULL` | Current primary occupation |
+| `createdById` | `INTEGER` | `NOT NULL`, `FK -> users(id)` | User who registered this citizen record |
+| `updatedById` | `INTEGER` | `NOT NULL`, `FK -> users(id)` | User who last updated this citizen record |
+| `createdAt` | `TIMESTAMP` | `NOT NULL`, Default `NOW()` | Record creation timestamp |
+| `updatedAt` | `TIMESTAMP` | `NOT NULL`, Default `NOW()` | Record last update timestamp |
 
 ---
 
@@ -145,20 +143,21 @@ Stores government announcements published through CivicOS.
 
 | Field | Data Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
-| `id` | `UUID` | `PRIMARY KEY`, Default `gen_random_uuid()` | Unique announcement identifier |
+| `id` | `SERIAL` | `PRIMARY KEY` | Auto-incrementing announcement identifier |
 | `title` | `VARCHAR(255)` | `NOT NULL` | Bulletin title header |
 | `content` | `TEXT` | `NOT NULL` | Body content (Markdown format supported) |
-| `status` | `ENUM` | `NOT NULL` (`DRAFT`, `PUBLISHED`, `ARCHIVED`) | Publication workflow state |
-| `publishedAt` | `TIMESTAMPTZ` | `NULLABLE` | Timestamp when published to public |
-| `departmentId` | `UUID` | `NOT NULL`, `FK -> departments(id)` | Publishing department |
-| `createdById` | `UUID` | `NOT NULL`, `FK -> users(id)` | Author user account |
-| `createdAt` | `TIMESTAMPTZ` | `NOT NULL`, Default `NOW()` | Creation timestamp |
-| `updatedAt` | `TIMESTAMPTZ` | `NOT NULL`, Default `NOW()` | Last modification timestamp |
+| `status` | `PG_ENUM` | `NOT NULL`, Default `'draft'` (`draft`, `published`, `archived`) | Publication workflow state |
+| `publishedAt` | `TIMESTAMP` | `NOT NULL`, Default `NOW()` | Timestamp when published to public |
+| `departmentId` | `INTEGER` | `NOT NULL`, `FK -> departments(id)` | Publishing department |
+| `createdById` | `INTEGER` | `NOT NULL`, `FK -> users(id)` | Author user account |
+| `createdAt` | `TIMESTAMP` | `NOT NULL`, Default `NOW()` | Creation timestamp |
+| `updatedAt` | `TIMESTAMP` | `NOT NULL`, Default `NOW()` | Last modification timestamp |
 
 ---
 
 ## 🔒 Database Indexing & Performance Rules
 
-1. **Foreign Key Indexing**: B-Tree indexes must be created on all FK columns (`roleId`, `departmentId`, `createdById`, `updatedById`) to maintain fast `JOIN` performance.
-2. **Search Indexing**: Trigram B-Tree / GIN indexes on `citizens.fullName`, `citizens.nationalId`, and `announcements.title` for instant text searching.
-3. **Audit Trail**: High-stakes tables (`citizens`, `announcements`) record `createdById` and `updatedById` to enforce accountability.
+1. **Foreign Key Indexes**: B-Tree indexes are created on foreign keys (`idx_users_role_id`, `idx_users_department_id`, `idx_citizens_created_by`, `idx_announcements_department_id`) to optimize `JOIN` execution.
+2. **Search Indexing**: B-Tree index `idx_citizens_full_name` on `citizens.fullName` for rapid citizen search queries.
+3. **Workflow Filtering**: B-Tree index `idx_announcements_status` on `announcements.status` for fast public feed queries.
+4. **Audit Trail Accountability**: High-stakes tables (`citizens`, `announcements`) record `createdById` and `updatedById` to enforce complete operational accountability.

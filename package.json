@@ -4,18 +4,25 @@
   "private": true,
   "devDependencies": {
     "@types/bun": "latest",
+    "@types/pg": "^8.20.3",
+    "drizzle-kit": "^1.0.0-rc.4",
+    "prettier": "^3.9.6",
+    "tsx": "^4.23.4",
     "typescript": "~6.0.2"
   },
   "workspaces": [
-    "packages/*",
     "apps/*"
   ],
   "scripts": {
     "dev:web": "bun --cwd apps/web dev",
-     "dev:api": "bun --cwd apps/api dev",
-    "lint": "echo \"Not implemented\""
+    "dev:api": "bun --cwd apps/api dev",
+    "test": "bun --cwd apps/api test",
+    "format": "prettier --write \"apps/*/src/**/*.{ts,tsx}\" \"apps/*/*.{ts,mjs,cjs,json}\" \"package.json\" \"tsconfig*.json\"",
+    "lint": "prettier --check \"apps/*/src/**/*.{ts,tsx}\" \"apps/*/*.{ts,mjs,cjs,json}\" \"package.json\" \"tsconfig*.json\""
   },
   "dependencies": {
-
+    "dotenv": "^17.4.2",
+    "drizzle-orm": "^1.0.0-rc.4",
+    "pg": "^8.22.0"
   }
 }

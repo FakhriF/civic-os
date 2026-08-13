@@ -30,13 +30,13 @@ graph LR
 
 ### 1. Identifier Naming Rules
 
-| Category | Convention | Pattern Example | Usage Context |
-| :--- | :--- | :--- | :--- |
-| **Files & Directories** | `kebab-case` | `user-table.tsx`, `create-user-dialog.tsx` | All component files, hooks, utilities |
-| **React Components** | `PascalCase` | `function UserTable() {}` | Component function declarations |
-| **Variables & Functions** | `camelCase` | `const currentUser`, `fetchCitizens()` | Local state, functions, parameters |
-| **Constants & Enums** | `UPPER_SNAKE_CASE` | `const MAX_LOGIN_ATTEMPTS = 5` | System constants, static config |
-| **TypeScript Types & Interfaces** | `PascalCase` | `type User = {}`, `interface CreateUserRequest` | Type definitions and interfaces |
+| Category                          | Convention         | Pattern Example                                 | Usage Context                         |
+| :-------------------------------- | :----------------- | :---------------------------------------------- | :------------------------------------ |
+| **Files & Directories**           | `kebab-case`       | `user-table.tsx`, `create-user-dialog.tsx`      | All component files, hooks, utilities |
+| **React Components**              | `PascalCase`       | `function UserTable() {}`                       | Component function declarations       |
+| **Variables & Functions**         | `camelCase`        | `const currentUser`, `fetchCitizens()`          | Local state, functions, parameters    |
+| **Constants & Enums**             | `UPPER_SNAKE_CASE` | `const MAX_LOGIN_ATTEMPTS = 5`                  | System constants, static config       |
+| **TypeScript Types & Interfaces** | `PascalCase`       | `type User = {}`, `interface CreateUserRequest` | Type definitions and interfaces       |
 
 ### 2. Component Directory Placement
 
@@ -72,6 +72,25 @@ import type { User, Role } from "@civicos/shared";
 
 ---
 
+## 🎨 Code Formatting
+
+All code MUST be formatted with Prettier using the project defaults (`.prettierrc.json`): double quotes, semicolons, 2-space indentation.
+
+- Run `bun run format` to format the workspace, or `bun run lint` to verify formatting in CI.
+- Import grouping (external → internal → type-only) is a manual convention; Prettier does not enforce it.
+
+---
+
+## 🌍 UI & Comment Language
+
+All user-facing UI strings and code comments MUST be written in English.
+
+- UI strings include labels, placeholders, buttons, alerts, toasts, and loading messages.
+- Code comments explain intent in English so the codebase stays consistent with the documentation (`docs/`).
+- Product localization (e.g. Bahasa Indonesia) is handled through an i18n layer when needed, never by mixing languages directly in the source.
+
+---
+
 ## 🌿 Git Workflow & Branching Strategy
 
 ### 1. Conventional Commit Standard
@@ -82,15 +101,15 @@ All commit messages MUST follow the [Conventional Commits](https://www.conventio
 <type>(<scope>): <short description>
 ```
 
-| Commit Type | Purpose | Example |
-| :--- | :--- | :--- |
-| `feat` | New user-facing feature | `feat(auth): add login endpoint and JWT handling` |
-| `fix` | Bug fix in code | `fix(population): validate unique nationalId before submit` |
-| `docs` | Documentation updates | `docs(database): update ERD schema and field specs` |
-| `refactor` | Code change without fixing bugs or adding features | `refactor(api): simplify authentication middleware logic` |
-| `style` | Code formatting or UI layout adjustment | `style(ui): adjust sidebar padding and font scale` |
-| `test` | Adding or updating tests | `test(auth): add unit tests for password hashing` |
-| `chore` | Build tasks, docker, dependencies | `chore(docker): update postgres compose service version` |
+| Commit Type | Purpose                                            | Example                                                     |
+| :---------- | :------------------------------------------------- | :---------------------------------------------------------- |
+| `feat`      | New user-facing feature                            | `feat(auth): add login endpoint and JWT handling`           |
+| `fix`       | Bug fix in code                                    | `fix(population): validate unique nationalId before submit` |
+| `docs`      | Documentation updates                              | `docs(database): update ERD schema and field specs`         |
+| `refactor`  | Code change without fixing bugs or adding features | `refactor(api): simplify authentication middleware logic`   |
+| `style`     | Code formatting or UI layout adjustment            | `style(ui): adjust sidebar padding and font scale`          |
+| `test`      | Adding or updating tests                           | `test(auth): add unit tests for password hashing`           |
+| `chore`     | Build tasks, docker, dependencies                  | `chore(docker): update postgres compose service version`    |
 
 ### 2. Branch Naming Strategy
 
@@ -129,10 +148,14 @@ catch (error) {
 
 All REST API endpoints in CivicOS returned from `apps/api` must conform to the standard JSON payload structure:
 
+- Success responses use the appropriate HTTP 2xx status code.
+- Error responses use the appropriate HTTP 4xx/5xx status code (`401`, `404`, `422`, ...).
+
 #### Success Response JSON Format:
+
 ```json
 {
-  "success": true,
+  "status": "success",
   "data": {
     "id": "usr_948201",
     "email": "officer@civicos.gov",
@@ -143,13 +166,22 @@ All REST API endpoints in CivicOS returned from `apps/api` must conform to the s
 ```
 
 #### Error Response JSON Format:
+
 ```json
 {
-  "success": false,
-  "message": "Citizen record with National ID 10928374 not found",
-  "errorCode": "RESOURCE_NOT_FOUND"
+  "status": "error",
+  "error": {
+    "code": "RESOURCE_NOT_FOUND",
+    "message": "Citizen record with National ID 10928374 not found"
+  }
 }
 ```
+
+Error codes use `UPPER_SNAKE_CASE` (e.g. `VALIDATION`, `INVALID_CREDENTIALS`, `UNAUTHORIZED`, `RESOURCE_NOT_FOUND`) and must be stable identifiers that clients can branch on without parsing messages.
+
+Validation failures return `422` with the `VALIDATION` code — Elysia's default validation shape is normalized to this contract by the API's global error handler.
+
+Resource endpoints use **plural nouns** (`/api/v1/announcements`, `/api/v1/users`) unless the route is a singleton or an action (`/api/v1/auth/me`, `/api/v1/auth/login`).
 
 ---
 
@@ -157,6 +189,7 @@ All REST API endpoints in CivicOS returned from `apps/api` must conform to the s
 
 1. **Document "WHY", Not "WHAT"**:
    - Comments should explain non-obvious business rules or architectural rationale, not restate syntax.
+
    ```typescript
    // ❌ Bad: Increment counter by 1
    count++;
@@ -176,12 +209,14 @@ All REST API endpoints in CivicOS returned from `apps/api` must conform to the s
 AI coding assistants are integral pair-programming partners for CivicOS development.
 
 ### Permitted AI Usage:
+
 - Brainstorming architecture alternatives and data modeling.
 - Explaining complex concepts, API patterns, and framework quirks.
 - Generating unit test stubs and boilerplate code.
 - Reviewing code for potential edge cases or security flaws.
 
 ### Developer Accountability:
+
 - **Understand Everything**: Developers must thoroughly inspect and comprehend all AI-generated code before committing.
 - **Verify Correctness**: Run local builds, tests, and database migrations to ensure code accuracy.
 - **Maintain Architectural Integrity**: AI suggestions must adhere strictly to CivicOS design system and module boundaries.

@@ -31,7 +31,17 @@ CivicOS/
 │   │   ├── 📄 ADR-008-bun-runtime.md
 │   │   ├── 📄 ADR-009-pure-bun-project.md
 │   │   ├── 📄 ADR-010-official-templates.md
-│   │   └── 📄 ADR-011-dependency-ownership.md
+│   │   ├── 📄 ADR-011-dependency-ownership.md
+│   │   ├── 📄 ADR-012-feature-oriented-frontend.md
+│   │   ├── 📄 ADR-013-feature-based-backend-modules.md
+│   │   ├── 📄 ADR-014-containerized-dev-environment.md
+│   │   ├── 📄 ADR-015-ignore-local-files-in-docker.md
+│   │   ├── 📄 ADR-016-optimize-docker-layer-caching.md
+│   │   ├── 📄 ADR-017-dev-containers-bind-mounts.md
+│   │   ├── 📄 ADR-018-dev-servers-listen-all-interfaces.md
+│   │   ├── 📄 ADR-019-incremental-docker-compose.md
+│   │   ├── 📄 ADR-020-soft-delete-user-accounts.md
+│   │   └── 📄 ADR-021-environment-configuration.md
 │   ├── 📂 modules/            # Business Module Specifications
 │   ├── 📄 architecture.md     # System architecture spec
 │   ├── 📄 database.md         # Database schema & ERD
@@ -102,31 +112,40 @@ apps/web/src/
 
 ## ⚡ Backend Application Layout (`apps/api/src/`)
 
-The backend follows a **Domain-Module Architecture**.
+The backend follows a **Feature-Based Domain Architecture** organized into app infrastructure (`src/app/`) and business domain modules (`src/modules/`).
 
 ```text
 apps/api/src/
-├── 📂 modules/                # Self-contained business modules
-│   ├── 📂 auth/               # Routes, login service, JWT handling
-│   ├── 📂 population/         # Routes, citizen CRUD service, validators
-│   ├── 📂 users/              # Routes, user/role management service
-│   └── 📂 announcement/       # Routes, bulletin publishing service
+├── 📂 app/                    # Application Infrastructure
+│   ├── 📂 config/             # DB connection & environment settings
+│   ├── 📂 middleware/         # Auth checking, CORS, & error handlers
+│   └── 📂 plugins/            # Elysia plugins (JWT, Swagger/OpenAPI)
 │
-├── 📂 db/                     # Drizzle ORM setup & migrations
-│   ├── 📂 schema/             # Database table definitions
-│   └── 📄 index.ts            # Database client connection
+├── 📂 database/               # Data Persistence Layer
+│   ├── 📂 schema/             # Drizzle ORM entity definitions
+│   └── 📂 migrations/         # Declarative SQL migrations
 │
-├── 📂 middleware/             # RBAC auth checking, logging, error handlers
-└── 📄 index.ts                # Server entry point & route registration
+├── 📂 modules/                # Self-contained business domain modules
+│   ├── 📂 announcement/       # Bulletin creation, publish/archive workflow
+│   ├── 📂 auth/               # Login endpoints, JWT handling, RBAC
+│   ├── 📂 population/         # Citizen registry endpoints, search, CRUD services
+│   └── 📂 user/               # User management & role provisioning
+│
+├── 📂 lib/                    # Helper utilities & shared functions
+├── 📂 test/                   # Unit + API test suites (bun test, ADR-026)
+├── 📂 types/                  # API-specific DTOs & context types
+├── 📄 app.ts                  # App builder & route registration (exported for tests)
+└── 📄 index.ts                # Server entry point (imports app, binds port)
 ```
 
 ---
 
 ## ⚖️ Global vs. Feature-Scoped Conventions
 
-| Code Type | Scope | Placement Directory | Example |
-| :--- | :--- | :--- | :--- |
-| **Global Component** | Generic, reusable UI component | `src/components/ui/` | `<Button>`, `<Modal>`, `<Table>`, `<Navbar>` |
-| **Feature Component** | Specific to one business domain | `src/features/<feature>/` | `<CitizenForm>`, `<AnnouncementCard>` |
-| **Global Utility** | General helper function | `src/lib/` | `formatDate()`, `currencyFormatter()` |
-| **Feature Hook** | Business state/query hook | `src/features/<feature>/hooks/` | `useCitizenQuery()`, `usePublishAnnouncement()` |
+| Code Type             | Scope                           | Placement Directory             | Example                                                |
+| :-------------------- | :------------------------------ | :------------------------------ | :----------------------------------------------------- |
+| **Global Component**  | Generic, reusable UI component  | `src/components/ui/`            | `<Button>`, `<Modal>`, `<Table>`, `<Navbar>`           |
+| **Feature Component** | Specific to one business domain | `src/features/<feature>/`       | `<CitizenForm>`, `<AnnouncementCard>`                  |
+| **Global Utility**    | General helper function         | `src/lib/`                      | `formatDate()`, `currencyFormatter()`                  |
+| **Shared Hook**       | Cross-feature state/query hook  | `src/lib/`                      | `useRoleOptions()`, `useDepartmentOptions()` (ADR-025) |
+| **Feature Hook**      | Business state/query hook       | `src/features/<feature>/hooks/` | `useCitizenQuery()`, `usePublishAnnouncement()`        |

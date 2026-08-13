@@ -1,0 +1,35 @@
+# Population Registry — Tasks
+
+> Implements: [./design.md](./design.md)
+> Status: Complete (automated tests pending)
+
+Every task references the requirement ID(s) it implements. The feature is only ready for verification when every requirement R1..Rn has at least one task.
+
+## Backend
+
+- [x] Move `requireRole` to `app/middleware/require-role.ts` and extend to multi-role (R3, R4)
+- [x] Update `modules/user/user.routes.ts` to import the shared guard (R5)
+- [x] Implement `GET /api/v1/citizens` with pagination, search, gender filter (R1)
+- [x] Implement `GET /api/v1/citizens/:id` (R2)
+- [x] Implement `POST /api/v1/citizens` with audit fields + duplicate NIK handling (R3, R5)
+- [x] Implement `PATCH /api/v1/citizens/:id` with immutable NIK + `updatedById` (R4, R5)
+
+## Frontend
+
+- [x] Implement `features/population/population-page.tsx` (search, filter, table, pagination) (R1)
+- [x] Implement `citizen-form-dialog.tsx` create/edit modal (R3, R4)
+- [x] Implement `use-citizens.ts` query + mutations with cache invalidation (R1–R4)
+- [x] Add debounced search via `useDebouncedValue` (R1)
+- [x] Render empty state for an empty registry (R1)
+
+## Testing
+
+- [ ] Add API tests: pagination, search, filter, create (duplicate/forbidden), update (404, NIK immutable) (R1–R5)
+- [ ] Add unit tests for pagination math (R1)
+
+## Verification
+
+- [x] Type checks pass (api + web)
+- [x] Lint/format pass (`bun run lint`)
+- [x] Manual verification: officer full flow + forbidden role + pagination
+- [x] Spec reflects the final implementation

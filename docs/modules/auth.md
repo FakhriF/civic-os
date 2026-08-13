@@ -3,6 +3,9 @@
 > **Module Name**: `auth`  
 > **Backend Path**: `apps/api/src/modules/auth`  
 > **Frontend Path**: `apps/web/src/features/authentication`  
+> 📄 **Detailed feature specification**: [`specs/auth/`](../../specs/auth/) (requirements, design, tasks)
+
+> ✅ **Frontend**: login page, session restore, and route guards are implemented in `apps/web/src/features/authentication` (see [`specs/auth/`](../../specs/auth/) for details).
 
 ---
 
@@ -16,8 +19,9 @@
 
 ## 🔌 API Contracts
 
-| Method | Endpoint | Access Level | Description |
-| :--- | :--- | :--- | :--- |
-| `POST` | `/api/auth/login` | Public | Authenticates credentials and returns JWT bearer token |
-| `POST` | `/api/auth/logout` | Authenticated | Invalidates user session token |
-| `GET` | `/api/auth/me` | Authenticated | Returns currently authenticated user profile & permissions |
+| Method | Endpoint               | Access Level            | Description                                                |
+| :----- | :--------------------- | :---------------------- | :--------------------------------------------------------- |
+| `POST` | `/api/v1/auth/login`   | Public                  | Authenticates credentials and returns JWT bearer token     |
+| `POST` | `/api/v1/auth/refresh` | Public (cookie)         | Issues a new access token from the refresh cookie          |
+| `POST` | `/api/v1/auth/logout`  | Public (cookie removal) | Invalidates user session token                             |
+| `GET`  | `/api/v1/auth/me`      | Authenticated           | Returns currently authenticated user profile & permissions |

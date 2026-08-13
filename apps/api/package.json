@@ -1,0 +1,23 @@
+{
+  "name": "api",
+  "version": "1.0.50",
+  "scripts": {
+    "dev": "bun run --watch src/index.ts",
+    "db:seed": "bun run src/database/seed.ts",
+    "db:migrate": "drizzle-kit migrate",
+    "test": "bun test --preload ./src/test/setup.ts"
+  },
+  "dependencies": {
+    "@elysia/jwt": "^1.4.2",
+    "dotenv": "^17.4.2",
+    "drizzle-orm": "^1.0.0-rc.4",
+    "elysia": "latest",
+    "pg": "^8.22.0"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.20.3",
+    "bun-types": "latest",
+    "drizzle-kit": "^1.0.0-rc.4"
+  },
+  "module": "src/index.js"
+}

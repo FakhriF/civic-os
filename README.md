@@ -12,17 +12,20 @@
 ```mermaid
 graph TD
     Client["💻 Web Client (React + Mantine)"]
-    API["⚡ API Gateway (Elysia Backend)"]
+    API["⚡ API (Elysia Backend)"]
     Auth["🔐 Auth Module"]
-    Pop["👥 Population Module"]
+    Users["👥 User Module"]
+    Pop["📋 Population Module"]
     Ann["📢 Announcements Module"]
     DB[("🐘 PostgreSQL + Drizzle ORM")]
 
     Client -->|REST API| API
     API --> Auth
+    API --> Users
     API --> Pop
     API --> Ann
     Auth --> DB
+    Users --> DB
     Pop --> DB
     Ann --> DB
 ```
@@ -31,14 +34,15 @@ graph TD
 
 ## 🛠️ Technology Stack
 
-| Layer | Technology | Description |
-| :--- | :--- | :--- |
-| **Frontend** | [React](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/) | Type-safe, component-driven UI framework |
-| **UI System** | [Mantine UI](https://mantine.dev/) | Enterprise component library & design system |
-| **State & Data Fetching** | [TanStack Query v5](https://tanstack.com/query) | Server state management & optimistic caching |
-| **Backend Framework** | [Elysia.js](https://elysiajs.com/) | High-performance TypeScript backend engine |
-| **Database & ORM** | [PostgreSQL](https://www.postgresql.org/) + [Drizzle ORM](https://orm.drizzle.team/) | Type-safe SQL ORM and schema migrations |
-| **Monorepo Architecture** | Feature & Module-based | Decoupled domain architecture for high scalability |
+| Layer                     | Technology                                                                           | Description                                              |
+| :------------------------ | :----------------------------------------------------------------------------------- | :------------------------------------------------------- |
+| **Frontend**              | [React](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)          | Type-safe, component-driven UI framework                 |
+| **UI System**             | [Mantine UI](https://mantine.dev/)                                                   | Enterprise component library & design system             |
+| **State & Data Fetching** | [TanStack Query v5](https://tanstack.com/query)                                      | Server state management & caching                        |
+| **Backend Framework**     | [Elysia.js](https://elysiajs.com/)                                                   | High-performance TypeScript backend engine               |
+| **Database & ORM**        | [PostgreSQL](https://www.postgresql.org/) + [Drizzle ORM](https://orm.drizzle.team/) | Type-safe SQL ORM and schema migrations                  |
+| **Runtime & PM**          | [Bun](https://bun.sh/)                                                               | Single runtime for dev, test, and production             |
+| **Infrastructure**        | [Docker Compose](https://docs.docker.com/compose/)                                   | Dev stack (bind mounts) + production stack (Nginx + API) |
 
 ---
 
@@ -46,18 +50,19 @@ graph TD
 
 All architectural specs, design guidelines, entity schemas, and decision records are maintained in the [`docs/`](./docs) folder:
 
-| Document | Description |
-| :--- | :--- |
-| 🎯 [**Product Vision & Scope**](./docs/vision.md) | Mission statement, strategic goals, and target outcomes |
-| 🏗️ [**System Architecture**](./docs/architecture.md) | High-level system topology, layered design, and domain contracts |
-| 🗄️ [**Database & ERD**](./docs/database.md) | Relational schema, field definitions, foreign keys, and ER diagram |
-| 🎨 [**Design System**](./docs/design.md) | UI tokens, color palette, typography scale, and layout guidelines |
-| 📂 [**Project Structure**](./docs/project-structure.md) | Monorepo layout, package sharing, and frontend/backend directories |
-| 🗺️ [**Product Roadmap**](./docs/roadmap.md) | Development phases, milestones, and release targets |
-| 🛠️ [**Development Standards**](./docs/development-standards.md) | Coding conventions, Git workflows, error handling, API response formats, & DoD |
-| 🤝 [**Contribution Guide**](./CONTRIBUTING.md) | Simple guidelines for submitting features, docs, and bug fixes |
-| 📜 [**Architecture Decision Records (ADRs)**](./docs/adr) | Key technical decisions and design rationale |
-| 🧩 [**Business Modules**](./docs/modules) | Specifications for domain modules (Auth, Population, Announcements) |
+| Document                                                            | Description                                                                |
+| :------------------------------------------------------------------ | :------------------------------------------------------------------------- |
+| 🎯 [**Product Vision & Scope**](./docs/vision.md)                   | Mission statement, strategic goals, and target outcomes                    |
+| 🏗️ [**System Architecture**](./docs/architecture.md)                | High-level system topology, layered design, and domain contracts           |
+| 🗄️ [**Database & ERD**](./docs/database.md)                         | Relational schema, field definitions, foreign keys, and ER diagram         |
+| 🎨 [**Design System**](./docs/design.md)                            | UI tokens, color palette, typography scale, and layout guidelines          |
+| 📂 [**Project Structure**](./docs/project-structure.md)             | Monorepo layout and frontend/backend directories                           |
+| 🗺️ [**Product Roadmap**](./docs/roadmap.md)                         | Development phases, milestones, and release targets                        |
+| 🛠️ [**Development Standards**](./docs/development-standards.md)     | Coding conventions, Git workflows, & DoD                                   |
+| 🚀 [**Deployment Runbook**](./docs/deployment.md)                   | VPS production deployment with Docker Compose                              |
+| 🤝 [**Contribution Guide**](./CONTRIBUTING.md)                      | Guidelines for submitting features, docs, and bug fixes                    |
+| 📜 [**Architecture Decision Records (ADRs)**](./docs/adr/README.md) | Categorized decision log (27 records: Monorepo, FE, BE, DevOps)            |
+| 🧩 [**Business Modules**](./docs/modules)                           | Specifications for domain modules (Auth, Users, Population, Announcements) |
 
 ---
 
@@ -65,10 +70,13 @@ All architectural specs, design guidelines, entity schemas, and decision records
 
 ```text
 CivicOS/
-├── 📂 apps/          # Monorepo frontend and backend applications
-├── 📂 docker/        # Containerization, Nginx reverse proxy & Postgres services
-├── 📂 docs/          # Technical specifications, design tokens, & ADRs
-└── 📂 packages/      # Shared TypeScript types, Zod schemas, & utility libs
+├── 📂 apps/                     # api (Elysia) + web (React/Vite)
+├── 📂 docs/                     # Architecture, ADRs, module specs, deployment runbook
+├── 📂 specs/                    # Spec-driven docs per feature (requirements → design → tasks)
+├── 📄 docker-compose.yml        # Dev stack (Postgres, API, Web — bind mounts, hot reload)
+├── 📄 docker-compose.prod.yml   # Production stack (Nginx + API + Postgres, no bind mounts)
+├── 📄 package.json              # Bun workspace root
+└── 📄 .env.example              # Environment variable template (ADR-021)
 ```
 
 ---
@@ -76,23 +84,58 @@ CivicOS/
 ## 🚀 Getting Started
 
 > [!NOTE]
-> System requirements: Node.js >= 20, Bun >= 1.1, Docker & Docker Compose.
+> Requirements: [Bun](https://bun.sh/) ≥ 1.x and Docker with the Compose plugin. CivicOS is a pure-Bun project (ADR-009) — no Node.js/npm needed.
 
 1. **Clone the repository:**
+
    ```bash
-   git clone https://github.com/your-org/civicos.git
-   cd Civicos
+   git clone <your-repo-url> civicos
+   cd civicos
    ```
 
-2. **Start local infrastructure (PostgreSQL):**
-   ```bash
-   docker compose -f docker/docker-compose.yml up -d
-   ```
+2. **Install dependencies:**
 
-3. **Install dependencies:**
    ```bash
    bun install
    ```
+
+3. **Configure environment:**
+
+   ```bash
+   cp .env.example .env.local   # dev values (secrets stay out of git)
+   ```
+
+4. **Start the dev stack (PostgreSQL + API + Web with hot reload):**
+
+   ```bash
+   docker compose up -d
+   ```
+
+5. **Migrate & seed the database:**
+
+   ```bash
+   bun run --cwd apps/api db:migrate
+   bun run --cwd apps/api db:seed
+   ```
+
+6. **Open the app:**
+   - Web: http://localhost:5173
+   - API: http://localhost:3000
+
+---
+
+## 🧪 Testing
+
+```bash
+docker compose up -d postgres-test   # isolated test database (ADR-026)
+bun test                             # 46 tests: unit + API integration
+```
+
+---
+
+## 🌐 Production
+
+See the [**Deployment Runbook**](./docs/deployment.md): production images (`Dockerfile.prod`), Nginx single-origin proxy (ADR-023), and a verified `docker-compose.prod.yml` stack.
 
 ---
 
