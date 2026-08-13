@@ -6,19 +6,20 @@
 
 ## 📌 Overview
 
-`apps/api` is the backend REST API engine for CivicOS. Built with **Elysia.js** running on **Bun**, it provides high-throughput, type-safe endpoints for authentication, population registry management, department bulletins, transportation transit, and municipal financial reporting.
+`apps/api` is the backend REST API engine for CivicOS. Built with **Elysia.js** running on **Bun**, it provides type-safe endpoints for authentication (JWT + refresh cookie), user management (RBAC), population registry, and announcements.
 
 ---
 
 ## 🛠️ Technology Stack
 
-| Layer | Technology | Purpose |
-| :--- | :--- | :--- |
-| **Framework** | [Elysia.js](https://elysiajs.com/) | High-performance TypeScript backend server engine |
-| **Runtime & PM** | [Bun](https://bun.sh/) | Fast JavaScript/TypeScript execution runtime |
-| **Database ORM** | [Drizzle ORM](https://orm.drizzle.team/) | Type-safe SQL query builder & migration engine |
-| **Database** | [PostgreSQL 16+](https://www.postgresql.org/) | Primary relational database |
-| **Schema Validation** | [Zod](https://zod.dev/) / TypeBox | Strongly typed request body & parameter validation |
+| Layer            | Technology                                | Purpose                                            |
+| :--------------- | :---------------------------------------- | :------------------------------------------------- |
+| **Framework**    | [Elysia.js](https://elysiajs.com/)        | High-performance TypeScript backend engine         |
+| **Validation**   | Elysia `t` (TypeBox)                      | Strongly typed request body & parameter validation |
+| **Database ORM** | [Drizzle ORM](https://orm.drizzle.team/)  | Type-safe SQL query builder & migration engine     |
+| **Database**     | [PostgreSQL](https://www.postgresql.org/) | Primary relational database                        |
+| **Auth**         | `@elysia/jwt`                             | Access token + HttpOnly refresh cookie (ADR-022)   |
+| **Runtime & PM** | [Bun](https://bun.sh/)                    | Execution runtime, test runner, package manager    |
 
 ---
 
@@ -28,10 +29,10 @@ Following [**ADR-013: Feature-Based Backend Modules**](../../docs/adr/ADR-013-fe
 
 ```text
 apps/api/src/
-├── 📂 app/                    # Global Application Infrastructure
-│   ├── 📂 config/             # Database & environment configurations
-│   ├── 📂 middleware/         # Auth checking, CORS, & error handlers
-│   └── 📂 plugins/            # Elysia plugins (JWT, Swagger/OpenAPI)
+├── 📂 app/                    # Application Infrastructure
+│   ├── 📂 middleware/         # Auth checking, requireRole guard
+│   ├── 📂 plugins/            # Elysia plugins (database, JWT)
+│   └── 📂 utils/              # Shared helpers (unique-violation)
 │
 ├── 📂 database/               # Data Persistence Layer
 │   ├── 📂 schema/             # Drizzle ORM entity definitions
@@ -39,39 +40,42 @@ apps/api/src/
 │
 ├── 📂 modules/                # Business Domain Modules
 │   ├── 📂 announcement/       # Bulletin creation, publish/archive workflow
-│   ├── 📂 auth/               # Login, JWT authorization, password hashing
-│   ├── 📂 population/         # Citizen registry endpoints, search, CRUD services
-│   └── 📂 user/               # User management & RBAC role assignments
+│   ├── 📂 auth/               # Login, JWT, refresh cookie
+│   ├── 📂 dashboard/          # Executive dashboard aggregates
+│   ├── 📂 department/         # Department master data
+│   ├── 📂 population/         # Citizen registry CRUD, search
+│   ├── 📂 role/               # Role master data
+│   └── 📂 user/               # User management & RBAC assignments
 │
-├── 📂 lib/                    # Helper utilities & shared functions
+├── 📂 lib/                    # Shared pure utilities (pagination, test helpers)
+├── 📂 test/                   # Unit + API test suites (bun test, ADR-026)
 ├── 📂 types/                  # API-specific DTOs & context declarations
-└── 📄 index.ts                # Elysia server entry point & route registration
+├── 📄 app.ts                  # App builder (exported for in-process tests)
+└── 📄 index.ts                # Server entry point (binds port)
 ```
 
 ---
 
 ## 🚀 Development Commands
 
-Run scripts from the workspace root or inside `apps/api`:
+Run scripts from the workspace root:
 
 ```bash
-# Start API dev server with hot reload (--watch)
-bun run --cwd apps/api dev
-
-# Generate database migration SQL files
-bun run --cwd apps/api drizzle-kit generate
+# Start API dev server with hot reload (--watch), port 3000
+bun run dev:api
 
 # Execute pending database migrations
-bun run --cwd apps/api drizzle-kit migrate
+bun run --cwd apps/api db:migrate
 
-# Seed initial roles and departments data into database
+# Seed initial roles, departments, and default admin (idempotent)
 bun run --cwd apps/api db:seed
 
-# Run unit and integration tests
-bun run --cwd apps/api test
-```
+# Generate a new migration SQL file from schema changes
+bunx --cwd apps/api drizzle-kit generate
 
-Default server URL: `http://localhost:3000`
+# Run unit + API tests (requires: docker compose up -d postgres-test)
+bun run test
+```
 
 ---
 
@@ -79,7 +83,8 @@ Default server URL: `http://localhost:3000`
 
 - [**System Architecture Spec**](../../docs/architecture.md)
 - [**Database Schema & ERD**](../../docs/database.md)
-- [**ADR-002: Domain-Driven Isolation**](../../docs/adr/ADR-002-react-vite.md)
+- [**ADR-002: React + Vite Frontend**](../../docs/adr/ADR-002-react-vite.md)
 - [**ADR-004: Layered Architecture**](../../docs/adr/ADR-004-layered-architecture.md)
 - [**ADR-008: Bun Runtime Adoption**](../../docs/adr/ADR-008-bun-runtime.md)
 - [**ADR-013: Feature-Based Backend Modules**](../../docs/adr/ADR-013-feature-based-backend-modules.md)
+- [**ADR-026: API Testing Strategy**](../../docs/adr/ADR-026-api-testing-strategy.md)

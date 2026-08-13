@@ -6,68 +6,60 @@
 
 ## 📌 Overview
 
-`apps/web` is the primary web client for CivicOS. It provides an intuitive, high-performance interface for municipal staff, department managers, city executives, and administrators to interact with city services, manage population records, publish announcements, and monitor city analytics.
+`apps/web` is the primary web client for CivicOS. It provides an intuitive, high-performance interface for municipal staff to manage population records, publish announcements, administer users, and monitor city analytics — all behind a role-aware authentication flow.
 
 ---
 
 ## 🛠️ Technology Stack
 
-| Layer | Technology | Purpose |
-| :--- | :--- | :--- |
-| **Framework** | [React 19](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/) | Type-safe component UI framework |
-| **Build Tool** | [Vite 8](https://vitejs.dev/) | Sub-second HMR dev server & Rollup production bundler |
-| **UI Library** | [Mantine UI v9](https://mantine.dev/) | Component library, notifications, & design system tokens |
-| **Styling** | PostCSS + Mantine PostCSS Preset | CSS variables & Mantine style processing |
-| **Runtime & PM** | [Bun](https://bun.sh/) | Fast workspace package manager & script runner |
+| Layer            | Technology                                                                     | Purpose                                   |
+| :--------------- | :----------------------------------------------------------------------------- | :---------------------------------------- |
+| **Framework**    | [React 19](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/) | Type-safe component UI framework          |
+| **Build Tool**   | [Vite](https://vitejs.dev/)                                                    | HMR dev server & production bundler       |
+| **UI Library**   | [Mantine UI v9](https://mantine.dev/)                                          | Component library & design system         |
+| **Server State** | [TanStack Query v5](https://tanstack.com/query)                                | Query cache, mutations, invalidation      |
+| **Routing**      | [React Router](https://reactrouter.com/)                                       | SPA routing + protected routes            |
+| **HTTP**         | [Axios](https://axios.dev/)                                                    | API client (same-origin `/api`, ADR-023)  |
+| **Runtime & PM** | [Bun](https://bun.sh/)                                                         | Workspace package manager & script runner |
 
 ---
 
 ## 📁 Source Directory Structure
 
-Following [**ADR-012: Feature-Oriented Frontend Structure**](../../docs/adr/ADR-012-feature-oriented-frontend.md), the codebase separates global application infrastructure from domain-specific features:
+Following [**ADR-012: Feature-Oriented Frontend Structure**](../../docs/adr/ADR-012-feature-oriented-frontend.md), domain features are self-contained and shared infrastructure lives outside features:
 
 ```text
 apps/web/src/
-├── 📂 api/                    # HTTP client instances & REST endpoints
-├── 📂 app/                    # Global Application Core
-│   ├── 📂 theme/              # Mantine theme tokens & PostCSS setup
-│   ├── 📂 router/             # App routing configuration & route guards
-│   └── 📂 providers/          # Top-level React context & query providers
+├── 📂 app/                    # Global app core (theme, providers)
+├── 📂 features/               # Domain feature modules
+│   ├── 📂 authentication/     # Login page, auth context, protected routes
+│   ├── 📂 dashboard/          # Stats cards, recent bulletins, quick actions
+│   ├── 📂 users/              # User directory, create/edit dialogs
+│   ├── 📂 population/         # Citizen registry table, filters, forms
+│   └── 📂 announcement/       # Bulletin workflow (draft/publish/archive)
 │
-├── 📂 constants/              # Global constant values
-├── 📂 features/               # Domain-Specific Feature Modules
-│   ├── 📂 population/         # Citizen registry tables, filters, forms
-│   ├── 📂 announcement/       # Bulletin creation, publish/archive workflow
-│
-├── 📂 components/             # Reusable UI Primitives
-│   ├── 📂 ui/                 # Generic buttons, modals, cards, badges
-│   └── 📂 layout/             # Header shell, collapsible sidebar, footer
-│
-├── 📂 pages/                  # Page Route Views
-├── 📂 hooks/                  # Global shared React hooks
-├── 📂 lib/                    # Helper functions & utilities
-├── 📂 types/                  # Web-specific TypeScript interfaces
-└── 📂 assets/                 # Static images, icons, and fonts
+├── 📂 layouts/                # AppShell layout (header, sidebar, theme switch)
+├── 📂 lib/                    # Cross-feature shared hooks (e.g. use-options, ADR-025)
+├── 📂 services/               # API client instances (axios)
+├── 📂 components/             # Reusable UI components
+└── 📂 types/                  # Web-specific TypeScript types
 ```
 
 ---
 
 ## 🚀 Development Scripts
 
-Run scripts from the workspace root or inside `apps/web`:
+Run scripts from the workspace root:
 
 ```bash
-# Start local development server (with HMR)
-bun run --cwd apps/web dev
+# Start dev server with HMR (Vite, port 5173)
+bun run dev:web
 
 # Type check & build production bundle
 bun run --cwd apps/web build
 
-# Run ESLint check
-bun run --cwd apps/web lint
-
-# Preview production build locally
-bun run --cwd apps/web preview
+# Production image (build → Nginx, see docs/deployment.md)
+docker compose -f docker-compose.prod.yml up -d --build
 ```
 
 ---
@@ -78,3 +70,4 @@ bun run --cwd apps/web preview
 - [**ADR-005: Feature-Based Structure**](../../docs/adr/ADR-005-feature-based-structure.md)
 - [**ADR-007: Mantine UI Adoption**](../../docs/adr/ADR-007-mantine-design-system.md)
 - [**ADR-012: Feature-Oriented Frontend Structure**](../../docs/adr/ADR-012-feature-oriented-frontend.md)
+- [**ADR-025: Shared Query Hooks & Cross-Feature Cache**](../../docs/adr/ADR-025-shared-query-hooks.md)
