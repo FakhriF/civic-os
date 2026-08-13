@@ -1,0 +1,49 @@
+# Production stack — no bind mounts, secrets from the environment (.env),
+# only Nginx exposed to the host (the API port stays internal).
+# Dedicated project name keeps prod containers/volumes isolated from the
+# dev stack (docker-compose.yml) on the same machine.
+name: civicos-prod
+
+services:
+  api:
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile.prod
+    container_name: civicos-api-prod
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      NODE_ENV: production
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
+    depends_on:
+      - postgres
+
+  web:
+    build:
+      context: ./apps/web
+      dockerfile: Dockerfile.prod
+    container_name: civicos-web-prod
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+
+  postgres:
+    image: postgres:18-alpine
+    container_name: civicos-db-prod
+    restart: unless-stopped
+    ports:
+      # Localhost-only: reachable from the host for migrate/seed/backup,
+      # never exposed to the network
+      - "127.0.0.1:5434:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres-data:/var/lib/postgresql
+
+volumes:
+  postgres-data:
