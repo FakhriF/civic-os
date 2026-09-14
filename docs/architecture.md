@@ -22,6 +22,9 @@ graph TB
         PopMod["👥 Population Module"]
         UserMod["👤 User Management Module"]
         AnnMod["📢 Announcement Module"]
+        DashMod["📊 Dashboard Module"]
+        RoleMod["🧩 Role Module"]
+        DeptMod["🏢 Department Module"]
     end
 
     subgraph DataLayer ["Data Access & Storage Layer"]
@@ -37,11 +40,17 @@ graph TB
     RESTGateway --> PopMod
     RESTGateway --> UserMod
     RESTGateway --> AnnMod
+    RESTGateway --> DashMod
+    RESTGateway --> RoleMod
+    RESTGateway --> DeptMod
 
     AuthMod --> Drizzle
     PopMod --> Drizzle
     UserMod --> Drizzle
     AnnMod --> Drizzle
+    DashMod --> Drizzle
+    RoleMod --> Drizzle
+    DeptMod --> Drizzle
 
     Drizzle --> Postgres
 ```
@@ -61,11 +70,15 @@ flowchart LR
     Frontend --> F2["features/population"]
     Frontend --> F3["features/announcement"]
     Frontend --> F4["features/dashboard"]
+    Frontend --> F5["features/users"]
 
     Backend --> B1["modules/auth"]
     Backend --> B2["modules/population"]
     Backend --> B3["modules/user"]
     Backend --> B4["modules/announcement"]
+    Backend --> B5["modules/dashboard"]
+    Backend --> B6["modules/role"]
+    Backend --> B7["modules/department"]
 ```
 
 ### 1. Feature-Based Architecture (Frontend)

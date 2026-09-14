@@ -1,6 +1,6 @@
 # 📍 Project Status & Handoff
 
-> **Last updated**: 2026-08-14
+> **Last updated**: 2026-09-14
 > **Read this first** when starting a new working session. It carries the current state, the open items, and the project's sharp edges, so nothing has to be re-explained.
 > **Release state**: v1.0 Core MVP complete (M1–M8) · next planned release **v1.1 Transportation**
 
@@ -13,28 +13,34 @@
 | v1.0 Core MVP  | Complete — Auth, App Shell, Dashboard, User Management, Population Registry, Announcements         |
 | Backend        | Elysia + Drizzle + PostgreSQL; 7 domain modules under `apps/api/src/modules/`                      |
 | Frontend       | React 19 + Mantine + TanStack Query; 5 feature modules under `apps/web/src/features/`              |
-| Tests          | 52 passing (`bun run test`)                                                                        |
+| Tests          | 54 passing (`bun run test`)                                                                        |
 | Type safety    | `apps/api` compiles under the shared strict `tsconfig.base.json`; no `any` in service signatures    |
 
 ---
 
-## 2. Latest session (2026-08-14)
+## 2. Latest session (2026-09-14)
+
+### Public route guard fixed
+
+- `/health` and `/` returned `401` because `authMiddleware` registers its hooks with `as: "global"`, so every route added after its plugins in `app.ts` is guarded. Both routes now register above the guarded `.use()` calls, and `apps/api/src/test/api/health.test.ts` covers unauthenticated access. Closes open item 6.
+
+### Earlier session (2026-08-14)
 
 Three threads, all verified with `tsc` + `bun run test` + Prettier.
 
-### a. Documentation reconciled with the code
+#### a. Documentation reconciled with the code
 
 - Purged every reference to a `packages/shared` workspace (`@civicos/shared`) and to Zod. Neither exists: the workspace is `apps/*` only, and request validation uses Elysia `t` (TypeBox).
 - Added [**ADR-028**](./adr/ADR-028-api-web-type-contracts.md): the API is the source of truth for wire shapes, and the web app mirrors them as local interfaces per feature. Eden Treaty is the recorded, deferred upgrade path.
 - Amended [ADR-012](./adr/ADR-012-feature-oriented-frontend.md) to the real frontend layout (bootstrap lives in `main.tsx`/`App.tsx`); deleted 11 empty, untracked directories that only existed on one machine.
 - Fixed the README test command.
 
-### b. RBAC surfaced to the client
+#### b. RBAC surfaced to the client
 
 - `roleName` is returned by `POST /auth/login`, `POST /auth/refresh` and `GET /auth/me` (joined from `roles`), so the UI needs no extra request to `/api/v1/roles`.
 - `usePermissions()` reads `user.roleName`; Administrator-only actions are hidden from other roles. Server-side `requireRole` remains the security boundary (ADR-024).
 
-### c. Type safety
+#### c. Type safety
 
 - `apps/api` now extends `tsconfig.base.json`. Its strict flags (`noUncheckedIndexedAccess`, `noImplicitOverride`, `verbatimModuleSyntax`) had been written but never active.
 - `db: any` replaced by `Database` (`typeof db` from `apps/api/src/database/client.ts`) across all services.
@@ -50,7 +56,6 @@ Three threads, all verified with `tsc` + `bun run test` + Prettier.
 | 3   | Relational queries            | `drizzle()` is called without `schema`, so `db.query.*` is unavailable. Pass `schema` if it is ever needed.               |
 | 4   | Module doc coverage           | `docs/modules/` documents `auth`, `user`, `population`, `announcement`. `dashboard`, `role`, `department` are deliberately undocumented supporting modules. |
 | 5   | v1.1 Transportation           | Next release per the [roadmap](./roadmap.md); no spec written yet.                                                        |
-| 6   | `/health` and `/` return `401` | The `onBeforeHandle({ as: "global" })` hook in `authMiddleware` leaks to routes registered *after* its plugins in `app.ts`, so these public endpoints are guarded. Nothing depends on them (the deployment runbook uses `/api/v1/auth/me`) and there is **no test for `/health`** — which is why it went unnoticed. Fix candidate: register the public routes before the guarded `.use()` calls. |
 
 ---
 
@@ -62,4 +67,4 @@ Three threads, all verified with `tsc` + `bun run test` + Prettier.
 - **Mirror contract changes atomically**: an API response change and its web-side interface belong in the same commit (ADR-028).
 - **No path alias**: imports are relative; `@/...` does not resolve.
 - **UI changes need a browser**: start the dev stack with `docker compose up -d`. Type checks and tests do not cover layout.
-- **Elysia global hooks leak**: `authMiddleware` registers its guard with `as: "global"`, so **every route added after it is protected** — including ones that look public. Keep unauthenticated routes above the guarded `.use(...)` calls, and test them (see open item 6).
+- **Elysia global hooks leak**: `authMiddleware` registers its guard with `as: "global"`, so **every route added after it is protected** — including ones that look public. Keep unauthenticated routes above the guarded `.use(...)` calls, and add a test for every public route — `/health` and `/` were the cautionary example.

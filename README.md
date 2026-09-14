@@ -17,6 +17,9 @@ graph TD
     Users["👥 User Module"]
     Pop["📋 Population Module"]
     Ann["📢 Announcements Module"]
+    Dash["📊 Dashboard Module"]
+    Role["🧩 Role Module"]
+    Dept["🏢 Department Module"]
     DB[("🐘 PostgreSQL + Drizzle ORM")]
 
     Client -->|REST API| API
@@ -24,10 +27,16 @@ graph TD
     API --> Users
     API --> Pop
     API --> Ann
+    API --> Dash
+    API --> Role
+    API --> Dept
     Auth --> DB
     Users --> DB
     Pop --> DB
     Ann --> DB
+    Dash --> DB
+    Role --> DB
+    Dept --> DB
 ```
 
 ---
@@ -128,7 +137,7 @@ CivicOS/
 
 ```bash
 docker compose up -d postgres-test   # isolated test database (ADR-026)
-bun run test                         # 46 tests: unit + API integration
+bun run test                         # 54 tests: unit + API integration
 ```
 
 > [!NOTE]
