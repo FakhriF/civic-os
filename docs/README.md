@@ -2,6 +2,9 @@
 
 Welcome to the **CivicOS** documentation hub. This directory contains the complete technical specifications, architectural guidelines, database schemas, design tokens, and Architecture Decision Records (ADRs) for CivicOS.
 
+> [!TIP]
+> **Starting a new working session?** Read [**Project Status & Handoff**](./status.md) first — it carries the current state, the open items, and the project's sharp edges.
+
 ---
 
 ## 🗂️ Documentation Map
@@ -9,6 +12,7 @@ Welcome to the **CivicOS** documentation hub. This directory contains the comple
 ```mermaid
 graph TD
     Docs["📚 CivicOS Docs"]
+    Status["📍 Status & Handoff"]
     Vision["🎯 Vision & Mission"]
     Arch["🏗️ Architecture"]
     DB["🗄️ Database & ERD"]
@@ -20,6 +24,7 @@ graph TD
     Modules["🧩 Business Modules"]
     AI["🤖 AI Guidelines"]
 
+    Docs --> Status
     Docs --> Vision
     Docs --> Arch
     Docs --> DB
@@ -37,6 +42,9 @@ graph TD
 ## 📋 Table of Contents
 
 ### 1. Core Specifications
+
+- [**Project Status & Handoff**](./status.md)  
+  _Current state, open items, and sharp edges — read this first when starting a new session._
 
 - [**Product Vision & Scope**](./vision.md)  
   _Defines the product purpose, municipal mission, target audience, and high-level goals._

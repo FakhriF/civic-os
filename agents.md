@@ -28,6 +28,7 @@ This matches the "AI Assistance & Code Review Policy" in `docs/development-stand
 
 Before answering, AI MUST base its guidance on the actual project rather than assumptions:
 
+- `docs/status.md` — **start here**: current state, open items, and known sharp edges
 - `docs/architecture.md` — system architecture
 - `docs/database.md` — database schema & ERD
 - `docs/design.md` — design system

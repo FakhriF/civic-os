@@ -142,3 +142,5 @@ Ideas raised during development that fall outside the agreed milestone scope. Th
 | CSV import/export                                                | M6 spec   | Population | Bulk operations deferred                                                 |
 | NIK auto-suggest search                                          | M6 spec   | Population | Advanced search deferred                                                 |
 | Pagination/search for the user directory                         | M5 spec   | Users      | Directory is small for now                                               |
+| Adopt Eden Treaty for end-to-end API–web types                   | ADR-028   | API/Web    | Revisit when the domain count grows (v1.1+); see `docs/adr/ADR-028`      |
+| Module docs for `dashboard`, `role`, `department`                | Docs review | Docs     | Supporting modules, deliberately left undocumented for now               |
