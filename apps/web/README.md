@@ -30,19 +30,18 @@ Following [**ADR-012: Feature-Oriented Frontend Structure**](../../docs/adr/ADR-
 
 ```text
 apps/web/src/
-├── 📂 app/                    # Global app core (theme, providers)
-├── 📂 features/               # Domain feature modules
-│   ├── 📂 authentication/     # Login page, auth context, protected routes
-│   ├── 📂 dashboard/          # Stats cards, recent bulletins, quick actions
-│   ├── 📂 users/              # User directory, create/edit dialogs
-│   ├── 📂 population/         # Citizen registry table, filters, forms
-│   └── 📂 announcement/       # Bulletin workflow (draft/publish/archive)
+├── 📂 features/               # Feature-based domain modules
+│   ├── 📂 announcement/       # Bulletin page, form dialog, query hooks
+│   ├── 📂 authentication/     # Login page, auth context, protected route
+│   ├── 📂 dashboard/          # Stat cards, recent bulletins, quick actions
+│   ├── 📂 population/         # Citizen registry page, form dialog, query hooks
+│   └── 📂 users/              # User directory, form dialog, query hooks
 │
-├── 📂 layouts/                # AppShell layout (header, sidebar, theme switch)
-├── 📂 lib/                    # Cross-feature shared hooks (e.g. use-options, ADR-025)
-├── 📂 services/               # API client instances (axios)
-├── 📂 components/             # Reusable UI components
-└── 📂 types/                  # Web-specific TypeScript types
+├── 📂 layouts/                # Page shell layouts (header, sidebar)
+├── 📂 lib/                    # Cross-feature hooks & helper functions (ADR-025)
+├── 📂 services/               # API client instance (axios) & interceptors
+├── 📄 App.tsx                 # Route table
+└── 📄 main.tsx                # App bootstrap: providers, theme, router
 ```
 
 ---

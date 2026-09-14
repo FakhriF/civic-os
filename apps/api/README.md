@@ -49,7 +49,6 @@ apps/api/src/
 │
 ├── 📂 lib/                    # Shared pure utilities (pagination, test helpers)
 ├── 📂 test/                   # Unit + API test suites (bun test, ADR-026)
-├── 📂 types/                  # API-specific DTOs & context declarations
 ├── 📄 app.ts                  # App builder (exported for in-process tests)
 └── 📄 index.ts                # Server entry point (binds port)
 ```
