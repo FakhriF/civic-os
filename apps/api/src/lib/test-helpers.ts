@@ -27,17 +27,25 @@ export interface ApiResult {
     data?: any;
     error?: { code?: string; message?: string };
   } | null;
+  // Raw Set-Cookie header, when the endpoint issues one (e.g. login).
+  setCookie?: string | null;
 }
 
 // Thin wrapper over Elysia's in-process request handling — no port needed
 export async function api(
   path: string,
-  options: { method?: string; token?: string; body?: unknown } = {},
+  options: {
+    method?: string;
+    token?: string;
+    body?: unknown;
+    cookie?: string;
+  } = {},
 ): Promise<ApiResult> {
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
   };
   if (options.token) headers.Authorization = `Bearer ${options.token}`;
+  if (options.cookie) headers.Cookie = options.cookie;
 
   const res = await app.handle(
     new Request(`http://localhost${path}`, {
@@ -55,7 +63,7 @@ export async function api(
   } catch {
     // Non-JSON body — leave as null
   }
-  return { status: res.status, body };
+  return { status: res.status, body, setCookie: res.headers.get("set-cookie") };
 }
 
 // End-to-end login through the real route; returns the access token.

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useAuth } from "../authentication/auth-context";
 import { UserFormDialog } from "./user-form-dialog";
 import { useUpdateUser, useUsers, type UserItem } from "./use-users";
+import { usePermissions } from "../authentication/use-permissions";
 
 export function UsersPage() {
   const { data, isLoading, isError } = useUsers();
@@ -10,6 +11,9 @@ export function UsersPage() {
   const { user: currentUser } = useAuth();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<UserItem | null>(null);
+
+  const { can } = usePermissions();
+  const isAdmin = can("Administrator");
 
   if (isLoading) return <Text c="dimmed">Loading users...</Text>;
   if (isError) return <Text c="red">Failed to load users.</Text>;
@@ -39,7 +43,7 @@ export function UsersPage() {
         <Text fw={700} size="lg">
           User Directory
         </Text>
-        <Button onClick={openCreate}>Add User</Button>
+        {isAdmin && <Button onClick={openCreate}>Add User</Button>}
       </Group>
       <Card withBorder padding={0}>
         <Table striped highlightOnHover>
@@ -50,13 +54,13 @@ export function UsersPage() {
               <Table.Th>Role</Table.Th>
               <Table.Th>Department</Table.Th>
               <Table.Th>Status</Table.Th>
-              <Table.Th>Actions</Table.Th>
+              {isAdmin && <Table.Th>Actions</Table.Th>}
             </Table.Tr>
           </Table.Thead>
           <Table.Tbody>
             {data && data.length === 0 && (
               <Table.Tr>
-                <Table.Td colSpan={6}>
+                <Table.Td colSpan={isAdmin ? 6 : 5}>
                   <Text ta="center" c="dimmed" py="lg">
                     No users yet.
                   </Text>
@@ -77,28 +81,30 @@ export function UsersPage() {
                     {user.isActive ? "Active" : "Inactive"}
                   </Badge>
                 </Table.Td>
-                <Table.Td>
-                  <Group gap="xs">
-                    <Button
-                      size="xs"
-                      variant="light"
-                      onClick={() => openEdit(user)}
-                    >
-                      Edit
-                    </Button>
-                    {/* Hide the toggle for the signed-in user (R4.2) */}
-                    {user.id !== currentUser?.id && (
+                {isAdmin && (
+                  <Table.Td>
+                    <Group gap="xs">
                       <Button
                         size="xs"
                         variant="light"
-                        color={user.isActive ? "red" : "green"}
-                        onClick={() => toggleActive(user)}
+                        onClick={() => openEdit(user)}
                       >
-                        {user.isActive ? "Deactivate" : "Reactivate"}
+                        Edit
                       </Button>
-                    )}
-                  </Group>
-                </Table.Td>
+                      {/* Hide the toggle for the signed-in user (R4.2) */}
+                      {user.id !== currentUser?.id && (
+                        <Button
+                          size="xs"
+                          variant="light"
+                          color={user.isActive ? "red" : "green"}
+                          onClick={() => toggleActive(user)}
+                        >
+                          {user.isActive ? "Deactivate" : "Reactivate"}
+                        </Button>
+                      )}
+                    </Group>
+                  </Table.Td>
+                )}
               </Table.Tr>
             ))}
           </Table.Tbody>

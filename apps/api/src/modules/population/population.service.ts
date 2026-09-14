@@ -1,6 +1,7 @@
 import { and, count, eq, ilike, or } from "drizzle-orm";
 import { computeTotalPages } from "../../lib/pagination";
 import { citizens } from "../../database/schema";
+import type { Database } from "../../database/client";
 
 const citizenSelect = {
   id: citizens.id,
@@ -33,7 +34,7 @@ export interface CitizenInput {
 }
 
 export class PopulationService {
-  static async list(db: any, params: CitizenListParams) {
+  static async list(db: Database, params: CitizenListParams) {
     const where = and(
       params.search
         ? or(
@@ -64,7 +65,7 @@ export class PopulationService {
     };
   }
 
-  static async findById(db: any, id: number) {
+  static async findById(db: Database, id: number) {
     const [citizen] = await db
       .select(citizenSelect)
       .from(citizens)
@@ -73,7 +74,7 @@ export class PopulationService {
     return citizen ?? null;
   }
 
-  static async create(db: any, input: CitizenInput, userId: number) {
+  static async create(db: Database, input: CitizenInput, userId: number) {
     const [inserted] = await db
       .insert(citizens)
       .values({
@@ -82,11 +83,12 @@ export class PopulationService {
         updatedById: userId,
       })
       .returning({ id: citizens.id });
+    if (!inserted) return null;
     return PopulationService.findById(db, inserted.id);
   }
 
   static async update(
-    db: any,
+    db: Database,
     id: number,
     input: Partial<CitizenInput>,
     userId: number,

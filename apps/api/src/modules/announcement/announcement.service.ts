@@ -1,6 +1,7 @@
 import { and, count, desc, eq } from "drizzle-orm";
 import { computeTotalPages } from "../../lib/pagination";
 import { announcements, departments } from "../../database/schema";
+import type { Database } from "../../database/client";
 
 const announcementSelect = {
   id: announcements.id,
@@ -38,7 +39,7 @@ export interface AnnouncementInput {
 }
 
 export class AnnouncementService {
-  static async list(db: any, params: AnnouncementListParams) {
+  static async list(db: Database, params: AnnouncementListParams) {
     const where = and(
       params.status ? eq(announcements.status, params.status) : undefined,
       params.departmentId
@@ -68,7 +69,7 @@ export class AnnouncementService {
     };
   }
 
-  static async findById(db: any, id: number) {
+  static async findById(db: Database, id: number) {
     const [item] = await db
       .select(announcementSelect)
       .from(announcements)
@@ -78,7 +79,7 @@ export class AnnouncementService {
     return item ?? null;
   }
 
-  static async create(db: any, input: AnnouncementInput, userId: number) {
+  static async create(db: Database, input: AnnouncementInput, userId: number) {
     const [inserted] = await db
       .insert(announcements)
       .values({
@@ -87,10 +88,15 @@ export class AnnouncementService {
         createdById: userId,
       })
       .returning({ id: announcements.id });
+    if (!inserted) return null;
     return AnnouncementService.findById(db, inserted.id);
   }
 
-  static async update(db: any, id: number, input: Partial<AnnouncementInput>) {
+  static async update(
+    db: Database,
+    id: number,
+    input: Partial<AnnouncementInput>,
+  ) {
     const [updated] = await db
       .update(announcements)
       .set(input)
@@ -115,7 +121,7 @@ export class AnnouncementService {
     }
   }
 
-  static async publish(db: any, id: number) {
+  static async publish(db: Database, id: number) {
     // publishedAt is NOT NULL with default now — stamp the actual publish time
     const [updated] = await db
       .update(announcements)
@@ -126,7 +132,7 @@ export class AnnouncementService {
     return AnnouncementService.findById(db, updated.id);
   }
 
-  static async archive(db: any, id: number) {
+  static async archive(db: Database, id: number) {
     const [updated] = await db
       .update(announcements)
       .set({ status: "archived" })

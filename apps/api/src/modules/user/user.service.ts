@@ -1,5 +1,6 @@
 import { eq } from "drizzle-orm";
 import { departments, roles, users } from "../../database/schema";
+import type { Database } from "../../database/client";
 
 const userWithNames = {
   id: users.id,
@@ -14,7 +15,7 @@ const userWithNames = {
 };
 
 export class UserService {
-  static async findAll(db: any) {
+  static async findAll(db: Database) {
     return db
       .select(userWithNames)
       .from(users)
@@ -23,7 +24,7 @@ export class UserService {
       .orderBy(users.fullName);
   }
 
-  static async findById(db: any, id: number) {
+  static async findById(db: Database, id: number) {
     const [user] = await db
       .select(userWithNames)
       .from(users)
@@ -36,7 +37,7 @@ export class UserService {
   }
 
   static async create(
-    db: any,
+    db: Database,
     input: {
       email: string;
       fullName: string;
@@ -56,11 +57,12 @@ export class UserService {
         departmentId: input.departmentId,
       })
       .returning({ id: users.id });
+    if (!inserted) return null;
     return UserService.findById(db, inserted.id);
   }
 
   static async update(
-    db: any,
+    db: Database,
     id: number,
     input: {
       fullName?: string;

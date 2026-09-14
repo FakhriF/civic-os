@@ -23,10 +23,10 @@ export const dashboardRoutes = new Elysia({ prefix: "/api/v1/dashboard" })
     return {
       status: "success",
       data: {
-        totalUsers: totalUsers.value,
-        activeUsers: activeUsers.value,
-        totalDepartments: totalDepartments.value,
-        totalAnnouncements: totalAnnouncements.value,
+        totalUsers: totalUsers?.value ?? 0,
+        activeUsers: activeUsers?.value ?? 0,
+        totalDepartments: totalDepartments?.value ?? 0,
+        totalAnnouncements: totalAnnouncements?.value ?? 0,
       },
     };
   });

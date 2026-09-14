@@ -1,4 +1,4 @@
-import { Elysia } from "elysia";
+import { Elysia, t } from "elysia";
 import { jwtPlugin } from "../../app/plugins/jwt";
 import { databasePlugin } from "../../app/plugins/database";
 import { AuthService } from "./auth.service";
@@ -7,6 +7,10 @@ import { authMiddleware } from "../../app/middleware/auth";
 
 // Must match login's cookie path exactly — deletion only works if the paths align
 const REFRESH_COOKIE_PATH = "/api/v1/auth/refresh";
+
+// Elysia types cookies as an index signature unless the route declares the
+// cookie shape; declaring it yields an explicit (non-optional) cookie accessor.
+const RefreshCookieDTO = t.Object({ refreshToken: t.Optional(t.String()) });
 
 export const authRoutes = new Elysia({ prefix: "/api/v1/auth" })
   .use(jwtPlugin)
@@ -29,7 +33,7 @@ export const authRoutes = new Elysia({ prefix: "/api/v1/auth" })
         body.password,
       );
 
-      if (!result || result.error === "ACCOUNT_DISABLED") {
+      if (!result || !result.user) {
         set.status = 401;
         return {
           status: "error",
@@ -73,29 +77,34 @@ export const authRoutes = new Elysia({ prefix: "/api/v1/auth" })
             email: user.email,
             fullName: user.fullName,
             roleId: user.roleId,
+            roleName: user.roleName,
             departmentId: user.departmentId,
           },
         },
       };
     },
-    { body: LoginBodyDTO },
+    { body: LoginBodyDTO, cookie: RefreshCookieDTO },
   )
 
   // 2. POST /api/v1/auth/logout
-  .post("/logout", ({ cookie: { refreshToken } }) => {
-    refreshToken.set({
-      value: "",
-      maxAge: 0,
-      expires: new Date(0),
-      path: REFRESH_COOKIE_PATH,
-      sameSite: "strict",
-      httpOnly: true,
-    });
-    return {
-      status: "success",
-      message: "Logged out successfully.",
-    };
-  })
+  .post(
+    "/logout",
+    ({ cookie: { refreshToken } }) => {
+      refreshToken.set({
+        value: "",
+        maxAge: 0,
+        expires: new Date(0),
+        path: REFRESH_COOKIE_PATH,
+        sameSite: "strict",
+        httpOnly: true,
+      });
+      return {
+        status: "success",
+        message: "Logged out successfully.",
+      };
+    },
+    { cookie: RefreshCookieDTO },
+  )
 
   // 3. POST /api/v1/auth/refresh
   .post(
@@ -165,11 +174,13 @@ export const authRoutes = new Elysia({ prefix: "/api/v1/auth" })
             email: user.email,
             fullName: user.fullName,
             roleId: user.roleId,
+            roleName: user.roleName,
             departmentId: user.departmentId,
           },
         },
       };
     },
+    { cookie: RefreshCookieDTO },
   )
 
   // 4. GET /api/v1/auth/me (Protected route)

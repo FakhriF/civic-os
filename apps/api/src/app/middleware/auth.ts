@@ -1,6 +1,6 @@
 import { Elysia } from "elysia";
 import { jwtPlugin } from "../plugins/jwt";
-import { users } from "../../database/schema";
+import { roles, users } from "../../database/schema";
 import { databasePlugin } from "../plugins/database";
 import { eq } from "drizzle-orm";
 
@@ -30,8 +30,17 @@ export const authMiddleware = new Elysia({ name: "auth-middleware" })
     const userId = Number(payload.sub);
 
     const [user] = await db
-      .select()
+      .select({
+        id: users.id,
+        email: users.email,
+        fullName: users.fullName,
+        roleId: users.roleId,
+        roleName: roles.name,
+        departmentId: users.departmentId,
+        isActive: users.isActive,
+      })
       .from(users)
+      .innerJoin(roles, eq(users.roleId, roles.id))
       .where(eq(users.id, userId))
       .limit(1);
 
@@ -48,6 +57,7 @@ export const authMiddleware = new Elysia({ name: "auth-middleware" })
         email: user.email,
         fullName: user.fullName,
         roleId: user.roleId,
+        roleName: user.roleName,
         departmentId: user.departmentId,
       },
     };

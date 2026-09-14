@@ -86,6 +86,17 @@ describe("POST /api/v1/users", () => {
 });
 
 describe("PATCH /api/v1/users/:id", () => {
+  test("non-admin is forbidden", async () => {
+    const token = await login("officer@civicos.test");
+    const res = await api("/api/v1/users/1", {
+      method: "PATCH",
+      token,
+      body: { fullName: "Blocked Rename" },
+    });
+    expect(res.status).toBe(403);
+    expect(res.body?.error?.code).toBe("FORBIDDEN");
+  });
+
   test("cannot deactivate yourself", async () => {
     const token = await login("admin@civicos.test");
     const me = await api("/api/v1/auth/me", { token });

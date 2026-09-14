@@ -11,3 +11,6 @@ export const pool = new Pool({
   connectionString: process.env.DATABASE_URL!,
 });
 export const db = drizzle({ client: pool });
+
+// The concrete Drizzle client type, so services can be typed without `any`.
+export type Database = typeof db;

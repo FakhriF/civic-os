@@ -6,6 +6,7 @@ import {
   Breadcrumbs,
   Group,
   Menu,
+  Stack,
   Text,
   UnstyledButton,
   useMantineColorScheme,
@@ -80,7 +81,7 @@ export function AppShellLayout() {
               hiddenFrom="sm"
               size={"sm"}
             />
-            <Text size="xl" fw={700}>
+            <Text size="xl" fw={700} c="blue.7">
               CivicOS
             </Text>
           </Group>
@@ -102,9 +103,14 @@ export function AppShellLayout() {
                     <Avatar size="sm" radius={"xl"} color="blue">
                       {initials}
                     </Avatar>
-                    <Text size="sm" fw={500} visibleFrom="sm">
-                      {user?.fullName}
-                    </Text>
+                    <Stack gap={0} align="flex-start">
+                      <Text size="sm" fw={500} visibleFrom="sm">
+                        {user?.fullName}
+                      </Text>
+                      <Text size="xs" visibleFrom="sm" c="dimmed">
+                        {user?.roleName}
+                      </Text>
+                    </Stack>
                   </Group>
                 </UnstyledButton>
               </Menu.Target>
