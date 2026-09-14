@@ -26,13 +26,6 @@ export const app = new Elysia()
     }
   })
   .use(databasePlugin)
-  .use(authRoutes)
-  .use(dashboardRoutes)
-  .use(announcementRoutes)
-  .use(populationRoutes)
-  .use(roleRoutes)
-  .use(departmentRoutes)
-  .use(userRoutes)
   .get("/health", async ({ set }) => {
     try {
       const [sampleRole] = await db.select().from(roles).limit(1);
@@ -55,4 +48,11 @@ export const app = new Elysia()
       };
     }
   })
-  .get("/", () => "Hello CivicOS");
+  .get("/", () => "Hello CivicOS")
+  .use(authRoutes)
+  .use(dashboardRoutes)
+  .use(announcementRoutes)
+  .use(populationRoutes)
+  .use(roleRoutes)
+  .use(departmentRoutes)
+  .use(userRoutes);
