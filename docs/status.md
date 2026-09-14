@@ -50,6 +50,7 @@ Three threads, all verified with `tsc` + `bun run test` + Prettier.
 | 3   | Relational queries            | `drizzle()` is called without `schema`, so `db.query.*` is unavailable. Pass `schema` if it is ever needed.               |
 | 4   | Module doc coverage           | `docs/modules/` documents `auth`, `user`, `population`, `announcement`. `dashboard`, `role`, `department` are deliberately undocumented supporting modules. |
 | 5   | v1.1 Transportation           | Next release per the [roadmap](./roadmap.md); no spec written yet.                                                        |
+| 6   | `/health` and `/` return `401` | The `onBeforeHandle({ as: "global" })` hook in `authMiddleware` leaks to routes registered *after* its plugins in `app.ts`, so these public endpoints are guarded. Nothing depends on them (the deployment runbook uses `/api/v1/auth/me`) and there is **no test for `/health`** — which is why it went unnoticed. Fix candidate: register the public routes before the guarded `.use()` calls. |
 
 ---
 
@@ -61,3 +62,4 @@ Three threads, all verified with `tsc` + `bun run test` + Prettier.
 - **Mirror contract changes atomically**: an API response change and its web-side interface belong in the same commit (ADR-028).
 - **No path alias**: imports are relative; `@/...` does not resolve.
 - **UI changes need a browser**: start the dev stack with `docker compose up -d`. Type checks and tests do not cover layout.
+- **Elysia global hooks leak**: `authMiddleware` registers its guard with `as: "global"`, so **every route added after it is protected** — including ones that look public. Keep unauthenticated routes above the guarded `.use(...)` calls, and test them (see open item 6).
