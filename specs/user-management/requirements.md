@@ -1,6 +1,6 @@
 # User Management — Requirements
 
-> Status: Draft
+> Status: Complete
 > Related roadmap milestone: v1.0 M5 — User Management
 > Owner: CivicOS team
 
@@ -73,6 +73,8 @@ The system SHALL restrict account mutations to the Administrator role; the direc
 - R5.1 Create, update, and deactivate by a non-Administrator return `403`, code `FORBIDDEN`.
 - R5.2 Unauthenticated requests return `401`, code `UNAUTHORIZED` (existing middleware).
 - R5.3 The role check is enforced server-side on every mutation, never only in the UI.
+- R5.4 The web app hides Administrator-only actions (create, edit, deactivate) from non-Administrators. This is UX polish and never replaces server-side enforcement (R5.3).
+- R5.5 The authenticated user's role name is delivered in the auth payload (`POST /auth/login`, `POST /auth/refresh`, `GET /auth/me`) so the UI can evaluate permissions without an extra request.
 
 ## Non-Functional Requirements
 

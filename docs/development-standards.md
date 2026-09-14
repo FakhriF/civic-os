@@ -62,12 +62,12 @@ Imports within all source files (`.ts`, `.tsx`) MUST follow a grouped, predictab
 import { Button, TextInput } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 
-// 2. Internal Monorepo Packages & Features
-import { UserTable } from "@/features/users";
-import { formatDate } from "@/lib/utils";
+// 2. Internal Modules (relative paths — no path alias is configured)
+import { useRoleOptions } from "../../lib/use-options";
+import { apiClient } from "../../services/api-client";
 
 // 3. Type-Only Imports
-import type { User, Role } from "@civicos/shared";
+import type { Announcement } from "../../features/announcement/use-announcements";
 ```
 
 ---

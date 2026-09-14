@@ -109,7 +109,7 @@ graph TD
 ## 🎯 Core Architectural Principles
 
 1. **Strict REST Interface Contract**  
-   The frontend communicates exclusively with the backend via strongly typed REST API endpoints. Types are shared via `@civicos/shared`.
+   The frontend communicates exclusively with the backend via strongly typed REST API endpoints. The API is the source of truth for wire shapes; the web app mirrors them as local interfaces (ADR-028).
 
 2. **Domain Encapsulation**  
    Modules and features own their domain logic. Cross-module communications are explicitly routed through defined service boundaries.

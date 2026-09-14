@@ -16,7 +16,7 @@ CivicOS frontend modules need to communicate with the Elysia backend server to e
 
 - **Simplicity**: Standard HTTP verbs (`GET`, `POST`, `PUT`, `PATCH`, `DELETE`) and HTTP status codes.
 - **Caching & Tooling**: Seamless integration with TanStack Query and standard browser devtools.
-- **Type Safety**: End-to-end type inference using TypeScript shared contracts (`@civicos/shared`).
+- **Type Safety**: One JSON contract per resource, mirrored in the web app from the API's source of truth (ADR-028).
 
 ---
 

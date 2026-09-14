@@ -36,22 +36,28 @@ CivicOS backend API (`apps/api`) organizes server logic by business module insid
 ```text
 apps/api/src/
 ├── 📂 app/                    # Application-Wide Infrastructure
-│   ├── 📂 config/             # DB & server environment settings
-│   ├── 📂 middleware/         # Auth verification, CORS, error handlers
-│   └── 📂 plugins/            # Elysia plugins (JWT, Swagger/OpenAPI)
+│   ├── 📂 middleware/         # Auth verification & role guards
+│   ├── 📂 plugins/            # Elysia plugins (database)
+│   └── 📂 utils/              # Infrastructure helpers
 │
 ├── 📂 database/               # Data Persistence Layer
 │   ├── 📂 schema/             # Drizzle ORM entity definitions
-│   └── 📂 migrations/         # Declarative SQL migrations
+│   ├── 📂 migrations/         # Declarative SQL migrations
+│   ├── 📄 client.ts           # Pool & Drizzle client
+│   └── 📄 seed.ts             # Seed data
 │
 ├── 📂 modules/                # Self-Contained Domain Modules
-│   ├── 📂 announcement/       # Bulletin authoring & public feeds
-│   ├── 📂 auth/               # Login endpoints, JWT token handling, RBAC
+│   ├── 📂 announcement/       # Bulletin authoring & publish/archive workflow
+│   ├── 📂 auth/               # Login endpoints & JWT token handling
+│   ├── 📂 dashboard/          # Executive metrics
+│   ├── 📂 department/         # Department lookup
 │   ├── 📂 population/         # Citizen registry endpoints, search, CRUD services
+│   ├── 📂 role/               # Role lookup
 │   └── 📂 user/               # User management & role provisioning
 │
 ├── 📂 lib/                    # Helper utilities & shared functions
-├── 📂 types/                  # API-specific DTOs & context types
+├── 📂 test/                   # Unit + API test suites (ADR-026)
+├── 📄 app.ts                  # App builder & route registration (exported for tests)
 └── 📄 index.ts                # Server entry point & route registration
 ```
 
@@ -62,4 +68,4 @@ apps/api/src/
   - Simplifies integration and unit testing for domain services.
   - Keeps core server infrastructure (`src/app/`) distinct from domain business logic (`src/modules/`).
 - **Cons & Trade-offs**:
-  - Shared utilities across modules must be explicitly placed in `src/lib/` or `@civicos/shared`.
+  - Shared utilities across modules must be explicitly placed in `src/lib/`.

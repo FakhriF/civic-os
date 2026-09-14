@@ -1,6 +1,6 @@
 # Population Registry — Requirements
 
-> Status: Draft
+> Status: Complete
 > Related roadmap milestone: v1.0 M6 — Population Module
 > Owner: CivicOS team
 

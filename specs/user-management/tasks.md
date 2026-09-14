@@ -1,7 +1,7 @@
 # User Management — Tasks
 
 > Implements: [./design.md](./design.md)
-> Status: Complete (automated tests pending)
+> Status: Complete
 
 Every task references the requirement ID(s) it implements. The feature is only ready for verification when every requirement R1..Rn has at least one task.
 
@@ -14,6 +14,7 @@ Every task references the requirement ID(s) it implements. The feature is only r
 - [x] Implement `POST /api/v1/users` with password hashing + duplicate-email handling (R2, R5)
 - [x] Implement `PATCH /api/v1/users/:id` incl. `isActive` toggle (R3, R4, R5)
 - [x] Add self-deactivation guard (R4.2)
+- [x] Expose `roleName` in the auth payload (login, refresh, `/me`) via a `roles` join (R5.5)
 
 ## Frontend
 
@@ -23,11 +24,15 @@ Every task references the requirement ID(s) it implements. The feature is only r
 - [x] Populate role/department selects from `/roles` + `/departments` (R2, R3)
 - [x] Add deactivate action with confirmation + hide for own row (R4)
 - [x] Render empty state for an empty directory (R1)
+- [x] Add `usePermissions()` hook reading `user.roleName` (R5.4, R5.5)
+- [x] Hide Administrator-only actions (create, edit, deactivate) for non-Administrators (R5.4)
 
 ## Testing
 
-- [ ] Add API tests: directory auth, create (success/duplicate/forbidden), update (404/403), deactivate (R1–R5)
-- [ ] Add unit tests for password hashing + payload mapping (R2)
+- [x] Add API tests: directory auth, create (success/duplicate/forbidden), update (404), self-deactivation (R1–R5)
+- [x] Add API tests asserting `roleName` in login, refresh, and `/me` (R5.5)
+- [x] Add API test: non-Administrator `PATCH` returns `403` (R5.1)
+- [x] Add unit tests for password hashing + payload mapping (R2)
 
 ## Verification
 

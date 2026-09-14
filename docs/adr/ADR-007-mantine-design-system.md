@@ -37,4 +37,4 @@ Mantine UI (v7+) is selected as the primary design system foundation for CivicOS
 ### Consequences & Trade-offs:
 
 - **Pros**: 100+ production-grade components, out-of-the-box dark/light theme support, rich form hooks (`@mantine/form`), built-in notifications (`@mantine/notifications`), accessible ARIA controls.
-- **Cons**: Vendor dependency on Mantine ecosystem, mitigated by abstracting common UI components inside `src/components/ui/`.
+- **Cons**: Vendor dependency on Mantine ecosystem, mitigated by consuming Mantine primitives directly and wrapping them in feature components where needed (no global wrapper layer exists yet).

@@ -1,7 +1,7 @@
 # Authentication & Authorization — Tasks
 
 > Implements: [./design.md](./design.md)
-> Status: In Progress (backend + frontend implemented; tests pending)
+> Status: Complete
 
 Every task references the requirement ID(s) it implements. The feature is only ready for verification when every requirement R1..Rn has at least one task.
 

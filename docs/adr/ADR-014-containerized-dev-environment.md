@@ -34,20 +34,21 @@ CivicOS consists of multiple applications (`apps/web`, `apps/api`) and supportin
 CivicOS adopts Docker Compose as the standard containerized local development and staging environment:
 
 1. **Per-App Dockerfiles**: Each application (`apps/web`, `apps/api`) owns its dedicated container build specification (`Dockerfile`).
-2. **Centralized Orchestration**: The repository orchestrates all services (`web`, `api`, `postgres`, `nginx`) via `docker-compose.yml`.
+2. **Centralized Orchestration**: The repository orchestrates all services (`web`, `api`, `postgres`, plus an isolated `postgres-test` for the test suite) via `docker-compose.yml` at the repository root.
 
 ```text
 CivicOS/
 ├── 📂 apps/
 │   ├── 📂 web/
-│   │   └── 📄 Dockerfile      # Frontend container build spec
+│   │   ├── 📄 Dockerfile       # Dev frontend image
+│   │   ├── 📄 Dockerfile.prod  # Prod frontend image (ADR-027)
+│   │   └── 📄 nginx.conf       # Production reverse proxy
 │   └── 📂 api/
-│       └── 📄 Dockerfile      # Backend container build spec
+│       ├── 📄 Dockerfile       # Dev backend image
+│       └── 📄 Dockerfile.prod  # Prod backend image (ADR-027)
 │
-└── 📂 docker/
-    ├── 📄 docker-compose.yml  # Multi-service container orchestration
-    ├── 📄 nginx.conf          # Reverse proxy routing
-    └── 📂 postgres/           # Database initialization & volumes
+├── 📄 docker-compose.yml       # Dev multi-service orchestration
+└── 📄 docker-compose.prod.yml  # Production orchestration (ADR-027)
 ```
 
 ### Consequences & Trade-offs:

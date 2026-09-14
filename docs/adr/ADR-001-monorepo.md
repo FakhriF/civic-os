@@ -8,13 +8,13 @@
 
 ## 📌 Context & Problem Statement
 
-CivicOS consists of multiple related projects: a React web application, an Elysia backend API, shared TypeScript types/schemas, and infrastructure configuration. Managing these in separate repositories would create synchronization friction, complex cross-repo dependency publishing, and fragmented issue tracking.
+CivicOS consists of multiple related projects: a React web application, an Elysia backend API, and the infrastructure configuration that runs them. Managing these in separate repositories would create synchronization friction, complex cross-repo dependency publishing, and fragmented issue tracking.
 
 ---
 
 ## 🎯 Decision Drivers
 
-- **Code Sharing**: Share Zod schemas, TypeScript types, and utilities seamlessly across frontend and backend.
+- **Co-evolution**: Change the API contract and its web-side mirror in a single atomic commit (ADR-028).
 - **Atomic Commits**: Make single commits that span backend API changes and frontend feature updates.
 - **Unified Tooling**: Single `package.json` root setup for linting, formatting, building, and running local infrastructure.
 
@@ -31,16 +31,17 @@ CivicOS consists of multiple related projects: a React web application, an Elysi
 
 **Chosen Option**: **Option 2 — Monorepo Architecture**.
 
-All frontend apps (`apps/web`), backend services (`apps/api`), shared libraries (`packages/shared`), and infrastructure configs (`docker/`) live within a single repository managed with Bun workspaces.
+Both applications (`apps/web`, `apps/api`) and the documents and specs that describe them live within a single repository managed with Bun workspaces.
 
 ```text
 CivicOS/
 ├── 📂 apps/          # Monorepo web and api applications
-├── 📂 packages/      # Shared workspace packages
-└── 📂 docker/        # Containerization configs
+├── 📂 docs/          # Architecture, ADRs, module specifications
+├── 📂 specs/         # Spec-driven feature plans
+└── 📄 docker-compose.yml   # Local dev stack
 ```
 
 ### Consequences & Trade-offs:
 
 - **Pros**: Zero friction code sharing, atomic cross-layer commits, centralized CI/CD, simplified developer onboarding.
-- **Cons**: Requires clear internal boundaries to prevent circular dependencies between workspace packages.
+- **Cons**: Requires clear internal boundaries to prevent circular dependencies between workspace apps.

@@ -1,6 +1,6 @@
 # 📂 Monorepo Project Structure & Conventions
 
-> **Monorepo Architecture**: Decoupled repository organizing apps, packages, documentation, and infrastructure.
+> **Monorepo Architecture**: Decoupled repository organizing apps, documentation, and infrastructure.
 
 ---
 
@@ -12,101 +12,63 @@ CivicOS/
 │   ├── 📂 web/                # React + Mantine Frontend SPA
 │   └── 📂 api/                # Elysia.js REST Backend Service
 │
-├── 📂 packages/               # Shared Monorepo Workspace Packages
-│   ├── 📂 shared/             # Shared domain types, interfaces & Zod schemas
-│   ├── 📂 config/             # Shared ESLint, Prettier, & Tailwind/CSS configs
-│   ├── 📂 types/              # Global TypeScript declaration types
-│   ├── 📂 ui/                 # Shared UI component primitives
-│   └── 📂 tsconfig/           # Shared TypeScript configuration files
-│
 ├── 📂 docs/                   # Architectural & Product Documentation
-│   ├── 📂 adr/                # Architectural Decision Records (ADRs)
-│   │   ├── 📄 ADR-001-monorepo.md
-│   │   ├── 📄 ADR-002-react-vite.md
-│   │   ├── 📄 ADR-003-rest-api.md
-│   │   ├── 📄 ADR-004-layered-architecture.md
-│   │   ├── 📄 ADR-005-feature-based-structure.md
-│   │   ├── 📄 ADR-006-foreign-keys.md
-│   │   ├── 📄 ADR-007-mantine-design-system.md
-│   │   ├── 📄 ADR-008-bun-runtime.md
-│   │   ├── 📄 ADR-009-pure-bun-project.md
-│   │   ├── 📄 ADR-010-official-templates.md
-│   │   ├── 📄 ADR-011-dependency-ownership.md
-│   │   ├── 📄 ADR-012-feature-oriented-frontend.md
-│   │   ├── 📄 ADR-013-feature-based-backend-modules.md
-│   │   ├── 📄 ADR-014-containerized-dev-environment.md
-│   │   ├── 📄 ADR-015-ignore-local-files-in-docker.md
-│   │   ├── 📄 ADR-016-optimize-docker-layer-caching.md
-│   │   ├── 📄 ADR-017-dev-containers-bind-mounts.md
-│   │   ├── 📄 ADR-018-dev-servers-listen-all-interfaces.md
-│   │   ├── 📄 ADR-019-incremental-docker-compose.md
-│   │   ├── 📄 ADR-020-soft-delete-user-accounts.md
-│   │   └── 📄 ADR-021-environment-configuration.md
+│   ├── 📂 adr/                # Architectural Decision Records (ADR-001 … ADR-028)
 │   ├── 📂 modules/            # Business Module Specifications
 │   ├── 📄 architecture.md     # System architecture spec
 │   ├── 📄 database.md         # Database schema & ERD
 │   ├── 📄 design.md           # Design system tokens & rules
 │   ├── 📄 development-standards.md # Engineering standards & DoD
+│   ├── 📄 deployment.md       # VPS production deployment runbook
+│   ├── 📄 project-structure.md # This document
 │   ├── 📄 roadmap.md          # Project rollout roadmap
 │   └── 📄 vision.md           # Product vision & goals
 │
-├── 📂 docker/                 # Containerization & Infrastructure
-│   ├── 📄 docker-compose.yml  # Local dev environment composition
-│   ├── 📄 nginx.conf          # Nginx reverse proxy configuration
-│   └── 📂 postgres/           # Database initialization scripts
+├── 📂 specs/                  # Spec-driven feature plans (requirements → design → tasks)
+│   ├── 📂 _templates/         # Templates for new feature specs
+│   ├── 📂 auth/
+│   ├── 📂 user-management/
+│   ├── 📂 population/
+│   ├── 📂 announcement/
+│   ├── 📂 testing/
+│   └── 📂 deploy/
 │
+├── 📄 docker-compose.yml      # Dev stack (Postgres, API, Web — bind mounts, hot reload)
+├── 📄 docker-compose.prod.yml # Production stack (Nginx + API + Postgres)
 ├── 📄 package.json            # Root Bun workspace manifest & task scripts
-├── 📄 tsconfig.json           # Root TypeScript configuration for Bun
-└── 📄 LICENSE.md              # MIT Open Source License
+├── 📄 tsconfig.base.json      # Base TypeScript config
+└── 📄 .env.example            # Environment variable template (ADR-021)
 ```
 
----
-
-## 📦 Shared Workspace Packages (`packages/`)
-
-To prevent code duplication between the frontend (`apps/web`) and backend (`apps/api`), shared assets are encapsulated within workspace packages:
-
-```mermaid
-graph TD
-    SharedPkg["📦 @civicos/shared"]
-    WebFrontend["💻 apps/web"]
-    APIBackend["⚡ apps/api"]
-
-    SharedPkg -->|Exports Zod Schemas & Types| WebFrontend
-    SharedPkg -->|Exports Zod Schemas & Types| APIBackend
-```
-
-### Shared Package Breakdown:
-
-- **`@civicos/shared`**: Holds shared domain entities, TypeScript interfaces, Zod validation schemas, and enum definitions (e.g. `User`, `Citizen`, `AnnouncementStatus`).
-- **`@civicos/tsconfig`**: Base `tsconfig.json` configurations inherited by sub-projects.
+> [!NOTE]
+> There is no `packages/` workspace. Shared workspace packages were dropped; `@civicos/shared` does **not** exist. API response shapes are mirrored per feature in the web app — see [**ADR-028**](./adr/ADR-028-api-web-type-contracts.md).
 
 ---
 
 ## 💻 Frontend Application Layout (`apps/web/src/`)
 
-The frontend follows a **Feature-Based Architecture**. Code related to a specific domain (e.g., Population) is grouped together.
+The frontend follows a **Feature-Based Architecture**. Code related to a specific domain (e.g., Population) is grouped together, with the application bootstrap and route table at the root of `src/`.
 
 ```text
 apps/web/src/
-├── 📂 app/                    # Routing, providers, & top-level app initialization
 ├── 📂 features/               # Feature-based domain modules
-│   ├── 📂 authentication/     # Login views, auth hooks, session state
-│   ├── 📂 population/         # Citizen registry tables, filters, forms
-│   ├── 📂 announcement/       # Bulletin creation, status toggles, public feed
-│   ├── 📂 users/              # User management & RBAC assignments
-│   └── 📂 dashboard/          # Metric cards, departmental analytics
+│   ├── 📂 announcement/       # Bulletin page, form dialog, query hooks
+│   ├── 📂 authentication/     # Login page, auth context, protected route
+│   ├── 📂 dashboard/          # Stat cards, recent bulletins, quick actions
+│   ├── 📂 population/         # Citizen registry page, form dialog, query hooks
+│   └── 📂 users/              # User directory, form dialog, query hooks
 │
-├── 📂 components/             # Reusable UI components (Design System)
-│   ├── 📂 ui/                 # Buttons, inputs, modals, cards, badges
-│   └── 📂 feedback/           # Toast notifications, empty states, loaders
-│
-├── 📂 layouts/                # Page shell layouts (Header, Sidebar, Footer)
-├── 📂 services/               # API client instances (Axios / Fetch wrappers)
-├── 📂 lib/                    # Helper functions & utility methods
-├── 📂 types/                  # Web-specific frontend types
-└── 📂 assets/                 # Static images, logos, icons, fonts
+├── 📂 layouts/                # Page shell layouts (header, sidebar)
+├── 📂 lib/                    # Cross-feature hooks & helper functions (ADR-025)
+├── 📂 services/               # API client instance (axios) & interceptors
+├── 📄 App.tsx                 # Route table
+└── 📄 main.tsx                # App bootstrap: providers, theme, router
 ```
+
+> [!NOTE]
+> Feature directories are flat: pages, dialogs, and hooks live side by side (e.g. `features/users/users-page.tsx`, `features/users/use-users.ts`). There are no per-feature `components/` or `hooks/` subfolders.
+>
+> Application-wide providers (Mantine, TanStack Query, auth, router) are wired in `main.tsx`, and the route table lives in `App.tsx`. There is no `src/app/`, `src/components/`, or `src/hooks/` layer; see the amendment in [ADR-012](./adr/ADR-012-feature-oriented-frontend.md).
 
 ---
 
@@ -117,35 +79,39 @@ The backend follows a **Feature-Based Domain Architecture** organized into app i
 ```text
 apps/api/src/
 ├── 📂 app/                    # Application Infrastructure
-│   ├── 📂 config/             # DB connection & environment settings
-│   ├── 📂 middleware/         # Auth checking, CORS, & error handlers
-│   └── 📂 plugins/            # Elysia plugins (JWT, Swagger/OpenAPI)
+│   ├── 📂 middleware/         # Auth verification & role guards
+│   ├── 📂 plugins/            # Elysia plugins (database)
+│   └── 📂 utils/              # Infrastructure helpers (unique-violation)
 │
 ├── 📂 database/               # Data Persistence Layer
 │   ├── 📂 schema/             # Drizzle ORM entity definitions
-│   └── 📂 migrations/         # Declarative SQL migrations
+│   ├── 📂 migrations/         # Declarative SQL migrations
+│   ├── 📄 client.ts           # Pool & Drizzle client
+│   └── 📄 seed.ts             # Seed data
 │
 ├── 📂 modules/                # Self-contained business domain modules
-│   ├── 📂 announcement/       # Bulletin creation, publish/archive workflow
-│   ├── 📂 auth/               # Login endpoints, JWT handling, RBAC
+│   ├── 📂 announcement/       # Bulletin endpoints, publish/archive workflow
+│   ├── 📂 auth/               # Login, refresh, logout
+│   ├── 📂 dashboard/          # Executive metrics
+│   ├── 📂 department/         # Department lookup
 │   ├── 📂 population/         # Citizen registry endpoints, search, CRUD services
+│   ├── 📂 role/               # Role lookup
 │   └── 📂 user/               # User management & role provisioning
 │
 ├── 📂 lib/                    # Helper utilities & shared functions
-├── 📂 test/                   # Unit + API test suites (bun test, ADR-026)
-├── 📂 types/                  # API-specific DTOs & context types
+├── 📂 test/                   # Unit + API test suites (ADR-026)
 ├── 📄 app.ts                  # App builder & route registration (exported for tests)
-└── 📄 index.ts                # Server entry point (imports app, binds port)
+└── 📄 index.ts                # Server entry point
 ```
 
 ---
 
 ## ⚖️ Global vs. Feature-Scoped Conventions
 
-| Code Type             | Scope                           | Placement Directory             | Example                                                |
-| :-------------------- | :------------------------------ | :------------------------------ | :----------------------------------------------------- |
-| **Global Component**  | Generic, reusable UI component  | `src/components/ui/`            | `<Button>`, `<Modal>`, `<Table>`, `<Navbar>`           |
-| **Feature Component** | Specific to one business domain | `src/features/<feature>/`       | `<CitizenForm>`, `<AnnouncementCard>`                  |
-| **Global Utility**    | General helper function         | `src/lib/`                      | `formatDate()`, `currencyFormatter()`                  |
-| **Shared Hook**       | Cross-feature state/query hook  | `src/lib/`                      | `useRoleOptions()`, `useDepartmentOptions()` (ADR-025) |
-| **Feature Hook**      | Business state/query hook       | `src/features/<feature>/hooks/` | `useCitizenQuery()`, `usePublishAnnouncement()`        |
+| Code Type                 | Scope                          | Placement Directory         | Example                                                       |
+| :------------------------ | :----------------------------- | :-------------------------- | :------------------------------------------------------------ |
+| **Feature Component**     | Specific to one business domain | `src/features/<feature>/`   | `announcement-form-dialog.tsx`, `citizen-form-dialog.tsx`     |
+| **Feature Hook**          | Business state/query hook       | `src/features/<feature>/`   | `use-citizens.ts`, `use-announcements.ts`                     |
+| **Shared Hook**           | Cross-feature state/query hook  | `src/lib/`                  | `useRoleOptions()`, `useDepartmentOptions()` (ADR-025)        |
+| **Shared Service**        | HTTP client setup               | `src/services/`             | `api-client.ts`                                               |
+| **Global Component**      | Generic, reusable UI            | —                           | Provided by Mantine UI (ADR-007); no global component library |

@@ -1,7 +1,7 @@
 # Deploy — Requirements
 
 > Implements M8 (Testing & Deploy) — second half
-> Status: Draft
+> Status: Complete
 
 ## R1 — Production API Image
 

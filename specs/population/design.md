@@ -1,6 +1,6 @@
 # Population Registry — Design
 
-> Status: Draft
+> Status: Complete
 > Implements: [./requirements.md](./requirements.md)
 
 ## Overview

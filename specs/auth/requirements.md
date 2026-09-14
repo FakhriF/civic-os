@@ -1,6 +1,6 @@
 # Authentication & Authorization — Requirements
 
-> Status: Complete (implemented; this specification documents the current implementation)
+> Status: Complete
 > Related roadmap milestone: v1.0 M2 — Authentication
 > Owner: CivicOS team
 

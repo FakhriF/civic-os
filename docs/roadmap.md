@@ -57,7 +57,7 @@ graph LR
 
 | Milestone                   | Scope & Deliverables                                                                                      | Status         |
 | :-------------------------- | :-------------------------------------------------------------------------------------------------------- | :------------- |
-| **M1: Project Setup**       | Monorepo structure, Bun workspaces (`packages/`, `apps/`), Root `package.json` & `tsconfig.json`          | `Completed` 🟢 |
+| **M1: Project Setup**       | Monorepo structure, Bun workspaces (`apps/`), Root `package.json` & `tsconfig.json`                        | `Completed` 🟢 |
 | **M2: Authentication**      | Login, Logout, JWT bearer tokens, Refresh token handling, Protected route guards                          | `Completed` 🟢 |
 | **M3: App Shell Layout**    | Mantine header, collapsible sidebar, breadcrumb navigation, theme switching                               | `Completed` 🟢 |
 | **M4: Executive Dashboard** | City overview stats cards, recent bulletins list, quick action panel                                      | `Completed` 🟢 |

@@ -61,7 +61,7 @@ All architectural specs, design guidelines, entity schemas, and decision records
 | 🛠️ [**Development Standards**](./docs/development-standards.md)     | Coding conventions, Git workflows, & DoD                                   |
 | 🚀 [**Deployment Runbook**](./docs/deployment.md)                   | VPS production deployment with Docker Compose                              |
 | 🤝 [**Contribution Guide**](./CONTRIBUTING.md)                      | Guidelines for submitting features, docs, and bug fixes                    |
-| 📜 [**Architecture Decision Records (ADRs)**](./docs/adr/README.md) | Categorized decision log (27 records: Monorepo, FE, BE, DevOps)            |
+| 📜 [**Architecture Decision Records (ADRs)**](./docs/adr/README.md) | Categorized decision log (28 records: Monorepo, FE, BE, DevOps)            |
 | 🧩 [**Business Modules**](./docs/modules)                           | Specifications for domain modules (Auth, Users, Population, Announcements) |
 
 ---
@@ -128,8 +128,11 @@ CivicOS/
 
 ```bash
 docker compose up -d postgres-test   # isolated test database (ADR-026)
-bun test                             # 46 tests: unit + API integration
+bun run test                         # 46 tests: unit + API integration
 ```
+
+> [!NOTE]
+> Use `bun run test`, not plain `bun test`. The script passes `--preload ./src/test/setup.ts`, which points `DATABASE_URL` at the isolated test database before the database client loads. Plain `bun test` skips the preload, falls back to the dev database from `.env.local`, and the API tests fail with `ECONNREFUSED`.
 
 ---
 

@@ -1,7 +1,7 @@
 # Testing — Design
 
 > Implements: [./requirements.md](./requirements.md)
-> Status: Draft
+> Status: Complete
 
 ---
 

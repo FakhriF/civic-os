@@ -51,7 +51,7 @@ graph TD
   _Design philosophy, color tokens, typography scale, component standards, accessibility rules, and layout specs._
 
 - [**Project Structure**](./project-structure.md)  
-  _Organization of apps, packages, feature folders, global assets, and monorepo conventions._
+  _Organization of apps, feature folders, global assets, and monorepo conventions._
 
 - [**Product Roadmap**](./roadmap.md)  
   _Phase-by-phase execution plan, milestone timelines, and feature rollout tracking._
@@ -109,6 +109,7 @@ All architectural decisions are documented in the [**ADR Registry (`docs/adr/`)*
 Located in [`docs/modules/`](./modules):
 
 - [**Authentication & Authorization Module**](./modules/auth.md) — _RBAC, JWT tokens, session handling_
+- [**User Management Module**](./modules/user.md) — _Employee accounts, roles, departments & deactivation_
 - [**Population Registry Module**](./modules/population.md) — _Resident information management_
 - [**Announcements Module**](./modules/announcement.md) — _Official municipal bulletins & statuses_
 
@@ -129,4 +130,4 @@ Located in [`docs/modules/`](./modules):
 >
 > - All new architecture decisions **must** follow the MADR format in `docs/adr/ADR-XXX.md`.
 > - Diagramming uses standard [Mermaid syntax](https://mermaid.js.org/).
-> - Shared types and domain schemas must be referenced from `packages/shared`.
+> - Shared types and domain schemas do **not** live in a workspace package. The API is the source of truth; the web app mirrors response shapes per feature (ADR-028).

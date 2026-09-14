@@ -16,7 +16,7 @@ In monorepo architecture, dependencies often get blindly installed into the work
 
 - **Scope Isolation**: Prevent frontend libraries (React, Mantine) from leaking into backend packages and vice versa.
 - **Minimal Deployment Bundles**: Keep build targets lightweight and explicitly scoped.
-- **Build Reproducibility**: Ensure sub-packages (`apps/web`, `apps/api`, `packages/shared`) explicitly declare their own `dependencies` and `devDependencies`.
+- **Build Reproducibility**: Ensure workspace apps (`apps/web`, `apps/api`) explicitly declare their own `dependencies` and `devDependencies`.
 
 ---
 
@@ -43,7 +43,7 @@ Every third-party dependency MUST belong to the smallest workspace scope that re
 | **Drizzle ORM** | `apps/api` | Database query builder & migrations |
 | **PostgreSQL Driver** | `apps/api` | Database connection client |
 | **TypeScript** | `Workspace Root` | Monorepo-wide type checking |
-| **Shared Linter Configs** | `packages/config` | Shared ESLint & code style standards |
+| **ESLint Config** | `apps/web` | Frontend lint rules (`eslint.config.mjs`) |
 
 ### Consequences & Trade-offs:
 

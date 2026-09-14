@@ -1,7 +1,7 @@
 # Testing — Requirements
 
 > Implements M8 (Testing & Deploy) — first half
-> Status: Draft
+> Status: Complete
 
 ## R1 — Test Runner & Scripts
 

@@ -26,11 +26,12 @@ graph TD
 
 | ADR                                              | Title                             | Status        | Primary Decision                                              |
 | :----------------------------------------------- | :-------------------------------- | :------------ | :------------------------------------------------------------ |
-| [**ADR-001**](./ADR-001-monorepo.md)             | **Monorepo Architecture**         | `Accepted` 🟢 | Unified workspace repository for web, API, and packages       |
+| [**ADR-001**](./ADR-001-monorepo.md)             | **Monorepo Architecture**         | `Accepted` 🟢 | Unified workspace repository for web and API                  |
 | [**ADR-008**](./ADR-008-bun-runtime.md)          | **Bun Runtime & Package Manager** | `Accepted` 🟢 | Adopt Bun as primary JS/TS runtime and package manager        |
 | [**ADR-009**](./ADR-009-pure-bun-project.md)     | **Pure Bun Project**              | `Accepted` 🟢 | Strict enforcement of Bun across dev, scripts, and production |
 | [**ADR-010**](./ADR-010-official-templates.md)   | **Official Project Templates**    | `Accepted` 🟢 | Use official framework starters for application scaffolding   |
 | [**ADR-011**](./ADR-011-dependency-ownership.md) | **Dependency Ownership**          | `Accepted` 🟢 | Scope dependencies strictly to the smallest requiring package |
+| [**ADR-028**](./ADR-028-api-web-type-contracts.md) | **API–Web Type Contracts**      | `Accepted` 🟢 | No shared types package: API is the source of truth, web mirrors shapes; Eden Treaty deferred |
 
 ---
 
@@ -41,7 +42,7 @@ graph TD
 | [**ADR-002**](./ADR-002-react-vite.md)                | **React + Vite Frontend**            | `Accepted` 🟢 | Single Page Application (SPA) framework with Vite HMR                  |
 | [**ADR-005**](./ADR-005-feature-based-structure.md)   | **Feature-Based Structure**          | `Accepted` 🟢 | Co-locate UI, hooks, and services by domain feature                    |
 | [**ADR-007**](./ADR-007-mantine-design-system.md)     | **Mantine UI Adoption**              | `Accepted` 🟢 | Standardized UI component library and design system foundation         |
-| [**ADR-012**](./ADR-012-feature-oriented-frontend.md) | **Feature-Oriented Frontend Layout** | `Accepted` 🟢 | Feature domain modules with core app shell under `src/app/`            |
+| [**ADR-012**](./ADR-012-feature-oriented-frontend.md) | **Feature-Oriented Frontend Layout** | `Accepted` 🟢 | Feature domain modules; bootstrap (providers/routes) in `main.tsx` & `App.tsx` |
 | [**ADR-025**](./ADR-025-shared-query-hooks.md)        | **Shared Query Hooks & Cache**       | `Accepted` 🟢 | Cross-feature hooks in `src/lib/`; reuse owning hooks for shared cache |
 
 ---

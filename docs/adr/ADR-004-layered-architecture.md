@@ -41,7 +41,7 @@ Business Layer (Service Logic & Permissions)
 Data Layer (Drizzle ORM & Database Access)
 ```
 
-- **Presentation Layer**: Handles HTTP requests, validates request body via Zod, and formats responses.
+- **Presentation Layer**: Handles HTTP requests, validates request bodies with Elysia's `t` (TypeBox) schemas, and formats responses.
 - **Business Layer**: Implements domain business logic, role-based authorization checks, and calculations.
 - **Data Layer**: Executes Drizzle ORM queries against PostgreSQL. Direct database calls from routes are prohibited.
 

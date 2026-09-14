@@ -34,7 +34,7 @@ CivicOS defines four roles — `Administrator`, `Manager`, `Mayor`, `Officer` �
 **Chosen Option**: **Option 2 — Reusable `requireRole` guard plugin**.
 
 ```ts
-const requireRole = (roleName: string) =>
+const requireRole = (...roleNames: string[]) =>
   new Elysia({ name: "require-role" })
     .use(databasePlugin)
     .use(authMiddleware)
@@ -42,13 +42,20 @@ const requireRole = (roleName: string) =>
     // apply to routes inside this plugin, which has none; scoped reaches
     // the parent's routes registered after .use(requireRole(...))
     .onBeforeHandle({ as: "scoped" }, async ({ db, user, set }) => {
-      const [role] = await db
-        .select()
-        .from(roles)
-        .where(eq(roles.name, roleName))
-        .limit(1);
+      if (!user) {
+        set.status = 403;
+        return {
+          status: "error",
+          error: { code: "FORBIDDEN", message: "Forbidden." },
+        };
+      }
 
-      if (!user || !role || user.roleId !== role.id) {
+      const allowed = await db
+        .select({ id: roles.id })
+        .from(roles)
+        .where(inArray(roles.name, roleNames));
+
+      if (!allowed.some((role) => role.id === user.roleId)) {
         set.status = 403;
         return {
           status: "error",
@@ -68,6 +75,7 @@ Applied to mutation routes only: `.use(requireRole("Administrator"))` after the 
 4. **Role changes lag by token lifetime**: the token carries the old `roleId` until it expires (15 minutes), so role changes take effect on the next access token.
 5. **Current policy**: user-management mutations (create/update/deactivate) are `Administrator`-only; the directory is readable by any authenticated user. Future modules define their own role requirements.
 6. **Deferred**: the permission matrix (Option 3) may replace per-route guards when the module set and role distinctions grow.
+7. **The role name travels with the session**: the authenticated user's `roleName` is resolved by joining `roles` and returned in the auth payload (`/auth/login`, `/auth/refresh`, `/auth/me`), so the client gates UI without an extra request to `/api/v1/roles`. It is never hardcoded and never trusted from the request.
 
 ### Consequences & Trade-offs:
 
@@ -85,4 +93,4 @@ Applied to mutation routes only: `.use(requireRole("Administrator"))` after the 
 
 - [**ADR-022** JWT Session Management](./ADR-022-jwt-session-management.md) · [**ADR-020** Soft Delete](./ADR-020-soft-delete-user-accounts.md)
 - Specification: [`specs/user-management/`](../../specs/user-management/)
-- Implementation: `apps/api/src/modules/user/user.routes.ts` (`requireRole`), `apps/api/src/modules/user/user.service.ts`
+- Implementation: `apps/api/src/app/middleware/require-role.ts` (`requireRole`), `apps/api/src/app/middleware/auth.ts` (`roleName` in the derived user), `apps/api/src/modules/user/user.routes.ts`, `apps/web/src/features/authentication/use-permissions.ts`

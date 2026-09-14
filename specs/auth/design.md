@@ -1,6 +1,6 @@
 # Authentication & Authorization — Design
 
-> Status: Complete (implemented)
+> Status: Complete
 > Implements: [./requirements.md](./requirements.md)
 
 ## Overview

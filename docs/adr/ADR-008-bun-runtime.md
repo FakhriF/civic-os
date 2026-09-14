@@ -16,7 +16,7 @@ CivicOS is built as a TypeScript monorepo with an Elysia.js backend and React SP
 
 - **Elysia Framework Synergy**: Elysia.js is optimized specifically for Bun's native HTTP server and JavaScript engine.
 - **Developer Velocity**: Extremely fast package installation and zero-config TypeScript execution without transpile steps.
-- **Monorepo Workspaces**: Built-in workspace support for linking local packages (`packages/shared`).
+- **Monorepo Workspaces**: Built-in workspace support for linking local workspace packages (`apps/*`).
 
 ---
 
@@ -35,7 +35,7 @@ CivicOS adopts **Bun** as the mandatory primary runtime and package manager acro
 
 - **Runtime Environment**: Executing backend services and build scripts.
 - **Package Management**: Dependency installation (`bun install`, `bun add`).
-- **Workspace Management**: Monorepo package resolution across `apps/` and `packages/`.
+- **Workspace Management**: Monorepo package resolution across `apps/`.
 - **Script Execution**: Task running (`bun run dev`, `bun run build`).
 
 ### Consequences & Trade-offs:

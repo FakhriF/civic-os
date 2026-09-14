@@ -1,6 +1,6 @@
 # Announcements — Requirements
 
-> Status: Draft
+> Status: Complete
 > Related roadmap milestone: v1.0 M7 — Announcements
 > Owner: CivicOS team
 

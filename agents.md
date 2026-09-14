@@ -33,7 +33,7 @@ Before answering, AI MUST base its guidance on the actual project rather than as
 - `docs/design.md` — design system
 - `docs/development-standards.md` — conventions, API contracts, error handling, Definition of Done
 - `docs/adr/` — architecture decision records
-- existing code in `apps/` and `packages/`
+- existing code in `apps/`
 
 AI should prefer existing utilities, services, components, and patterns over proposing new ones, and should reference files by their project-relative path.
 
