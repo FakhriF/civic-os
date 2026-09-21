@@ -5,6 +5,7 @@
     "dev": "bun run --watch src/index.ts",
     "db:seed": "bun run src/database/seed.ts",
     "db:migrate": "drizzle-kit migrate",
+    "db:generate": "drizzle-kit generate",
     "test": "bun test --preload ./src/test/setup.ts"
   },
   "dependencies": {
