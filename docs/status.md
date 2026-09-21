@@ -55,7 +55,7 @@ Three threads, all verified with `tsc` + `bun run test` + Prettier.
 | 2   | Eden Treaty adoption          | Deferred. Revisit when the domain count grows (v1.1+). See ADR-028.                                                       |
 | 3   | Relational queries            | `drizzle()` is called without `schema`, so `db.query.*` is unavailable. Pass `schema` if it is ever needed.               |
 | 4   | Module doc coverage           | `docs/modules/` documents `auth`, `user`, `population`, `announcement`. `dashboard`, `role`, `department` are deliberately undocumented supporting modules. |
-| 5   | v1.1 Transportation           | Next release per the [roadmap](./roadmap.md); no spec written yet.                                                        |
+| 5   | v1.1 Transportation           | Next release per the [roadmap](./roadmap.md). Spec drafted: [`specs/transportation/`](../specs/transportation/) (requirements, design, tasks); driver identity decided in [ADR-029](./adr/ADR-029-driver-identity-and-transportation-domain-modeling.md). Implementation not started. |
 
 ---
 

@@ -76,7 +76,9 @@ Manages public transportation networks, municipal fleet, and transit operations.
 
 - **Bus Routes & Stop Management**: Route mapping, stop coordinates, active schedule management.
 - **Fleet & Vehicle Inventory**: Bus fleet details, maintenance logs, inspection status.
-- **Driver Assignments & Status**: Duty rosters, real-time route status (`Active`, `Delayed`, `Maintenance`).
+- **Driver Assignments & Status**: Duty rosters, route operational status (`On time`, `Delayed`, `Maintenance`).
+
+> Draft spec: [`specs/transportation/`](../specs/transportation/) (requirements · design · tasks) · Design decision: [ADR-029](./adr/ADR-029-driver-identity-and-transportation-domain-modeling.md)
 
 ---
 

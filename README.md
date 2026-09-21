@@ -70,7 +70,7 @@ All architectural specs, design guidelines, entity schemas, and decision records
 | 🛠️ [**Development Standards**](./docs/development-standards.md)     | Coding conventions, Git workflows, & DoD                                   |
 | 🚀 [**Deployment Runbook**](./docs/deployment.md)                   | VPS production deployment with Docker Compose                              |
 | 🤝 [**Contribution Guide**](./CONTRIBUTING.md)                      | Guidelines for submitting features, docs, and bug fixes                    |
-| 📜 [**Architecture Decision Records (ADRs)**](./docs/adr/README.md) | Categorized decision log (28 records: Monorepo, FE, BE, DevOps)            |
+| 📜 [**Architecture Decision Records (ADRs)**](./docs/adr/README.md) | Categorized decision log (29 records: Monorepo, FE, BE, DevOps)            |
 | 🧩 [**Business Modules**](./docs/modules)                           | Specifications for domain modules (Auth, Users, Population, Announcements) |
 
 ---

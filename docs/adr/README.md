@@ -59,6 +59,7 @@ graph TD
 | [**ADR-022**](./ADR-022-jwt-session-management.md)        | **JWT Session Management**        | `Accepted` 🟢 | Short-lived in-memory access token + long-lived HttpOnly refresh cookie        |
 | [**ADR-024**](./ADR-024-role-based-access-control.md)     | **Role-Based Access Control**     | `Accepted` 🟢 | Reusable `requireRole` guard plugin with scoped `onBeforeHandle`               |
 | [**ADR-026**](./ADR-026-api-testing-strategy.md)          | **API Testing Strategy**          | `Accepted` 🟢 | `bun test` + isolated `civicos_test` DB + in-process `app.handle()`            |
+| [**ADR-029**](./ADR-029-driver-identity-and-transportation-domain-modeling.md) | **Driver Identity & Transit Modeling** | `Accepted` 🟢 | Dedicated `drivers` table (optional unique `userId`); one `transportation` module |
 
 ---
 
