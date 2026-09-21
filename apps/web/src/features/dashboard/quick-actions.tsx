@@ -33,9 +33,6 @@ export function QuickActions() {
           </Button>
         ))}
       </Stack>
-      <Text size="xs" c="dimmed" mt="sm">
-        Module pages ship with M5–M7
-      </Text>
     </Card>
   );
 }
