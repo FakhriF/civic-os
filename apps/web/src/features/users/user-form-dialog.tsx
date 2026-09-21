@@ -62,7 +62,7 @@ export function UserFormDialog({
 
     try {
       if (isEdit) {
-        await updateUser.mutateAsync({ id: editing!.id, ...profile });
+        await updateUser.mutateAsync({ id: editing!.id, ...profile, ...password ? { password } : {} });
       } else {
         await createUser.mutateAsync({ email, ...profile, password });
       }
